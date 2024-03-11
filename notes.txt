@@ -1,0 +1,51 @@
+Message de SUBMIT ET GRISER LES CHAMPS SI LE CANDIDAT A DEJA FAIT L action
+
+1MO ---->> 100MO  ✅
+
+upload fichier dropify  ✅
+
+Popup success et refresh de la page avec grid recapitulatif + down button for next stage.
+
+Apogge de l'utudiant .pdf pour le nom de pdf ✅
+
+Cliquer Ici pour telechager
+
+teacher ikon ando CRUD table l kola filiere ichof biha les dossiers de stage + recommendation rapport pour biblio
+
+reçu provisoire d'envoi de dossier (definitif après validation).
+
+later f biblio we should add gest accounts.
+
+migration {
+    t_etudiant ✅
+    t_academie  ✅
+    t_categorie_socio_proffesio ✅
+    t_commune ✅
+    t_departement ✅
+    t_diplome❌
+    t_diplomes✅
+    t_diplome_enseigne✅
+    t_dossier_stage ✅
+    t_element_etape  ✅
+    t_etablissement✅
+    t_etape_diplome ✅
+    t_etudiant_filiere ✅
+    t_fonction ✅
+    t_grade ✅
+    t_loceaux ✅
+    t_pays ✅
+    t_personnel✅
+    t_prof_element ✅
+    t_province_et_prefecture ✅ 
+    t_region✅ 
+    t_serie_bac✅
+    t_service✅
+    t_situationadmin✅
+    t_specialite✅
+    t_type_etablissement✅
+    t_type_handicap✅
+    t_type_handicap✅
+    t_type_loceaux✅ 
+    t_type_personnel✅
+    t_universite✅
+}
