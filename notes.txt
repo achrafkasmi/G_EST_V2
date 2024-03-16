@@ -55,4 +55,14 @@ migration {
 teacher makital3och lih les pdfs (hadi ana l9it blanha got to users table)❌
 
 
-addnotice wkha heyednaha mazal katla3 l role student- tacher
+addnotice wkha heyednaha mazal katla3 l role student- tacher.
+
+Save approvals : mn mora maki validi teacher l les etudiant o ki 
+clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin.
+
+
+jib les teachers f les filiere bach ndiro correspondance mabin l etudiant li uploada stage
+o teacher dyalo bach mankhltoch bin kolchi.
+
+
+Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant ybano lih gher les etudiant li m encadre

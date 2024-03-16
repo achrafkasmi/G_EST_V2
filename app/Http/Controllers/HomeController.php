@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,8 @@ class HomeController extends Controller
 
     public function dashHome() : View {
         
-        return  view('Dashboards.dashboard');
+        $users=User::where('is_uploaded',true)->get();
+
+        return  view('Dashboards.dashboard')->with(['users'=>$users]);
     }
 }

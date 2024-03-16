@@ -8,139 +8,139 @@
 
 
 <div class="app-main">
-    @include('tiles.actions')
-    <div class="chart-row three">
-        <div class="chart-container-wrapper">
-            <a href="#" id="toggleCrudContainer">
+        @include('tiles.actions')
+        <div class="chart-row three">
+            <div class="chart-container-wrapper">
+                <a href="#" id="toggleCrudContainer">
+                    <div class="chart-container">
+                        <div class="chart-info-wrapper">
+                            <h2>Dossiers de Stage</h2>
+                            <span>Visualiser</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="chart-container-wrapper">
                 <div class="chart-container">
                     <div class="chart-info-wrapper">
-                        <h2>Dossiers de Stage</h2>
-                        <span>Visualiser</span>
+                        <h2>Attendance</h2>
+                        <span>Commencer</span>
                     </div>
                 </div>
-            </a>
-        </div>
-
-        <div class="chart-container-wrapper">
-            <div class="chart-container">
-                <div class="chart-info-wrapper">
-                    <h2>Attendance</h2>
-                    <span>Commencer</span>
+            </div>
+            <div class="chart-container-wrapper">
+                <div class="chart-container">
+                    <div class="chart-info-wrapper">
+                        <h2>cursus</h2>
+                        <span>Descriptifs Et Documentations</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="chart-container-wrapper">
-            <div class="chart-container">
-                <div class="chart-info-wrapper">
-                    <h2>cursus</h2>
-                    <span>Descriptifs Et Documentations</span>
+
+        <div class="chart-row two">
+
+            <div class="chart-container-wrapper small">
+
+
+            </div>
+        </div>
+        <div class="container crud-container">
+            <span class="close-btn" onclick="toggleCrudContainer()">❌</span>
+            <h2 class="crud-title">Stage Approvals LP-GC</h2>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search...">
+                <button id="searchBtn" onclick="searchTable()">Search</button>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Recommandation</th>
+                        <th>Etudiant</th>
+                        <th>Type de Stage</th>
+                        <th>Dossier</th>
+                        <th>Rapport</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                    <tr>
+                        <td><input type="checkbox" name="recommandation" id="recommandation1"></td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->etudiant->stage->type_dossier}}</td>
+                        <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
+                        <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
+                        <!-- CRUD options (Icons) -->
+                        <td class="crud-options">
+                            <a href="your_link_here" title="Visualize">
+                                <span class="icon visualize-icon"></span>
+                                <!-- or use text -->
+                                <!-- YourVisualizeIconOrText -->
+                            </a>
+                            <a href="#" title="Approve" style="color: green;" onclick="approveStage(1)">✔</a>
+                            <a href="#" title="Disapprove" style="color: red;" onclick="showDisapprovePopup(1)">✘</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+
+            <!-- Save Button -->
+            <button class="save-button" onclick="saveApprovals()">Save Approvals</button>
+
+            <!-- Disapprove Popup -->
+            <div class="disapprove-popup" id="disapprovePopup">
+                <div class="popup-content">
+                    <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
+                    <textarea id="disapproveNote" class="popup-input" rows="4"></textarea>
+                    <div class="popup-buttons">
+                        <button onclick="hideDisapprovePopup()">Cancel</button>
+                        <button style="background-color: red; color: #fff;" onclick="disapproveStage()">send updates</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="chart-row two">
-
-        <div class="chart-container-wrapper small">
-
-
-        </div>
-    </div>
-    <div class="container crud-container">
-        <span class="close-btn" onclick="toggleCrudContainer()">❌</span>
-        <h2 class="crud-title">Stage Approvals LP-GC</h2>
-
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search...">
-            <button id="searchBtn" onclick="searchTable()">Search</button>
-        </div>
-
-        <table class="table">
+        <div class="datatabcontainer">
+        <table class="tab" id="myTable">
             <thead>
                 <tr>
-                    <th>Recommandation</th>
-                    <th>Etudiant</th>
-                    <th>Type de Stage</th>
-                    <th>Dossier</th>
+                    <th>Nom complet</th>
+                    <th>Type de stage</th>
+                    <th>Dossier de stage</th>
                     <th>Rapport</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($users as $user)
-                <tr>
-                    <td><input type="checkbox" name="recommandation" id="recommandation1"></td>
+                <tr> <!-- Start a new row for each user -->
                     <td>{{$user->name}}</td>
                     <td>{{$user->etudiant->stage->type_dossier}}</td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
-                    <!-- CRUD options (Icons) -->
-                    <td class="crud-options">
-                        <a href="your_link_here" title="Visualize">
-                            <span class="icon visualize-icon"></span>
-                            <!-- or use text -->
-                            <!-- YourVisualizeIconOrText -->
+                    <td> 
+                        <a href="#">
+                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
                         </a>
-                        <a href="#" title="Approve" style="color: green;" onclick="approveStage(1)">✔</a>
-                        <a href="#" title="Disapprove" style="color: red;" onclick="showDisapprovePopup(1)">✘</a>
+                        <a href="#">
+                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                        </a>
+                        <a href="#">
+                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                        </a>
                     </td>
                 </tr>
                 @endforeach
-                <!-- Add more rows as needed -->
             </tbody>
         </table>
-
-        <!-- Save Button -->
-        <button class="save-button" onclick="saveApprovals()">Save Approvals</button>
-
-        <!-- Disapprove Popup -->
-        <div class="disapprove-popup" id="disapprovePopup">
-            <div class="popup-content">
-                <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
-                <textarea id="disapproveNote" class="popup-input" rows="4"></textarea>
-                <div class="popup-buttons">
-                    <button onclick="hideDisapprovePopup()">Cancel</button>
-                    <button style="background-color: red; color: #fff;" onclick="disapproveStage()">send updates</button>
-                </div>
-            </div>
-        </div>
     </div>
-
-    <div class="datatabcontainer">
-    <table class="tab" id="myTable">
-        <thead>
-            <tr>
-                <th>Nom complet</th>
-                <th>Type de stage</th>
-                <th>Dossier de stage</th>
-                <th>Rapport</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-            <tr> <!-- Start a new row for each user -->
-                <td>{{$user->name}}</td>
-                <td>{{$user->etudiant->stage->type_dossier}}</td>
-                <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
-                <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
-                <td> 
-                    <a href="#">
-                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
-                    </a>
-                    <a href="#">
-                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
-                    </a>
-                    <a href="#">
-                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
 
 
     <button class="save-button" onclick="saveApprovals()">Save Approvals</button>

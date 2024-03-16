@@ -9,8 +9,16 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     public function index(){
+        
+        $users=User::where('is_uploaded',true)->get();
 
-        return view('Dashboards.dashboard');
+        if(auth()->user()->hasRole('teacher')){
+
+            return  view('Dashboards.dashteacher')->with(['users'=>$users]);
+
+        }
+        
+        return  view('Dashboards.dashboard')->with(['users'=>$users]);
     }
 
     public function dashteacher(){
