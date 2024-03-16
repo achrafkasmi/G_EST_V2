@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +41,21 @@ Artisan::command('createUser', function () {
    $user->save();
 });
 
+Artisan::command('add_apogee', function () {
+
+    Schema::table('t_etudiant', function (Blueprint $table) {
+        $table->dropColumn('apogee');
+    });
+    
+        if (!Schema::hasColumn('t_etudiant', 'apogee')) {
+
+            Schema::table('t_etudiant', function (Blueprint $table) {
+
+                $table->string('apogee')->nullable()->unique;
+            });
+
+        }
+
+        $this->info('Added successfully.');
+
+});

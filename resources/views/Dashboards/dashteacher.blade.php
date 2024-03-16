@@ -108,17 +108,19 @@
     </div>
 
     <div class="datatabcontainer">
-        <table class="tab" id="myTable">
-            <thead>
-                <tr>
-                    <th>Nom complet</th>
-                    <th>Type de stage</th>
-                    <th>Dossier de stage</th>
-                    <th>Rapport</th>
-                    <th>Actions</th>
-                </tr>
-            <tbody>
-                @foreach($users as $user)
+    <table class="tab" id="myTable">
+        <thead>
+            <tr>
+                <th>Nom complet</th>
+                <th>Type de stage</th>
+                <th>Dossier de stage</th>
+                <th>Rapport</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($users as $user)
+            <tr> <!-- Start a new row for each user -->
                 <td>{{$user->name}}</td>
                 <td>{{$user->etudiant->stage->type_dossier}}</td>
                 <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
@@ -127,12 +129,20 @@
                     <a href="#">
                         <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
                     </a>
+                    <a href="#">
+                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                    </a>
+                    <a href="#">
+                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                    </a>
                 </td>
-                @endforeach
-            </tbody>
-            </thead>
-        </table>
-    </div>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
     <button class="save-button" onclick="saveApprovals()">Save Approvals</button>
 
 </div>
