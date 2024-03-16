@@ -5,11 +5,11 @@
 <div class="app-main">
     <div class="container form-container bg-light-gray">
 
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
         <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -87,22 +87,23 @@
 
             <div class="row mb-0">
                 <div class="col-md-6 offset-md-4">
-                <button type="submit" id="user-submit-btn" class="btn btn-primary">{{ __('Register') }}</button>
-                    
+                    <button type="submit" id="user-submit-btn" class="btn btn-primary">{{ __('Register') }}</button>
+
                 </div>
             </div>
         </form>
 
-      
+
     </div>
 
     <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data" class="mt-4">
         @csrf
-        <div class="mb-5">
-            <label for="excel_file" class="form-label">Choose Excel File</label>
+        <div class="excelinput mb-5">
+            <label for="excel_file" class="form-label">Massive Add</label>
             <input class="form-control" type="file" id="excel_file" name="excel_file">
+            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
         </div>
-        <button type="submit" id="excel-submit-btn" class="btn btn-primary">Upload</button>
+
     </form>
 
 
@@ -110,6 +111,12 @@
 </div>
 
 <style>
+    .excelinput {
+        width: 47%;
+        margin-left: 35%;
+        color: white;
+    }
+
     @media only screen and (max-width: 992px) {
         .form {
             background-color: rgba(255, 255, 255, 0.2);

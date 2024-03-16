@@ -8,6 +8,11 @@
 
     <title>Login Page</title>
     <style>
+        body {
+            background-image: url('bglogin.PNG'); /* Specify the path to your background image */
+            background-size: cover; /* Cover the entire body with the background image */
+        }
+
         .main {
             height: 100%;
             min-height: 100vh;
