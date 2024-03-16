@@ -21,6 +21,7 @@ class ExcelImport implements ToCollection
             $firstRow = $rows[0];
 
             $hasExpectedHeaders = true;
+            
             foreach ($expectedHeaders as $header) {
 
                 if (!in_array($header, $firstRow)) {
@@ -35,7 +36,7 @@ class ExcelImport implements ToCollection
                 for ($i = 1; $i < count($rows); $i++) {
 
                     dd($rows[$i]);
-                    
+
                     $row = $rows[$i];
                 }
 
