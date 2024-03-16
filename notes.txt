@@ -49,3 +49,10 @@ migration {
     t_type_personnel✅
     t_universite✅
 }
+
+
+
+teacher makital3och lih les pdfs (hadi ana l9it blanha got to users table)❌
+
+
+addnotice wkha heyednaha mazal katla3 l role student- tacher

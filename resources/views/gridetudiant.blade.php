@@ -12,44 +12,38 @@
 </head>
 
 <body>
-  <div class="appmid">
-    <div class="containers">
-      <table class="responsive-table">
-        <caption>recapitulatif des informations de stages</caption>
-        <thead>
-          <tr>
-            <th scope="col">type de stage</th>
-            <th scope="col">dossier de stage</th>
-            <th scope="col">rapport</th>
-            <th scope="col">date delivrence</th>
-            <th scope="col">modification</th>
-            <th scope="col">observations</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Type de Stage</th>
-            <td data-title="PDF dossier de stage"><a <a href="#" target="_blank">cliquer ici </a></td>
-            <td data-title="PDF rapport de stage"><a <a href="#" target="_blank">cliquer ici </a></td>
-            <td data-title="date de delivrence de dossier" <a href="#" class="date"></a>--/--/----</td>
-            <td data-title="vous puvez modifier que avant la confirmation de Professeur encadrant"><a href="http://127.0.0.1:8000/messtages">Clicker ici</a></td>
-            <td data-title="observation de l'encadrant">
-              <p class="font-weight-normal"> bon travail A+</p>
-            </td>
-
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  
+  <div class="containers">
+    <h1 style="margin-bottom: 1em;font-size: 1em;font-weight: bold;text-align: center; color:aliceblue;">recapitulatif des informations de stages</h1>
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th scope="col">type de stage</th>
+          <th scope="col">dossier de stage</th>
+          <th scope="col">rapport</th>
+          <th scope="col">date delivrence</th>
+          <th scope="col">modification</th>
+          <th scope="col">observations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Type de Stage</th>
+          <td data-title="PDF dossier de stage"><a <a href="{{ Storage::url(auth()->user()->stage_file) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="PDF rapport de stage"><a <a href="{{ Storage::url(auth()->user()->rapport_file) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="date de delivrence de dossier" <a href="#" class="date"></a>--/--/----</td>
+          <td data-title="vous puvez modifier que avant la confirmation de Professeur encadrant"><a href="http://127.0.0.1:8000/messtages">Clicker ici</a></td>
+          <td data-title="observation de l'encadrant">
+            <p class="font-weight-normal"> bon travail A+</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 
-
   <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
 </body>
 @endsection
 
@@ -58,9 +52,6 @@
   /*@import "bourbon@5.*";
   @import "variables";*/
 
-  .appmid {
-    background-color: #151c32;
-  }
 
   html {
     box-sizing: border-box;
@@ -78,6 +69,7 @@
 
   table {
     margin: .3 em;
+
   }
 
   a {
@@ -91,8 +83,10 @@
 
   .containers {
     margin: 5% 3%;
-    width: 80%;
+    width: 100%;
     height: 30%;
+    background-color: #050e2d;
+
 
     @media (min-width: 48em) {
       margin: 2%;
@@ -294,3 +288,8 @@
     }
   }
 </style>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

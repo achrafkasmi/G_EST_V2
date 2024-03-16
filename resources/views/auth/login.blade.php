@@ -42,7 +42,7 @@
 
                         <div class="form-group">
                             <label for="email">email</label>
-                            <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter APPOGEE code">
+                            <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Email Universitaire">
                             <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -53,7 +53,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputPassword1">Passcorde</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Passcode">
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="APOGEE">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -72,11 +72,11 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
+                                <!--@if (Route::has('password.request'))
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
-                                @endif
+                                @endif-->
                             </div>
                         </div>
 

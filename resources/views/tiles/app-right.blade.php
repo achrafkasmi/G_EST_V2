@@ -1,4 +1,8 @@
  <div class="app-right">
+
+
+
+
    <button class="close-right">
      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
        <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -8,11 +12,22 @@
    <div class="profile-box">
      <div class="profile-photo-wrapper">
 
-    <img alt="{{ auth()->user()->name ?? 'pls connect'}}" @if(auth()->user())src="{{ Storage::url(auth()->user()->image) }}"@endif
+       <img alt="{{ auth()->user()->name ?? 'pls connect'}}" @if(auth()->user())src="{{ Storage::url(auth()->user()->image) }}"@endif
        class="dense-image dense-loading">
 
      </div>
-     <p class="profile-text">{{ auth()->user()->name ?? 'pls connect' }}</p>
+     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
+
+<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <svg class="logout-icon" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M29,18c0,7.2-5.8,13-13,13S3,25.2,3,18c0-5.5,3.5-10.4,8.7-12.3c0.5-0.2,1.1,0.1,1.3,0.6 c0.2,0.5-0.1,1.1-0.6,1.3C8,9.2,5,13.3,5,18c0,6.1,4.9,11,11,11s11-4.9,11-11c0-4.7-3-8.8-7.3-10.4c-0.5-0.2-0.8-0.8-0.6-1.3 c0.2-0.5,0.8-0.8,1.3-0.6C25.5,7.6,29,12.5,29,18z"/>
+        <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M17,2v10c0,0.5-0.5,1-1,1s-1-0.5-1-1V2c0-0.5,0.5-1,1-1S17,1.5,17,2z"/>
+    </svg>
+</a>
+
+     <p class="profile-text">{{ auth()->user()->name ?? 'please connect' }}</p>
      <p class="profile-subtext">Admin</p>
    </div>
    <div class="app-right-content">
@@ -47,7 +62,7 @@
          </div>
        </div>
      </div>
-     <div class="app-right-section">
+     <!--<div class="app-right-section">
        <div class="app-right-section-header">
          <h2>Activity</h2>
          <span class="notification-active">
@@ -146,6 +161,18 @@
            <a href="#" class="activity-link">Complete Now</a>
          </div>
        </div>
-     </div>
+     </div>-->
    </div>
  </div>
+
+ <style>
+    .logout-icon {
+        position: relative;
+        bottom: 100px;
+        left: 35px; /* Adjust as needed */
+    }
+
+    .logout-icon:hover .logout-fill {
+        fill: red; /* Change to the desired red color */
+    }
+</style>

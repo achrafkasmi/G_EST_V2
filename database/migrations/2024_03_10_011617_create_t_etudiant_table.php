@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Schema;
     {
         Schema::create('t_etudiant', function (Blueprint $table) {
             $table->id();  // Primary key
+            $table->unsignedBigInteger('user_id')->nullable();   // Foreign key
             $table->string('cin', 20)->nullable();
             $table->string('cne', 20)->nullable();
             $table->string('nom_ar', 100)->nullable();
@@ -97,6 +98,8 @@ use Illuminate\Support\Facades\Schema;
             $table->string('inscription', 3)->nullable();
             $table->date('date_inscription')->nullable();
             $table->date('date_retrait_def')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
 
             $table->timestamps();  // Created at and Updated at timestamps
         });

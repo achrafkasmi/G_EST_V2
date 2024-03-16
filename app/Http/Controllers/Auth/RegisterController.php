@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+
 
 class RegisterController extends Controller
 {
@@ -80,7 +82,14 @@ class RegisterController extends Controller
             $user->image = Storage::putFile($path, $data->file('image'));
 
             $user->save();
+
         };
+
+        $role = $data['role'];
+
+        $user->assignRole($role);
+        //$user->assignRole('admin');
+
 
         return $user;
     }

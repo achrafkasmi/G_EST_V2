@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+
 
 class UploadManager extends Controller
 {
@@ -18,41 +21,56 @@ class UploadManager extends Controller
     // Handle the file uploads
     public function uploadPost(Request $request)
     {
+
+        $user = auth()->user();
+        //dd($user->roles->pluck('name'));
+
+        if (!Gate::denies('student', $user)) {
+            abort(403);
+        }
         // Validate and process the uploaded files
-        try {
-            $request->validate([
-                'stageFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
-                'rapportFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
-            ]);
+        
+            //$request->validate([
+              //  'stageFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
+                //'rapportFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
+            //]);
 
+            $dossier_pdf_name = 'Dossier-'.$user->apogee;
 
-            
-            $dossier_pdf_name = 'Dossier-'.Auth()->user()->apogee;
-            $rapport_pdf_name = 'Rapport-'.Auth()->user()->apogee;
+            $rapport_pdf_name = 'Rapport-'.$user->apogee;
 
             $path = "public/uploads/";
 
             $stageFilename = $request->input('stageFilename',$dossier_pdf_name) . '.pdf';
+
             $rapportFilename = $request->input('rapportFilename',$rapport_pdf_name) . '.pdf';
 
             // Store the files in the storage/app/public/uploads directory with custom filenames
             $stageFilePath = $request->file('stageFile')->storeAs('uploads', $stageFilename, 'public');
+
             $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapportFilename, 'public');
 
-            // You can save these file paths and filenames to the database or perform other operations as needed
-            $path = "public/uploads/";
-            // Generate unique filenames or let users provide their own filenames
-            $user=User::where('id',Auth::user()->id)->first();
-            $user->is_uploaded=true;
-            $user->rapport_file=$path.$rapport_pdf_name. '.pdf';
-            $user->stage_file=$path.$dossier_pdf_name. '.pdf';
+            $stage = Stage::where('id_etu',$user->etudiant->id)->first() ?? new Stage();
+
+            $stage->id_etu = $user->etudiant->id;
+
+            $stage->type_dossier = $request->get('fileType');
+
+            $stage->rapport = $path.$rapport_pdf_name. '.pdf';
+
+            $stage->dossier_stage = $path.$dossier_pdf_name. '.pdf';
+
+            $stage->save();
+
+
+            $user->is_uploaded = true;
+
             $user->save();
-            // Redirect back to the form with a success message
+
+
             return redirect()->route('dashboard')->with('success', 'Files uploaded successfully!');
-            
-        } catch (\Exception $e) {
-            // Handle the exception and return an error message to the view
-            return redirect()->back()->withInput()->withErrors(['error' => 'File upload failed. Please try again.']);
-        }
+       
     }
+
+    
 }

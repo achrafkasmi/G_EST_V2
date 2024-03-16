@@ -50,6 +50,7 @@ body {
   display: flex;
   position: relative;
   max-width: 1680px;
+  background-color: #050e2d;
 }
 
 .app-left {

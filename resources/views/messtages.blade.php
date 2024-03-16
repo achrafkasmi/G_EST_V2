@@ -4,6 +4,9 @@
 <!-- Include Dropify CSS from CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
 <!-- Include jQuery from CDN (required for Dropify) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -79,6 +82,10 @@
 
 
 <div class="app-main">
+    
+    @include('tiles.actions')
+
+    @if(!auth()->user()->is_uploaded)
 
     <div class="container form-container">
         <h2 class="form-title">Dossier de Stage</h2>
@@ -90,9 +97,9 @@
                 <label for="fileType" class="form-label">Select Type:</label>
                 <select class="form-select form-control" id="fileType" name="fileType">
                     <option selected>Select type de dossier de stage</option>
-                    <option value="1">Stage d'initiation</option>
-                    <option value="2">Stage professionnel</option>
-                    <option value="3">Stage technique</option>
+                    <option value="Stage d'initiation">Stage d'initiation</option>
+                    <option value="Stage professionnel">Stage professionnel</option>
+                    <option value="Stage technique">Stage technique</option>
                 </select>
             </div>
 
@@ -112,6 +119,39 @@
         </form>
     </div>
 
+    @else
+
+    <div class="containers">
+    <h1 style="margin-bottom: 1em;font-size: 1em;font-weight: bold;text-align: center; color:aliceblue;">recapitulatif des informations de stages</h1>
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th scope="col">type de stage</th>
+          <th scope="col">dossier de stage</th>
+          <th scope="col">rapport</th>
+          <th scope="col">date delivrence</th>
+          <th scope="col">modification</th>
+          <th scope="col">observations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Type de Stage</th>
+          <td data-title="PDF dossier de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->dossier_stage) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="PDF rapport de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="date de delivrence de dossier" href="#" class="date"></a>{{ auth()->user()->created_at}}</td>  <!--had lma3lomat khasso ijibhom men stage machi men users-->
+          <td data-title="modification"><a href="#"></a>modification temporairement impossible</td>
+          <td data-title="observation de l'encadrant">
+            <p class="font-weight-normal"> bon travail A+</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    @endif
+
+
 </div>
 <script>
     $(document).ready(function() {
@@ -126,7 +166,20 @@
 
 
 <style>
-    @media only screen and (max-width: 992px) {
+   
+</style>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Include Bootstrap CSS from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<!-- Include Dropify CSS from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
+
+
+
+<style>
+     /*@media only screen and (max-width: 992px) {
         .form {
             background-color: rgba(255, 255, 255, 0.2);
             margin: 10px;
@@ -146,13 +199,13 @@
         }
     }
 
-    /*.body{               hada old background momkin n7tajo
+    .body{               hada old background momkin n7tajo
         background-image: url('background2.png'); 
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;
-    }*/
+    }
 
     .form-floatings {
         position: fixed;
@@ -164,13 +217,263 @@
     .border {
         position: relative;
         border-radius: 20px;
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+    
+ 
+  html {
+    box-sizing: border-box;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  body {
+    color: rgba(224, 224, 224, .1);
+  }
+
+  table {
+    margin: .3 em;
+
+  }
+
+  a {
+    color: rgba(38, 137, 13, 1);
+
+    &:hover,
+    &:focus {
+      color: rgba(4, 106, 56, 1);
     }
+  }
+
+  .containers {
+    margin: 3%;
+    width: 94%;
+    height: 30%;
+    
+    @media (min-width: 48em) {
+      margin: 2%;
+      width: 96%;
+    }
+
+    @media (min-width: 75em) {
+      margin: 2em auto;
+      max-width: 75em;
+    }
+  }
+
+  .responsive-table {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+    margin-bottom: 1.5em;
+    border-spacing: 0;  
+
+    @media (min-width: 48em) {
+      font-size: .9em;
+    }
+
+    @media (min-width: 62em) {
+      font-size: 1em;
+    }
+
+   
+
+
+
+
+    thead {
+      /*Accessibly hide <thead> on narrow viewports*/
+      position: absolute;
+      clip: rect(1px 1px 1px 1px);
+      /* IE6, IE7 */
+      padding: 0;
+      border: 0;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+
+      @media (min-width: 48em) {
+        /*Unhide <thead> on wide viewports*/
+        position: relative;
+        clip: auto;
+        height: auto;
+        width: auto;
+        overflow: auto;
+      }
+
+      th {
+        background-color: rgba(38, 137, 13, .25);
+        border: 0.1px solid rgba(134, 188, 37, 1);
+        font-weight: normal;
+        text-align: center;
+        color: white;
+
+        &:first-of-type {
+          text-align: left;
+        }
+      }
+    }
+
+    /*Set these items to display: block for narrow viewports*/
+    tbody,
+    tr,
+    th,
+    td {
+      display: block;
+      padding: 0;
+      text-align: left;
+      white-space: normal;
+    }
+
+    tr {
+      @media (min-width: 48em) {
+        /*Undo display: block*/
+        display: table-row;
+      }
+    }
+
+    th,
+    td {
+      padding: .5em;
+      vertical-align: middle;
+
+      @media (min-width: 30em) {
+        padding: .75em .5em;
+      }
+
+      @media (min-width: 48em) {
+        /*Undo display: block*/
+        display: table-cell;
+        padding: .5em;
+      }
+
+      @media (min-width: 62em) {
+        padding: .75em .5em;
+      }
+
+      @media (min-width: 75em) {
+        padding: .75em;
+      }
+    }
+
+    caption {
+      margin-bottom: 1em;
+      font-size: 1em;
+      font-weight: bold;
+      text-align: center;
+
+      @media (min-width: 48em) {
+        font-size: 1.5em;
+      }
+    }
+
+    tfoot {
+      font-size: .8em;
+      font-style: italic;
+
+      @media (min-width: 62em) {
+        font-size: .9em;
+      }
+    }
+
+    tbody {
+      @media (min-width: 48em) {
+        /*Undo display: block*/
+        display: table-row-group;
+      }
+
+      tr {
+        margin-bottom: 1em;
+
+        @media (min-width: 48em) {
+          /*Undo display: block*/
+          display: table-row;
+          border-width: 1px;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        &:nth-of-type(even) {
+          @media (min-width: 48em) {
+            background-color: rgba(192, 192, 192, .15);
+          }
+        }
+      }
+
+      th[scope="row"] {
+        background-color: rgba(38, 137, 13, 1);
+        color: white;
+
+        @media (min-width: 30em) {
+          border-left: 1px solid rgba(134, 188, 37, 1);
+          border-bottom: 1px solid rgba(134, 188, 37, 1);
+        }
+
+        @media (min-width: 48em) {
+          background-color: transparent;
+          color: rgba(192, 192, 192, .8);
+          text-align: left;
+        }
+      }
+
+      td {
+        text-align: right;
+
+        @media (min-width: 48em) {
+          border-left: 1px solid rgba(134, 188, 37, 1);
+          border-bottom: 1px solid rgba(134, 188, 37, 1);
+          text-align: center;
+        }
+
+        &:last-of-type {
+          @media (min-width: 48em) {
+            border-right: 1px solid rgba(134, 188, 37, 1);
+          }
+        }
+      }
+
+      td[data-type=currency] {
+        text-align: right;
+      }
+
+      td[data-title]:before {
+        content: attr(data-title);
+        float: left;
+        font-size: .8em;
+        color: rgba(192, 192, 192, .87);
+
+        @media (min-width: 30em) {
+          font-size: .9em;
+        }
+
+        @media (min-width: 48em) {
+          /* Don’t show data-title labels*/
+          content: none;
+        }
+      }
+    }
+  }
 </style>
 
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<!-- Include Bootstrap CSS from CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
-<!-- Include Dropify CSS from CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

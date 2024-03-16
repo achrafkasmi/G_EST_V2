@@ -19,7 +19,6 @@ var data = {
 };
 
 
-
 var options = {
   responsive: true,
   maintainAspectRatio: true,
@@ -47,8 +46,6 @@ var options = {
       }
     }]
   },
-
-
 
   elements: {
     line: {

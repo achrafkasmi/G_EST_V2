@@ -4,7 +4,14 @@
 
 <div class="app-main">
     <div class="container form-container bg-light-gray">
-        <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+        <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf
             <h2 class="form-title text-white">Add User</h2>
             <div class="row mb-3">
@@ -22,7 +29,7 @@
             </div>
 
             <div class="row mb-3">
-            <label for="email" class="col-md-4 col-form-label text-md-end text-white">{{ __('Email Address') }}</label>
+                <label for="email" class="col-md-4 col-form-label text-md-end text-white">{{ __('Email Address') }}</label>
 
                 <div class="col-md-6">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -56,6 +63,19 @@
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                 </div>
             </div>
+
+            <div class="row mb-3">
+                <label for="role" class="col-md-4 col-form-label text-md-end text-white">{{ __('Role') }}</label>
+                <div class="col-md-6">
+                    <select id="role" class="form-select" name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="row mb-3">
                 <label for="image" class="col-md-4 col-form-label text-md-end text-white">Upload image</label>
 

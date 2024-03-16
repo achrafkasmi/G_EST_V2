@@ -29,6 +29,16 @@
         Dossier de Stage
       </a>
     </li>
+
+    <li class="nav-list-item">
+      <a class="pop-cont nav-list-link" href="#">
+        <img src="calendar.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        Plannings examens
+        <span class="pop-up">Ce Service est en cours de développement...</span>
+      </a>
+    </li>
+    <!--haaadi nfakrek fiha❌-->
+    @if(auth()->user() && auth()->user()->hasRole('admin'))
     <li class="nav-list-item">
       <a class="pop-cont nav-list-link" href="#">
         <img src="team.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
@@ -45,33 +55,26 @@
     </li>
     <li class="nav-list-item">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="calendar.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
-        Plannings examens
-        <span class="pop-up">Ce Service est en cours de développement...</span>
-      </a>
-    </li>
-    <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
         <img src="historisation.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Historisation
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
-
     </li>
     <li class="nav-list-item">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/register">
+      <a class="nav-list-link" href="http://127.0.0.1:8000/addUser">
         <img src="adduser.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Users
       </a>
     </li>
     <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
+      <a class="nav-list-link" href="http://127.0.0.1:8000/addnotice">
         <img src="notice.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Notice.
-        <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
+    @endif
   </ul>
+
 </div>
 
 <style>
@@ -136,7 +139,7 @@
     display: none;
   }
 
-    /*.display-js{
+  /*.display-js{
       display: block;
   }*/
   .pop-up:after {
@@ -180,12 +183,12 @@
   var currentPopup = null;
 
   // Iterate through each 'pop-cont' element
-  popupContainers.forEach(function (popupContainer) {
+  popupContainers.forEach(function(popupContainer) {
     // Get the corresponding '.pop-up' element within the current 'pop-cont'
     var popupBox = popupContainer.querySelector('.pop-up');
 
     // Add a click event listener to each 'pop-cont'
-    popupContainer.onclick = function () {
+    popupContainer.onclick = function() {
       // Check if there is a currently displayed popup
       if (currentPopup !== null) {
         // Hide the currently displayed popup
@@ -201,11 +204,11 @@
   });
 
   // Close the popup when clicking outside of it
-  window.onclick = function (event) {
+  window.onclick = function(event) {
     // Check if the clicked element is neither a '.pop-cont' nor a '.pop-up'
     if (!event.target.matches('.pop-cont') && !event.target.matches('.pop-up')) {
       // Hide all '.pop-up' elements
-      popupContainers.forEach(function (popupContainer) {
+      popupContainers.forEach(function(popupContainer) {
         var popupBox = popupContainer.querySelector('.pop-up');
         popupBox.style.display = 'none';
       });
@@ -215,4 +218,3 @@
     }
   };
 </script>
-
