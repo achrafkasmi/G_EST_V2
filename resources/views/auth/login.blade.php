@@ -37,7 +37,7 @@
                 <!-- Login Form -->
                 <div class="bg-light border py-3 px-4 rounded">
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('POST-CONNEXION') }}">
                         @csrf
 
                         <div class="form-group">

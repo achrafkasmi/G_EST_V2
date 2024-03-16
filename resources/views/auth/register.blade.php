@@ -87,13 +87,26 @@
 
             <div class="row mb-0">
                 <div class="col-md-6 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('Register') }}
-                    </button>
+                <button type="submit" id="user-submit-btn" class="btn btn-primary">{{ __('Register') }}</button>
+                    
                 </div>
             </div>
         </form>
+
+      
     </div>
+
+    <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+        @csrf
+        <div class="mb-5">
+            <label for="excel_file" class="form-label">Choose Excel File</label>
+            <input class="form-control" type="file" id="excel_file" name="excel_file">
+        </div>
+        <button type="submit" id="excel-submit-btn" class="btn btn-primary">Upload</button>
+    </form>
+
+
+
 </div>
 
 <style>

@@ -23,17 +23,11 @@ class UploadManager extends Controller
     {
 
         $user = auth()->user();
-        //dd($user->roles->pluck('name'));
-
-        if (!Gate::denies('student', $user)) {
-            abort(403);
-        }
-        // Validate and process the uploaded files
         
-            //$request->validate([
-              //  'stageFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
-                //'rapportFile' => 'required|mimes:pdf|max:5120', // Assuming PDF file and max 5MB
-            //]);
+        $request->validate([
+            'stageFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
+            'rapportFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
+        ]);
 
             $dossier_pdf_name = 'Dossier-'.$user->apogee;
 

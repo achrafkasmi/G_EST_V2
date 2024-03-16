@@ -21,7 +21,7 @@ class CreateTEtapeDiplomeTable extends Migration
             $table->timestamps();  // Created at and Updated at timestamps
 
             // Foreign key
-            $table->foreign('id_diplome')->references('id')->on('t_diplome')->onDelete('cascade');
+            //$table->foreign('id_diplome')->references('id')->on('t_diplome')->onDelete('cascade');
         });
     }
 

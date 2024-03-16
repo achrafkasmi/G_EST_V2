@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -16,4 +17,14 @@ class DashboardController extends Controller
         $users=User::where('is_uploaded',true)->get();
         return view('Dashboards.dashteacher')->with(['users'=>$users]);
     }   
+
+    public function myIntern() : View {
+
+        if(!auth()->user()->hasRole('student')) {
+          
+            abort(403);
+        }
+
+        return view('messtages');
+    }
  }

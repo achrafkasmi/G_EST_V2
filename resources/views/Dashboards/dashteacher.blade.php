@@ -123,7 +123,11 @@
                 <td>{{$user->etudiant->stage->type_dossier}}</td>
                 <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
                 <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
-                <td>actions</td>
+                <td> 
+                    <a href="#">
+                        <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                    </a>
+                </td>
                 @endforeach
             </tbody>
             </thead>

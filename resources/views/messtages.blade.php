@@ -105,12 +105,12 @@
 
             <div class="mb-3">
                 <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
-                <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="1M" data-height="100" />
+                <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="30M" data-height="100" />
             </div>
 
             <div class="mb-3">
                 <label for="rapportFile" class="form-label">Rapport en PDF:</label>
-                <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="1M" data-height="100" />
+                <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="30M" data-height="100" />
             </div>
 
             <div class="d-grid gap-2 mt-3">

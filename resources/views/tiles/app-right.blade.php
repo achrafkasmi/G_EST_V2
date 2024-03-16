@@ -16,7 +16,7 @@
        class="dense-image dense-loading">
 
      </div>
-     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+     <form id="logout-form" action="{{ route('AUTH-LOGOUT') }}" method="POST" class="d-none">
     @csrf
 </form>
 
