@@ -1,16 +1,16 @@
-Message de SUBMIT ET GRISER LES CHAMPS SI LE CANDIDAT A DEJA FAIT L action
+Message de SUBMIT ET GRISER LES CHAMPS SI LE CANDIDAT A DEJA FAIT L action ✅(l form kimchi)
 
 1MO ---->> 100MO  ✅
 
 upload fichier dropify  ✅
 
-Popup success et refresh de la page avec grid recapitulatif + down button for next stage.
+Popup success et refresh de la page avec grid recapitulatif + down button for next stage.✅
 
 Apogge de l'utudiant .pdf pour le nom de pdf ✅
 
-Cliquer Ici pour telechager
+Cliquer Ici pour telechager 
 
-teacher ikon ando CRUD table l kola filiere ichof biha les dossiers de stage + recommendation rapport pour biblio
+teacher ikon ando CRUD table l kola filiere ichof biha les dossiers de stage + recommendation rapport pour biblio✅
 
 reçu provisoire d'envoi de dossier (definitif après validation).
 
@@ -57,6 +57,7 @@ teacher makital3och lih les pdfs (hadi ana l9it blanha got to users table)❌
 
 addnotice wkha heyednaha mazal katla3 l role student- tacher.
 
+
 Save approvals : mn mora maki validi teacher l les etudiant o ki 
 clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin.
 
@@ -69,9 +70,13 @@ Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant yban
 
 
 
-
-
 ntestew ila kan user deja m connecter ydiiiiih l dash machi /hooo
 
 
 teacher rah mazal kimchi l dash admin f lewel 
+
+
+id on null f upload 
+
+
+authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... 

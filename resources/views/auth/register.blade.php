@@ -3,7 +3,7 @@
 @section('app-mid')
 
 <div class="app-main">
-    <div class="container form-container bg-light-gray">
+    <div class="containerf form-container bg-light-gray">
 
         @if(session('success'))
         <div class="alert alert-success">
@@ -95,28 +95,49 @@
 
 
     </div>
+    <div class="containerf form-container">
+        <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data"">
+            @csrf
+            <div class="excelinput mb-5">
+                <h2 class="form-title text-white">Massive Add</h2>
+                <input class="form-control" type="file" id="excel_file" name="excel_file">
+                <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
+            </div>
 
-    <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data" class="mt-4">
-        @csrf
-        <div class="excelinput mb-5">
-            <label for="excel_file" class="form-label">Massive Add</label>
-            <input class="form-control" type="file" id="excel_file" name="excel_file">
-            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
-        </div>
-
-    </form>
-
+        </form>
+    </div>
 
 
 </div>
 
 <style>
-    .excelinput {
-        width: 47%;
-        margin-left: 35%;
-        color: white;
-    }
+    .containerf {
+    background-color: #5e6a81;
+    border-radius: 10px;
+    margin: 5%;
+    position: relative;
+    padding: 5px;
+}
 
+.excelinput {
+    width: 90%; /* Adjusted width to fit inside container */
+    margin: 0 auto; /* Center the element horizontally */
+    color: white;
+}
+
+@media only screen and (max-width: 768px) {
+    .excelinput {
+        width: 80%;
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .excelinput {
+        width: 90%;
+        margin-left: 5%;
+    }
+}
     @media only screen and (max-width: 992px) {
         .form {
             background-color: rgba(255, 255, 255, 0.2);

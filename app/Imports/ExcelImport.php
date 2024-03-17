@@ -16,7 +16,7 @@ class ExcelImport implements ToCollection
      */
     public function collection(Collection $rows)
     {
-         ini_set('memory_limit', '1024M');
+        ini_set('memory_limit', '1024M');
 
         ini_set('max_execution_time', 360);
 
@@ -27,21 +27,17 @@ class ExcelImport implements ToCollection
         if (!$rows->isEmpty()) {
 
             $firstRow = $rows->first()->toArray(); // Get the first row as an associative array
-        
+
             $hasExpectedHeaders = true;
-
-        }
-
-        else{
+        } else {
             return;
         }
 
         if ($hasExpectedHeaders) {
 
-            $rows = $rows->slice(1); 
-
+            $rows = $rows->slice(1);
         }
-        
+
         $i = 0;
 
         foreach ($rows as $row) {
@@ -50,21 +46,20 @@ class ExcelImport implements ToCollection
 
             $email = $row[1];
 
-            $student = Etudiant::where('apogee',$apogee)->first() ?? new Etudiant;
+            $student = Etudiant::where('apogee', $apogee)->first() ?? new Etudiant;
 
-            $user = User::where('apogee')->orWhere('email',$email)->first() ?? new User();
+            $user = User::where('apogee')->orWhere('email', $email)->first() ?? new User();
 
-            foreach($firstRow as $cell)
-            {
+            foreach ($firstRow as $cell) {
                 $student->$cell = $row[$i];
 
                 $i++;
-             }
-             
+            }
+
 
             $student->save();
 
-            $user->name = $student->nom_fr.' '.$student->prenom_fr;
+            $user->name = $student->nom_fr . ' ' . $student->prenom_fr;
 
             $user->email = $student->email1;
 
@@ -80,7 +75,5 @@ class ExcelImport implements ToCollection
 
             $user->assignRole('student');
         }
-           
-        
     }
 }
