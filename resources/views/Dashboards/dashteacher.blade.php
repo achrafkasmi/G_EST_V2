@@ -8,107 +8,40 @@
 
 
 <div class="app-main">
-        @include('tiles.actions')
-        <div class="chart-row three">
-            <div class="chart-container-wrapper">
-                <a href="#" id="toggleCrudContainer">
-                    <div class="chart-container">
-                        <div class="chart-info-wrapper">
-                            <h2>Dossiers de Stage</h2>
-                            <span>Visualiser</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="chart-container-wrapper">
+    @include('tiles.actions')
+    <div class="chart-row three">
+        <div class="chart-container-wrapper">
+            <a href="#" id="toggleCrudContainer">
                 <div class="chart-container">
                     <div class="chart-info-wrapper">
-                        <h2>Attendance</h2>
-                        <span>Commencer</span>
+                        <h2>Dossiers de Stage</h2>
+                        <span>Visualiser</span>
                     </div>
                 </div>
-            </div>
-            <div class="chart-container-wrapper">
-                <div class="chart-container">
-                    <div class="chart-info-wrapper">
-                        <h2>cursus</h2>
-                        <span>Descriptifs Et Documentations</span>
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
 
-        <div class="chart-row two">
-
-            <div class="chart-container-wrapper small">
-
-
-            </div>
-        </div>
-        <div class="container crud-container">
-            <span class="close-btn" onclick="toggleCrudContainer()">❌</span>
-            <h2 class="crud-title">Stage Approvals LP-GC</h2>
-
-            <!-- Search Bar -->
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search...">
-                <button id="searchBtn" onclick="searchTable()">Search</button>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Recommandation</th>
-                        <th>Etudiant</th>
-                        <th>Type de Stage</th>
-                        <th>Dossier</th>
-                        <th>Rapport</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($users as $user)
-                    <tr>
-                        <td><input type="checkbox" name="recommandation" id="recommandation1"></td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->etudiant->stage->type_dossier}}</td>
-                        <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
-                        <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
-                        <!-- CRUD options (Icons) -->
-                        <td class="crud-options">
-                            <a href="your_link_here" title="Visualize">
-                                <span class="icon visualize-icon"></span>
-                                <!-- or use text -->
-                                <!-- YourVisualizeIconOrText -->
-                            </a>
-                            <a href="#" title="Approve" style="color: green;" onclick="approveStage(1)">✔</a>
-                            <a href="#" title="Disapprove" style="color: red;" onclick="showDisapprovePopup(1)">✘</a>
-                        </td>
-                    </tr>
-                    @endforeach
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-
-            <!-- Save Button -->
-            <button class="save-button" onclick="saveApprovals()">Save Approvals</button>
-
-            <!-- Disapprove Popup -->
-            <div class="disapprove-popup" id="disapprovePopup">
-                <div class="popup-content">
-                    <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
-                    <textarea id="disapproveNote" class="popup-input" rows="4"></textarea>
-                    <div class="popup-buttons">
-                        <button onclick="hideDisapprovePopup()">Cancel</button>
-                        <button style="background-color: red; color: #fff;" onclick="disapproveStage()">send updates</button>
-                    </div>
+        <div class="chart-container-wrapper">
+            <div class="chart-container">
+                <div class="chart-info-wrapper">
+                    <h2>Attendance</h2>
+                    <span>Commencer</span>
                 </div>
             </div>
         </div>
+        <div class="chart-container-wrapper">
+            <div class="chart-container">
+                <div class="chart-info-wrapper">
+                    <h2>cursus</h2>
+                    <span>Descriptifs Et Documentations</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="datatabcontainer">
+    <div class="datatabcontainer mt-4">
         <table class="tab" id="myTable">
+
             <thead>
                 <tr>
                     <th>Nom complet</th>
@@ -116,6 +49,7 @@
                     <th>Dossier de stage</th>
                     <th>Rapport</th>
                     <th>Actions</th>
+                    <th>Statut</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,26 +59,42 @@
                     <td>{{$user->etudiant->stage->type_dossier}}</td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
-                    <td> 
-                        <a href="#">
-                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+                    <td>
+
+                        <a href="#" title="Approve" onclick="approveStage(1)">
+                            <svg class="approve" width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <path class="approve-fill" fill="{{ auth()->check() ? 'black' : 'yellow' }}" d="M26,24c-0.553,0-1,0.448-1,1v4H7V3h10v7c0,0.552,0.447,1,1,1h7v4c0,0.552,0.447,1,1,1s1-0.448,1-1v-4.903    c0.003-0.033,0.02-0.063,0.02-0.097c0-0.337-0.166-0.635-0.421-0.816l-7.892-7.891c-0.086-0.085-0.187-0.147-0.292-0.195    c-0.031-0.015-0.063-0.023-0.097-0.034c-0.082-0.028-0.166-0.045-0.253-0.05C18.043,1.012,18.022,1,18,1H6C5.447,1,5,1.448,5,2v28    c0,0.552,0.447,1,1,1h20c0.553,0,1-0.448,1-1v-5C27,24.448,26.553,24,26,24z M19,9V4.414L23.586,9H19z" />
+                                <path class="approve-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M30.73,15.317c-0.379-0.404-1.01-0.424-1.414-0.047l-10.004,9.36l-4.629-4.332c-0.404-0.378-1.036-0.357-1.414,0.047    c-0.377,0.403-0.356,1.036,0.047,1.413l5.313,4.971c0.192,0.18,0.438,0.27,0.684,0.27s0.491-0.09,0.684-0.27l10.688-10    C31.087,16.353,31.107,15.72,30.73,15.317z" />
+                            </svg>
                         </a>
-                        <a href="#">
-                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
+
+                        <a title="Disapprove" onclick="showDisapprovePopup(1)" style="margin-left:5px;">
+                            <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="red" d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z" />
+                            </svg>
                         </a>
-                        <a href="#">
-                            <i class="bi bi-pencil-square"></i> <!-- Edit icon -->
-                        </a>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="checkbox{{$loop->iteration}}" name="checkbox{{$loop->iteration}}" style="width: 20px; height: 20px; margin-right:5px;">
+                        <label for="checkbox{{$loop->iteration}}"> </label><!-- Label for accessibility -->
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        <!-- Disapprove Popup -->
+        <div class="disapprove-popup" id="disapprovePopup">
+            <div class="popup-content">
+                <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
+                <textarea id="disapproveNote" class="popup-input" rows="4"></textarea>
+                <div class="popup-buttons">
+                    <button onclick="hideDisapprovePopup()">Cancel</button>
+                    <button style="background-color: red; color: #fff;" onclick="disapproveStage()">send updates</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-
     <button class="save-button" onclick="saveApprovals()">Save Approvals</button>
-
 </div>
 
 
@@ -157,9 +107,13 @@
 <script>
     // Function to toggle the visibility of the .crud-container
     function toggleCrudContainer() {
-        var crudContainer = document.querySelector('.crud-container');
-        crudContainer.style.display = (crudContainer.style.display === 'none' || crudContainer.style.display === '') ? 'block' : 'none';
-    }
+        var datatabcontainer = document.querySelector('.datatabcontainer');
+        var saveButton = document.querySelector('.save-button');
+
+        // Toggle the display style
+        datatabcontainer.style.display = (datatabcontainer.style.display === 'none' || datatabcontainer.style.display === '') ? 'block' : 'none';
+        saveButton.style.display = (saveButton.style.display === 'none' || saveButton.style.display === '') ? 'block' : 'none';
+    }  
 
     // Function to handle the link click and prevent default behavior
     function handleLinkClick(event) {
