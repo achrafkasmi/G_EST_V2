@@ -43,9 +43,7 @@ Artisan::command('createUser', function () {
 
 Artisan::command('add_apogee', function () {
 
-    Schema::table('t_etudiant', function (Blueprint $table) {
-        $table->dropColumn('apogee');
-    });
+
     
         if (!Schema::hasColumn('t_etudiant', 'apogee')) {
 
@@ -57,5 +55,20 @@ Artisan::command('add_apogee', function () {
         }
 
         $this->info('Added successfully.');
+
+});
+
+Artisan::command('is_recommanded', function () {
+    
+    if (!Schema::hasColumn('t_dossier_stage', 'is_recommanded')) {
+
+        Schema::table('t_dossier_stage', function (Blueprint $table) {
+
+            $table->boolean('is_recommanded')->default(false);
+        });
+
+    }
+
+    $this->info('Added successfully.');
 
 });

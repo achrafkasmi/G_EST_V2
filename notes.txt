@@ -70,13 +70,17 @@ Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant yban
 
 
 
-ntestew ila kan user deja m connecter ydiiiiih l dash machi /hooo
+ntestew ila kan user deja m connecter ydiiiiih l dash machi /hooo✅
 
 
-teacher rah mazal kimchi l dash admin f lewel 
+teacher rah mazal kimchi l dash admin f lewel ✅
 
 
 id on null f upload 
 
 
 authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... 
+
+
+
+n9alleb ela notif 

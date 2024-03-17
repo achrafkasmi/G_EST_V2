@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\StudentT;
 use stdClass;
-
 class ExcelImport implements ToCollection
 {
     /**

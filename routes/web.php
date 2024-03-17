@@ -19,6 +19,8 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 //Auth::routes();
  Route::middleware(['auth'])->group(function () {
 
@@ -57,6 +59,7 @@ Route::get('/addnotice', function () {return view('addnotice');})->name('gridetu
 
 Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
+Route::get('/student-recommendation/{id}',[App\Http\Controllers\libraryController::class, 'recommand'])->name('student.recomandation');
 
 
 
