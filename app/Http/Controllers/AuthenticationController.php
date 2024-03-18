@@ -31,14 +31,12 @@ class AuthenticationController extends Controller
     }
 
     protected function postUser(Request $data)
-    {
-
-        $user = User::create([
-            'apogee' => random_int(100000,999999),
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+    {            // Validate
+        $user = new User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->save();
 
         if($data->file('image')){
 
