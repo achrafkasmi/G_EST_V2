@@ -47,7 +47,7 @@ class ExcelImport implements ToCollection
             $student->save();
 
             $user->name = $student->nom_fr . ' ' . $student->prenom_fr;
-            $user->email = $student->email1; // Use 'email1' for the User model
+            $user->email = $student->email1;
             $user->apogee = $student->apogee;
             $user->password = bcrypt($student->apogee);
 

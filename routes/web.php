@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadManager;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AvisController;
+use App\Models\Avis;
 
 
 /*
@@ -36,15 +38,14 @@ Route::get('/', function () {
 
     Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
 
-    // TO DO
+
+    // TO DO 
 
     Route::get('/gridetudiant', function () {return view('gridetudiant');})->name('gridetudiant');
-
-
 });
 
-Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
 
+Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
 
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
@@ -54,13 +55,13 @@ Route::get('/addUser', [App\Http\Controllers\AuthenticationController::class, 'a
 
 Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-
 Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
 
 Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
 Route::get('/student-recommendation/{id}',[App\Http\Controllers\libraryController::class, 'recommand'])->name('student.recomandation');
 
+Route::post('/add/comment',[App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
 
 

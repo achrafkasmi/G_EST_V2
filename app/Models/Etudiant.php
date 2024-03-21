@@ -5,6 +5,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Etudiant extends Model
@@ -16,6 +18,10 @@ class Etudiant extends Model
         return $this->hasOne(User::class,'user_id');
     }
 
+    public function notifications(): HasMany
+{
+    return $this->hasMany(Notification::class, 'id_etu');
+}
    public function stage() : HasOne
    {
      return $this->hasOne(Stage::class,'id_etu');

@@ -4,9 +4,8 @@
 
 <div class="app-main">
   @include('tiles.actions')
-  @if(auth()->user() && auth()->user()->hasRole('teacher'))
+  @if(auth()->user() && auth()->user()->hasRole('etudiant'))
 
-    <!--hna dashboard dyal lmo3alim--> 
   @endif
   <div class="chart-row three">
     <div class="chart-container-wrapper">
@@ -123,53 +122,9 @@
           <span class="progress-amount">8%</span>
         </div>
       </div>
-      <div class="chart-container applicants">
-        <div class="chart-container-header">
-          <h2>Staff</h2>
-          <span></span>
-        </div>
-        <div class="applicant-line">
-          <img src="https://images.unsplash.com/photo-1587628604439-3b9a0aa7a163?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjB8fHdvbWFufGVufDB8fDB8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="profile">
-          <div class="applicant-info">
-            <span>Emma Ray</span>
-            <p>Applied for <strong>Product Designer</strong></p>
-          </div>
-        </div>
-        <div class="applicant-line">
-          <img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2555&amp;q=80" alt="profile">
-          <div class="applicant-info">
-            <span>A.Kasmi</span>
-            <p>technicien<strong>Developer</strong></p>
-          </div>
-        </div>
-        <div class="applicant-line">
-          <img src="https://images.unsplash.com/photo-1543965170-4c01a586684e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2232&amp;q=80" alt="profile">
-
-          <div class="applicant-info">
-            <span>T.Boughalem</span>
-            <p>technicien<strong>Developer</strong></p>
-          </div>
-        </div>
-        <div class="applicant-line">
-          <img src="https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1215&amp;q=80" alt="profile">
-          <div class="applicant-info">
-            <span>A.Rachida</span>
-            <p>technicien<strong>Finance</strong></p>
-          </div>
-        </div>
-        <div class="applicant-line">
-          <img src="https://images.unsplash.com/photo-1450297350677-623de575f31c?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MzV8fHdvbWFufGVufDB8fDB8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="profile">
-
-          <div class="applicant-info">
-            <span>O.Boumandi</span>
-            <p>technicien<strong>chargé de communication</strong></p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
-<!-- if auth()->user-> hasrole-->
 @endsection
 
 

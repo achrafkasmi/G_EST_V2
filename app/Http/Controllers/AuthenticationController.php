@@ -61,6 +61,11 @@ class AuthenticationController extends Controller
 
     public function login()
     {
+        if(auth()->check()){
+            
+            return redirect('/dash');
+        }
+
         return view('auth.login');
     }
 

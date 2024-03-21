@@ -23,48 +23,51 @@ class UploadManager extends Controller
     {
 
         $user = auth()->user();
-        
+
         $request->validate([
             'stageFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
             'rapportFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
         ]);
 
-            $dossier_pdf_name = 'Dossier-'.$user->apogee;
+        $dossier_pdf_name = 'Dossier-' . $user->apogee;
 
-            $rapport_pdf_name = 'Rapport-'.$user->apogee;
+        $rapport_pdf_name = 'Rapport-' . $user->apogee;
 
-            $path = "public/uploads/";
+        $path = "public/uploads/";
 
-            $stageFilename = $request->input('stageFilename',$dossier_pdf_name) . '.pdf';
+        $stageFilename = $request->input('stageFilename', $dossier_pdf_name) . '.pdf';
 
-            $rapportFilename = $request->input('rapportFilename',$rapport_pdf_name) . '.pdf';
+        $rapportFilename = $request->input('rapportFilename', $rapport_pdf_name) . '.pdf';
 
-            // Store the files in the storage/app/public/uploads directory with custom filenames
-            $stageFilePath = $request->file('stageFile')->storeAs('uploads', $stageFilename, 'public');
+        // Store the files in the storage/app/public/uploads directory with custom filenames
+        $stageFilePath = $request->file('stageFile')->storeAs('uploads', $stageFilename, 'public');
 
-            $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapportFilename, 'public');
+        $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapportFilename, 'public');
 
-            $stage = Stage::where('id_etu',$user->etudiant->id)->first() ?? new Stage();
+        $stage = Stage::where('id_etu', $user->etudiant->id)->first() ?? new Stage();
 
-            $stage->id_etu = $user->etudiant->id;
+        $stage->id_etu = $user->etudiant->id;
 
-            $stage->type_dossier = $request->get('fileType');
+        $stage->type_dossier = $request->get('fileType');
 
-            $stage->rapport = $path.$rapport_pdf_name. '.pdf';
+        $stage->rapport = $path . $rapport_pdf_name . '.pdf';
 
-            $stage->dossier_stage = $path.$dossier_pdf_name. '.pdf';
+        $stage->dossier_stage = $path . $dossier_pdf_name . '.pdf';
 
-            $stage->save();
-
-
-            $user->is_uploaded = true;
-
-            $user->save();
+        $stage->save();
 
 
-            return redirect()->route('dashboard')->with('success', 'Files uploaded successfully!');
-       
+        $user->is_uploaded = true;
+
+        $user->save();
+
+          // Store success message in session
+         $request->session()->flash('success', 'Files were uploaded successfully!');
+
+         // Redirect back with success message
+         return redirect()->back();
+
+        //return redirect()->route('dashboard')->with('success', 'Files uploaded successfully!');
+
     }
-
-    
 }

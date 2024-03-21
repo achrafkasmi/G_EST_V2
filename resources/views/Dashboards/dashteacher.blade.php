@@ -68,7 +68,7 @@
                             </svg>
                         </a>
 
-                        <a title="Disapprove" onclick="showDisapprovePopup(1)" style="margin-left:5px;">
+                        <a title="Disapprove" onclick="showDisapprovePopup({{ $user->etudiant->id }})" style="margin-left:5px;">
                             <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill="red" d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z" />
                             </svg>
@@ -119,19 +119,27 @@
 
         </table>
         <!-- Disapprove Popup -->
-        <div class="disapprove-popup" id="disapprovePopup">
-            <div class="popup-content">
-                <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
-                <textarea id="disapproveNote" class="popup-input" rows="4"></textarea>
-                <div class="popup-buttons">
-                    <button onclick="hideDisapprovePopup()">Cancel</button>
-                    <button style="background-color: red; color: #fff;" onclick="disapproveStage()">send updates</button>
+       
+
+        <form id="commentForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
+            @csrf
+            <div class="disapprove-popup" id="disapprovePopup">
+                <div class="popup-content">
+                    <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
+                    <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
+                    <div class="popup-buttons">
+                        <button type="button" onclick="hideDisapprovePopup()">Cancel</button>
+                        <button type="button" style="background-color: red; color: #fff;" onclick="submitForm()">Send updates</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+
+       
+
+
     </div>
 </div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -193,10 +201,22 @@
     }
 
     // Function to show the disapprove popup
-    function showDisapprovePopup(rowId) {
-        var popup = document.getElementById("disapprovePopup");
-        popup.style.display = "flex";
-    }
+    function showDisapprovePopup(idEtu) {
+    var popup = document.getElementById("disapprovePopup");
+
+    // Create a hidden input element
+    var hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "id_etu";
+    hiddenInput.value = idEtu;
+
+    // Append the hidden input to the popup
+    popup.appendChild(hiddenInput);
+
+    // Set the display style to "flex" to show the popup
+    popup.style.display = "flex";
+}
+
 
     // Function to hide the disapprove popup
     function hideDisapprovePopup() {
@@ -210,6 +230,51 @@
         var note = document.getElementById("disapproveNote").value;
         alert("Stage disapproved with note: " + note);
         hideDisapprovePopup();
+    }
+
+
+
+
+
+
+    
+
+    function submitForm() {
+        // Send AJAX request
+        $.ajax({
+            url: $('#commentForm').attr('action'),
+            type: 'POST',
+            data: $('#commentForm').serialize(),
+            success: function(response) {
+                // Show success message using SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Comment added successfully!',
+                    onClose: () => {
+                        // Clear textarea
+                        $('#disapproveNote').val('');
+
+                        // Hide popup
+                        hideDisapprovePopup();
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                // Show error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Error occurred while adding comment. Please try again.'
+                });
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function hideDisapprovePopup() {
+        var popup = document.getElementById("disapprovePopup");
+        popup.style.display = "none";
     }
 </script>
 

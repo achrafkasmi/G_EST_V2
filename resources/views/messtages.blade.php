@@ -6,7 +6,6 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
 <!-- Include jQuery from CDN (required for Dropify) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -15,113 +14,124 @@
 
 
 <style>
-        body {
-            background-color: #26324a; /* Slightly lighter than #1f273d */
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-        }
+  body {
+    background-color: #26324a;
+    /* Slightly lighter than #1f273d */
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+  }
 
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #2f3c57; /* Slightly lighter than #1f273d */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+  .form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #2f3c57;
+    /* Slightly lighter than #1f273d */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-        .form-title {
-            font-size: 24px;
-            color: #007bff;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+  .form-title {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-        .form-label {
-            color: #b8c2d3;
-        }
+  .form-label {
+    color: #b8c2d3;
+  }
 
-        .form-select,
-        .form-control {
-            background-color: #394a6e; /* Slightly lighter than #2a354e */
-            border: 1px solid #4d6396; /* Slightly lighter than #364862 */
-            color: #b8c2d3;
-        }
+  .form-select,
+  .form-control {
+    background-color: #394a6e;
+    /* Slightly lighter than #2a354e */
+    border: 1px solid #4d6396;
+    /* Slightly lighter than #364862 */
+    color: #b8c2d3;
+  }
 
-        .form-select:focus,
-        .form-control:focus {
-            background-color: #394a6e; /* Slightly lighter than #2a354e */
-            border-color: #4d6396; /* Slightly lighter than #364862 */
-            color: #b8c2d3;
-        }
+  .form-select:focus,
+  .form-control:focus {
+    background-color: #394a6e;
+    /* Slightly lighter than #2a354e */
+    border-color: #4d6396;
+    /* Slightly lighter than #364862 */
+    color: #b8c2d3;
+  }
 
-        .dropify-wrapper {
-            border-radius: 8px;
-            overflow: hidden;
-        }
+  .dropify-wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
-        .dropify-wrapper .dropify-message p {
-            font-size: 14px;
-            color: #b8c2d3;
-        }
+  .dropify-wrapper .dropify-message p {
+    font-size: 14px;
+    color: #b8c2d3;
+  }
 
-        .submit-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
+  .submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
 
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
 </head>
 
 
 <div class="app-main">
-    
-    @include('tiles.actions')
 
-    @if(!auth()->user()->is_uploaded)
+  @include('tiles.actions')
 
-    <div class="container form-container">
-        <h2 class="form-title">Dossier de Stage</h2>
+  @if(session('success'))
+  <div id="successMessage" class="alert alert-success" role="alert">
+    {{ session('success') }}
+  </div>
+  @endif
 
-        <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
-            @csrf
+  @if(!auth()->user()->is_uploaded)
+  <div class="container form-container">
+    <h2 class="form-title">Dossier de Stage</h2>
 
-            <div class="mb-3">
-                <label for="fileType" class="form-label">Select Type:</label>
-                <select class="form-select form-control" id="fileType" name="fileType">
-                    <option selected>Select type de dossier de stage</option>
-                    <option value="Stage d'initiation">Stage d'initiation</option>
-                    <option value="Stage professionnel">Stage professionnel</option>
-                    <option value="Stage technique">Stage technique</option>
-                </select>
-            </div>
+    <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
+      @csrf
 
-            <div class="mb-3">
-                <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
-                <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="30M" data-height="100" />
-            </div>
+      <div class="mb-3">
+        <label for="fileType" class="form-label">Select Type:</label>
+        <select class="form-select form-control" id="fileType" name="fileType">
+          <option selected>Select type de dossier de stage</option>
+          <option value="Stage d'initiation">Stage d'initiation</option>
+          <option value="Stage professionnel">Stage professionnel</option>
+          <option value="Stage technique">Stage technique</option>
+        </select>
+      </div>
 
-            <div class="mb-3">
-                <label for="rapportFile" class="form-label">Rapport en PDF:</label>
-                <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="30M" data-height="100" />
-            </div>
+      <div class="mb-3">
+        <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
+        <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="30M" data-height="100" />
+      </div>
 
-            <div class="d-grid gap-2 mt-3">
-                <button class="btn submit-btn" type="submit">Envoyer</button>
-            </div>
-        </form>
-    </div>
+      <div class="mb-3">
+        <label for="rapportFile" class="form-label">Rapport en PDF:</label>
+        <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="30M" data-height="100" />
+      </div>
 
-    @else
+      <div class="d-grid gap-2 mt-3">
+        <button class="btn submit-btn" type="submit">Envoyer</button>
+      </div>
+    </form>
+  </div>
 
-    <div class="containers">
+  @else
+
+  <div class="containers">
     <h1 style="margin-bottom: 1em;font-size: 1em;font-weight: bold;text-align: center; color:aliceblue;">recapitulatif des informations de stages</h1>
     <table class="responsive-table">
       <thead>
@@ -136,10 +146,10 @@
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Type de Stage</th>
+          <th scope="row">{{ auth()->user()->etudiant->stage->type_dossier }}</th>
           <td data-title="PDF dossier de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->dossier_stage) }}" target="_blank">cliquer ici </a></td>
           <td data-title="PDF rapport de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
-          <td data-title="date de delivrence de dossier" href="#" class="date"></a>{{ auth()->user()->created_at}}</td>  <!--had lma3lomat khasso ijibhom men stage machi men users-->
+          <td data-title="date de delivrence de dossier" class="date"></a>{{ auth()->user()->etudiant->stage->created_at}}</td>
           <td data-title="modification"><a href="#"></a>modification temporairement impossible</td>
           <td data-title="observation de l'encadrant">
             <p class="font-weight-normal"> bon travail A+</p>
@@ -149,24 +159,24 @@
     </table>
   </div>
 
-    @endif
+  @endif
 
 
 </div>
 <script>
-    $(document).ready(function() {
-        // Initialize Dropify on stageFile input
-        $('#stageFile').dropify();
+  $(document).ready(function() {
+    // Initialize Dropify on stageFile input
+    $('#stageFile').dropify();
 
-        // Initialize Dropify on rapportFile input
-        $('#rapportFile').dropify();
-    });
+    // Initialize Dropify on rapportFile input
+    $('#rapportFile').dropify();
+  });
 </script>
 @endsection
 
 
 <style>
-   
+
 </style>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -176,10 +186,14 @@
 <!-- Include Dropify CSS from CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
 
-
+<script>
+  setTimeout(function() {
+    document.getElementById('successMessage').style.display = 'none';
+  }, 2000);
+</script>
 
 <style>
-     /*@media only screen and (max-width: 992px) {
+  /*@media only screen and (max-width: 992px) {
         .form {
             background-color: rgba(255, 255, 255, 0.2);
             margin: 10px;
@@ -229,8 +243,8 @@
 
 
 
-    
- 
+
+
   html {
     box-sizing: border-box;
   }
@@ -263,7 +277,7 @@
     margin: 3%;
     width: 94%;
     height: 30%;
-    
+
     @media (min-width: 48em) {
       margin: 2%;
       width: 96%;
@@ -279,9 +293,9 @@
     width: 100%;
     height: 100%;
     position: relative;
-    
+
     margin-bottom: 1.5em;
-    border-spacing: 0;  
+    border-spacing: 0;
 
     @media (min-width: 48em) {
       font-size: .9em;
@@ -291,7 +305,7 @@
       font-size: 1em;
     }
 
-   
+
 
 
 
@@ -473,7 +487,7 @@
 </style>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

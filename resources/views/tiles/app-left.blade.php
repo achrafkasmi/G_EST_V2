@@ -56,8 +56,15 @@
     </li>
     <li class="nav-list-item">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="historisation.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="historisation.PNG" alt="checkstage" width="28" height="28" style="margin-right: 10px;" />
         Historisation
+        <span class="pop-up">Ce Service est en cours de développement...</span>
+      </a>
+    </li>
+    <li class="nav-list-item">
+      <a class="pop-cont nav-list-link" href="#">
+        <img src="checkstage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        Gestion Des Stages
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
