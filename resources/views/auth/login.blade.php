@@ -46,7 +46,7 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="email">email</label>
+                            <label for="email">Email</label>
                             <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Email Universitaire">
                             <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                             @error('email')
@@ -57,8 +57,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Passcorde</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="APOGEE">
+                            <label for="exampleInputPassword1">Passcode</label>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Passcode/APOGEE">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

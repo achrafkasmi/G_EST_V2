@@ -151,9 +151,11 @@
           <td data-title="PDF rapport de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
           <td data-title="date de delivrence de dossier" class="date"></a>{{ auth()->user()->etudiant->stage->created_at}}</td>
           <td data-title="modification"><a href="#"></a>modification temporairement impossible</td>
+          @foreach(auth()->user()->etudiant->notifications as $notification)
           <td data-title="observation de l'encadrant">
-            <p class="font-weight-normal"> bon travail A+</p>
+            <p class="font-weight-normal">{{ $notification->text_message }}</p>
           </td>
+          @endforeach
         </tr>
       </tbody>
     </table>

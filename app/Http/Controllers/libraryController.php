@@ -30,4 +30,17 @@ class libraryController extends Controller
 
         return redirect('/dash');
     }
+
+
+    public function validationstage($id)
+    {
+        $student = User::where('id', $id)->first()->etudiant;
+        if ($student) {
+            $student->stage->validation_prof = true;
+            $student->stage->save();
+        }
+
+        return redirect('/dash');
+    }
+
 }

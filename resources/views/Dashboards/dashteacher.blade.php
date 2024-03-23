@@ -54,14 +54,19 @@
             </thead>
             <tbody>
                 @foreach($users as $user)
-                <tr> <!-- Start a new row for each user -->
+                <tr>
                     <td>{{$user->name}}</td>
                     <td>{{$user->etudiant->stage->type_dossier}}</td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
                     <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
                     <td>
-
-                        <a href="#" title="Approve" onclick="approveStage(1)">
+                        @if ($user->etudiant->stage->validation_prof)
+                        <svg width="24px" height="24px" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 48 48">
+                            <circle fill="#4CAF50" cx="24" cy="24" r="21" />
+                            <polygon fill="#CCFF90" points="34.6,14.6 21,28.2 15.4,22.6 12.6,25.4 21,33.8 37.4,17.4" />
+                        </svg>
+                        @else
+                        <a href="{{ route('student.validation', $user->id) }}" title="Approve" onclick="approveStage(1)">
                             <svg class="approve" width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                 <path class="approve-fill" fill="{{ auth()->check() ? 'black' : 'yellow' }}" d="M26,24c-0.553,0-1,0.448-1,1v4H7V3h10v7c0,0.552,0.447,1,1,1h7v4c0,0.552,0.447,1,1,1s1-0.448,1-1v-4.903    c0.003-0.033,0.02-0.063,0.02-0.097c0-0.337-0.166-0.635-0.421-0.816l-7.892-7.891c-0.086-0.085-0.187-0.147-0.292-0.195    c-0.031-0.015-0.063-0.023-0.097-0.034c-0.082-0.028-0.166-0.045-0.253-0.05C18.043,1.012,18.022,1,18,1H6C5.447,1,5,1.448,5,2v28    c0,0.552,0.447,1,1,1h20c0.553,0,1-0.448,1-1v-5C27,24.448,26.553,24,26,24z M19,9V4.414L23.586,9H19z" />
                                 <path class="approve-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M30.73,15.317c-0.379-0.404-1.01-0.424-1.414-0.047l-10.004,9.36l-4.629-4.332c-0.404-0.378-1.036-0.357-1.414,0.047    c-0.377,0.403-0.356,1.036,0.047,1.413l5.313,4.971c0.192,0.18,0.438,0.27,0.684,0.27s0.491-0.09,0.684-0.27l10.688-10    C31.087,16.353,31.107,15.72,30.73,15.317z" />
@@ -73,6 +78,7 @@
                                 <path fill="red" d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z" />
                             </svg>
                         </a>
+                        @endif
                     </td>
                     <td>
                         @if ($user->etudiant->stage->is_recommanded)
@@ -116,10 +122,7 @@
                 </tr>
                 @endforeach
             </tbody>
-
         </table>
-        <!-- Disapprove Popup -->
-       
 
         <form id="commentForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
             @csrf
@@ -134,9 +137,6 @@
                 </div>
             </div>
         </form>
-
-       
-
 
     </div>
 </div>
@@ -172,7 +172,7 @@
 
     // Function to search the table
     function searchTable() {
-        // Implement your search logic here
+        //search logic
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("searchInput");
         filter = input.value.toUpperCase();
@@ -180,7 +180,7 @@
         tr = table.getElementsByTagName("tr");
 
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0]; // Assuming search is based on the first column (Name)
+            td = tr[i].getElementsByTagName("td")[0];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -202,20 +202,23 @@
 
     // Function to show the disapprove popup
     function showDisapprovePopup(idEtu) {
-    var popup = document.getElementById("disapprovePopup");
+        var popup = document.getElementById("disapprovePopup");
 
-    // Create a hidden input element
-    var hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = "id_etu";
-    hiddenInput.value = idEtu;
+        // Create a hidden input element
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "id_etu";
+        hiddenInput.value = idEtu;
 
-    // Append the hidden input to the popup
-    popup.appendChild(hiddenInput);
+        // Append the hidden input to the popup
+        popup.appendChild(hiddenInput);
 
-    // Set the display style to "flex" to show the popup
-    popup.style.display = "flex";
-}
+        // Set the display style to "flex" to show the popup
+        popup.style.display = "flex";
+
+        // Disable the onclick event of the icon
+        document.getElementById('disapproveIcon').onclick = null;
+    }
 
 
     // Function to hide the disapprove popup
@@ -237,7 +240,7 @@
 
 
 
-    
+
 
     function submitForm() {
         // Send AJAX request
@@ -1173,8 +1176,7 @@
         border-radius: 10px;
         padding: 5px;
         background-color: transparent;
-        color: transparent;
-
+        color: #35374B;
         margin-left: 10px
     }
 

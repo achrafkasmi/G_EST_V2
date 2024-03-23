@@ -8,11 +8,9 @@ Popup success et refresh de la page avec grid recapitulatif + down button for ne
 
 Apogge de l'utudiant .pdf pour le nom de pdf ✅
 
-Cliquer Ici pour telechager reçu
-
 teacher ikon ando CRUD table l kola filiere ichof biha les dossiers de stage + recommendation rapport pour biblio✅
 
-reçu provisoire d'envoi de dossier (definitif après validation).
+reçu provisoire d'envoi de dossier (definitif après validation).❌
 
 later f biblio we should add gest accounts.
 
@@ -51,11 +49,11 @@ migration {
 }
 
 
-addnotice wkha heyednaha mazal katla3 l role student- tacher.
+web.php a verifier
 
 
-Save approvals : mn mora maki validi teacher l les etudiant o ki 
-clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin.
+Save approvals : mn mora maki validi teacher l les etudiant o ki  
+clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 😁 en cours
 
 
 jib les teachers f les filiere bach ndiro correspondance mabin l etudiant li uploada stage
@@ -72,7 +70,7 @@ ntestew ila kan user deja m connecter ydiiiiih l dash machi /hooo✅
 teacher rah mazal kimchi l dash admin f lewel ✅
 
 
-id on null f upload ✅
+id on null f upload ✅ (ila kan student khassk trslo b excel)
 
 
 authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... ✅
@@ -82,21 +80,13 @@ authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... ✅
 n9alleb ela notif ✅
 
 
-if user teacher ola admin khassno ymchi also -> t_personnel 
+if user teacher ola admin khassno ymchi also -> t_personnel  🚨
 
 
-registerController ba9i fih appogee men 100000 ->9999999
-
-
+registerController ba9i fih appogee men 100000 ->9999999 
 
 
 
-anzido wahd tale t_filiere {
-     id_etu men etudiant
-     nom filire; 
-     .... bach n9eddo nzido les fileres
-
-}
 
 ➕ t_personnel andiro menno FK ghada l FILIERE 
 
@@ -105,3 +95,8 @@ anzido wahd tale t_filiere {
 teacher20@gmail.com
 
 12345678
+
+
+
+stylo ikon clickable once 
+disconnect clickable once 

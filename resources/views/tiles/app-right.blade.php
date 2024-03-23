@@ -1,8 +1,4 @@
  <div class="app-right">
-
-
-
-
    <button class="close-right">
      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
        <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -11,10 +7,8 @@
    </button>
    <div class="profile-box">
      <div class="profile-photo-wrapper">
-
        <img alt="{{ auth()->user()->name}}" @if(auth()->user()->image) src="{{ Storage::url(auth()->user()->image) }}" @else src="profile.PNG" @endif
        class="dense-image dense-loading">
-
      </div>
      <form id="logout-form" action="{{ route('AUTH-LOGOUT') }}" method="POST" class="d-none">
        @csrf
@@ -26,9 +20,7 @@
          <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M17,2v10c0,0.5-0.5,1-1,1s-1-0.5-1-1V2c0-0.5,0.5-1,1-1S17,1.5,17,2z" />
        </svg>
      </a>
-
-     <p class="profile-text">{{ auth()->user()->name ?? 'please connect !' }}</p>
-
+     <p class="profile-text">{{ auth()->user()->name ?? 'Connecter Vous!' }}</p>
      <p class="profile-subtext">
        @foreach(auth()->user()->roles as $role)
        {{ $role->name }}
@@ -67,9 +59,6 @@
          </div>
        </div>
      </div>
-
-
-
      <div class="app-right-section">
        <div class="app-right-section-header">
          <h2>Notifications</h2>
@@ -80,33 +69,27 @@
            </svg>
          </span>
        </div>
-       
-        @if(auth()->user()->hasRole('student') && auth()->user()->etudiant)
-    @foreach(auth()->user()->etudiant->notifications as $notification)
-        <div class="activity-line">
-            <span class="activity-icon applicant">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="12" y1="18" x2="12" y2="12"></line>
-                    <line x1="9" y1="15" x2="15" y2="15"></line>
-                </svg>
-            </span>
-            <div class="activity-text-wrapper">
-                <p class="activity-text">L'encadrant <strong>{{ $notification->user->name }}</strong> a demandé une modification : {{ $notification->text_message }}</p>
-            </div>
-        </div>
-    @endforeach
-@endif
 
-
-      
-
-
+       @if(auth()->user()->hasRole('student') && auth()->user()->etudiant)
+       @foreach(auth()->user()->etudiant->notifications as $notification)
+       <div class="activity-line">
+         <span class="activity-icon applicant">
+           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus">
+             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+             <polyline points="14 2 14 8 20 8"></polyline>
+             <line x1="12" y1="18" x2="12" y2="12"></line>
+             <line x1="9" y1="15" x2="15" y2="15"></line>
+           </svg>
+         </span>
+         <div class="activity-text-wrapper">
+           <p class="activity-text">L'encadrant <strong>{{ $notification->user->name }}</strong>: {{ $notification->text_message }}</p>
+         </div>
+       </div>
+       @endforeach
+       @endif
      </div>
    </div>
  </div>
-
  <style>
    .logout-icon {
      position: relative;

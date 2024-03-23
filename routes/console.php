@@ -23,52 +23,62 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
+
 Artisan::command('selectedDB', function () {
     $result = DB::table('t_grad')->get();
     print_r($result);
 });
 
+
 Artisan::command('createUser', function () {
 
-   $this->info('creating user...');
+    $this->info('creating user...');
 
-   $user = new User();
+    $user = new User();
 
-   $user->email = 'achraf@gmail.com';
-   $user->name = 'achraf';
-   $user->apogee = 'K12345';
-   $user->password = bcrypt('123456');
-   $user->save();
+    $user->email = 'achraf@gmail.com';
+    $user->name = 'achraf';
+    $user->apogee = 'K12345';
+    $user->password = bcrypt('123456');
+    $user->save();
 });
+
 
 Artisan::command('add_apogee', function () {
 
+    if (!Schema::hasColumn('t_etudiant', 'apogee')) {
 
-    
-        if (!Schema::hasColumn('t_etudiant', 'apogee')) {
+        Schema::table('t_etudiant', function (Blueprint $table) {
 
-            Schema::table('t_etudiant', function (Blueprint $table) {
+            $table->string('apogee')->nullable()->unique;
+        });
+    }
 
-                $table->string('apogee')->nullable()->unique;
-            });
-
-        }
-
-        $this->info('Added successfully.');
-
+    $this->info('Added successfully.');
 });
 
+
 Artisan::command('is_recommanded', function () {
-    
+
     if (!Schema::hasColumn('t_dossier_stage', 'is_recommanded')) {
 
         Schema::table('t_dossier_stage', function (Blueprint $table) {
 
             $table->boolean('is_recommanded')->default(false);
         });
-
     }
-
     $this->info('Added successfully.');
+});
 
+
+Artisan::command('validation_prof', function () {
+
+    if (!Schema::hasColumn('t_dossier_stage', 'validation_prof')) {
+
+        Schema::table('t_dossier_stage', function (Blueprint $table) {
+
+            $table->boolean('validation_prof')->default(false);
+        });
+    }
+    $this->info('Stage Validé.');
 });

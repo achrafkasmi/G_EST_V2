@@ -61,8 +61,11 @@ Route::post('/import/users', [App\Http\Controllers\AuthenticationController::cla
 
 Route::get('/student-recommendation/{id}',[App\Http\Controllers\libraryController::class, 'recommand'])->name('student.recomandation');
 
+Route::get('/student-validation/{id}',[App\Http\Controllers\libraryController::class, 'validationstage'])->name('student.validation');
+
 Route::post('/add/comment',[App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
 
 
+Route::get('/gestionstage', function () {return view('gestionstage');})->name('gestionstage');
 
