@@ -18,7 +18,11 @@ class CreateTPersonnelTable extends Migration
             $table->string('code_personnel', 50)->nullable();
             $table->string('nom_personnel', 50)->nullable();
             $table->timestamps();  // Created at and Updated at timestamps
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
+
     }
 
     /**

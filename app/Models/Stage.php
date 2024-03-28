@@ -14,4 +14,17 @@ class Stage extends Model
         
         return $this->belongsTo(Etudiant::class, "id_etu");
     }
+
+    protected $fillable = [
+        'id_etu',
+        'type_dossier',
+        'dossier_stage',
+        'annee_universitaire',
+        'rapport',
+        'validation_prof',
+        'observation_prof',
+        'validation_admin',
+        'observation_admin',
+        'is_recommended',
+    ];
 }

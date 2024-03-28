@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('is_uploaded')->default(0);
             $table->string('rapport_file')->nullable();
             $table->string('stage_file')->nullable();
+            $table->string('filiere')->nullable();
         });
     }
 

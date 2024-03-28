@@ -13,16 +13,16 @@ class CreateTEtapeDiplomeTable extends Migration
      */
     public function up()
     {
-        Schema::create('t_etape_diplome', function (Blueprint $table) {
+       /* Schema::create('t_etape_diplome', function (Blueprint $table) {
             $table->id();  // Primary key
             $table->string('code_etape_diplome', 50)->nullable();
             $table->string('nom_etape_diplome', 50)->nullable();
-            $table->unsignedBigInteger('id_diplome')->index()->nullable();
+            $table->unsignedBigInteger('id_diplome')->nullable();
             $table->timestamps();  // Created at and Updated at timestamps
 
             // Foreign key
             //$table->foreign('id_diplome')->references('id')->on('t_diplome')->onDelete('cascade');
-        });
+        });*/
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateTEtapeDiplomeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_etape_diplome');
+        /*Schema::dropIfExists('t_etape_diplome');*/
     }
 }

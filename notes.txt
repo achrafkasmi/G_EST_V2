@@ -12,7 +12,7 @@ teacher ikon ando CRUD table l kola filiere ichof biha les dossiers de stage + r
 
 reçu provisoire d'envoi de dossier (definitif après validation).❌
 
-later f biblio we should add gest accounts.
+later f biblio we should add guest accounts.
 
 migration {
     t_etudiant ✅
@@ -20,7 +20,7 @@ migration {
     t_categorie_socio_proffesio ✅
     t_commune ✅
     t_departement ✅
-    t_diplome❌
+    t_diplome✅
     t_diplomes✅
     t_diplome_enseigne✅
     t_dossier_stage ✅
@@ -57,10 +57,10 @@ clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 
 
 
 jib les teachers f les filiere bach ndiro correspondance mabin l etudiant li uploada stage
-o teacher dyalo bach mankhltoch bin kolchi.
+o teacher dyalo bach mankhltoch bin kolchi. ✅
 
 
-Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant ybano lih gher les etudiant li m encadre
+Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant ybano lih gher les etudiant li m encadre ✅
 
 
 
@@ -76,27 +76,33 @@ id on null f upload ✅ (ila kan student khassk trslo b excel)
 authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... ✅
 
 
-
 n9alleb ela notif ✅
 
 
-if user teacher ola admin khassno ymchi also -> t_personnel  🚨
+if user teacher khassno ymchi also -> t_personnel  ✅
 
 
 registerController ba9i fih appogee men 100000 ->9999999 
 
+disconnect clickable once ✅
 
 
-
-➕ t_personnel andiro menno FK ghada l FILIERE 
-
+prof i9ed ieawd ydir edit message plusieurs fois.✅
 
 
-teacher20@gmail.com
+khass tkon validation reversible 
 
-12345678
+une fois teacher est ajouté on dois lui  ajouter aussi dans la table personnel ✅
+
+il faut ajouter champs id_dip (li ankon creeit ) dans les headers d'excel ✅
 
 
+scenarios a verifier : creation des filieres kolhom -> creation d'un etudiant correspond a chaque filiere 
++creation des teachers pour chaque filiere  ->upload des stages pour chaque etudiant ->  verification des uploads par les teachers 
+->envoi des texts messages au etudiants ->verification des texts->
 
-stylo ikon clickable once 
-disconnect clickable once 
+
+-> mni l prof i disapprovi khass modification t enabla
+-> datatable dyal admin mazal mam9addach
+
+

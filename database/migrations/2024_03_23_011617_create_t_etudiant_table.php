@@ -98,7 +98,10 @@ use Illuminate\Support\Facades\Schema;
             $table->string('inscription', 3)->nullable();
             $table->date('date_inscription')->nullable();
             $table->date('date_retrait_def')->nullable();
-
+            $table->unsignedBigInteger('id_dip')->nullable();
+            $table->unsignedBigInteger('apogee')->nullable();
+            
+            $table->foreign( 'id_dip' )->references('id') ->on('t_diplome');
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
 
             $table->timestamps();  // Created at and Updated at timestamps

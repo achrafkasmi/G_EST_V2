@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ExcelImport;
+use App\Models\Personnel;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -51,6 +53,18 @@ class AuthenticationController extends Controller
         $role = $data['role'];
 
         $user->assignRole($role);
+
+        if($role==="teacher"){
+
+            $personnel= Personnel::where('user_id',$user->id)->first() ?? new  Personnel;
+
+            $personnel->nom_personnel = $user->name;
+
+            $personnel->user_id = $user->id;
+
+            $personnel->save();
+
+        }
         //$user->assignRole('admin');
 
 

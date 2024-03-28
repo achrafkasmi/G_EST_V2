@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Stage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class libraryController extends Controller
 
         return redirect('/dash');
     }
-
+ 
 
     public function validationstage($id)
     {
@@ -41,6 +42,22 @@ class libraryController extends Controller
         }
 
         return redirect('/dash');
+    }
+
+
+    public function unvalidatestage($id)
+    {
+        $student = User::where('id', $id)->first()->etudiant;
+        if ($student) {
+            $student->stage->validation_prof = false;
+            $student->stage->save();
+        }
+    }
+
+    public function index()
+    {
+        $dossierStages = Stage::all();
+        return view('gestionstage', compact('dossierStages'));
     }
 
 }

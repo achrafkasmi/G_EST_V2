@@ -13,9 +13,9 @@ class Etudiant extends Model
 {
     protected $table='t_etudiant';
 
-    public function user() : HasOne
+    public function user()
     {
-        return $this->hasOne(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function notifications(): HasMany
@@ -25,5 +25,10 @@ class Etudiant extends Model
    public function stage() : HasOne
    {
      return $this->hasOne(Stage::class,'id_etu');
+   }
+
+   public function diplome() : BelongsTo
+   {
+     return $this->belongsTo(Diplome::class,'id_dip');
    }
 }

@@ -11,15 +11,15 @@
        class="dense-image dense-loading">
      </div>
      <form id="logout-form" action="{{ route('AUTH-LOGOUT') }}" method="POST" class="d-none">
-       @csrf
-     </form>
+    @csrf
+</form>
 
-     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-       <svg class="logout-icon" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-         <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M29,18c0,7.2-5.8,13-13,13S3,25.2,3,18c0-5.5,3.5-10.4,8.7-12.3c0.5-0.2,1.1,0.1,1.3,0.6 c0.2,0.5-0.1,1.1-0.6,1.3C8,9.2,5,13.3,5,18c0,6.1,4.9,11,11,11s11-4.9,11-11c0-4.7-3-8.8-7.3-10.4c-0.5-0.2-0.8-0.8-0.6-1.3 c0.2-0.5,0.8-0.8,1.3-0.6C25.5,7.6,29,12.5,29,18z" />
-         <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M17,2v10c0,0.5-0.5,1-1,1s-1-0.5-1-1V2c0-0.5,0.5-1,1-1S17,1.5,17,2z" />
-       </svg>
-     </a>
+<a href="#" onclick="logoutOnClick(event)">
+    <svg class="logout-icon" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M29,18c0,7.2-5.8,13-13,13S3,25.2,3,18c0-5.5,3.5-10.4,8.7-12.3c0.5-0.2,1.1,0.1,1.3,0.6 c0.2,0.5-0.1,1.1-0.6,1.3C8,9.2,5,13.3,5,18c0,6.1,4.9,11,11,11s11-4.9,11-11c0-4.7-3-8.8-7.3-10.4c-0.5-0.2-0.8-0.8-0.6-1.3 c0.2-0.5,0.8-0.8,1.3-0.6C25.5,7.6,29,12.5,29,18z" />
+        <path class="logout-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M17,2v10c0,0.5-0.5,1-1,1s-1-0.5-1-1V2c0-0.5,0.5-1,1-1S17,1.5,17,2z" />
+    </svg>
+</a>
      <p class="profile-text">{{ auth()->user()->name ?? 'Connecter Vous!' }}</p>
      <p class="profile-subtext">
        @foreach(auth()->user()->roles as $role)
@@ -103,3 +103,15 @@
      /* Change to the desired red color */
    }
  </style>
+
+<script>
+    //make it clickable only once.
+    var logoutInitiated = false;
+    function logoutOnClick(event) {
+        event.preventDefault();
+        if (!logoutInitiated) {
+            logoutInitiated = true;
+            document.getElementById('logout-form').submit();
+        }
+    }
+</script>

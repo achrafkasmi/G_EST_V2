@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_notification', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_etu')->index()->nullable();
+            $table->unsignedBigInteger('id_etu')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();   // Foreign key
             $table->longText('text_message')->nullable();
             $table->timestamps();

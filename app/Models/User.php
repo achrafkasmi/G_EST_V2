@@ -47,9 +47,6 @@ class User extends Authenticatable
     ];
 
 
-
-
-
     public function roles()
     {
         return $this->belongsToMany(Role::class);
@@ -67,7 +64,11 @@ class User extends Authenticatable
         
     }
 
+    public function personnel(){
 
-
-
+        return $this->hasOne(Personnel::class, "user_id");
+        
+    }
+    
+    
 }
