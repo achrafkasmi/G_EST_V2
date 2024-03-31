@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Library;
 use App\Models\Stage;
 use App\Models\User;
+use CreateTDossierStageTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 
 class libraryController extends Controller
 {
@@ -17,7 +20,7 @@ class libraryController extends Controller
             $student->stage->is_recommanded = true;
             $student->stage->save();
 
-            $rapport_pdf_name = 'Rapport-' . $student->apogee.'.pdf';
+            $rapport_pdf_name = 'Rapport-' . $student->apogee . '.pdf';
 
             $sourceFilePath = storage_path('app/public/uploads/' . $rapport_pdf_name);
 
@@ -31,13 +34,14 @@ class libraryController extends Controller
 
         return redirect('/dash');
     }
- 
+
 
     public function validationstage($id)
     {
         $student = User::where('id', $id)->first()->etudiant;
         if ($student) {
-            $student->stage->validation_prof = true;
+            if($student->stage->validation_prof) $student->stage->validation_prof = false;
+            else $student->stage->validation_prof = true;
             $student->stage->save();
         }
 
@@ -53,11 +57,18 @@ class libraryController extends Controller
             $student->stage->save();
         }
     }
-
+    //hadi drtha pour datatable dyal admin bach ichouf all stages uploaded and accepeted
     public function index()
     {
         $dossierStages = Stage::all();
         return view('gestionstage', compact('dossierStages'));
     }
 
+
+
+    public function fetchlibrary()
+    {
+        $dossierStages = Library::where('is_recommanded', 1)->get();
+        return view('library')->with(['dossierStages' => $dossierStages]);
+    }
 }

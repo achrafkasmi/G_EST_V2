@@ -17,7 +17,7 @@
       </a>
     </li>
     <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
+      <a class="pop-cont nav-list-link" href="http://127.0.0.1:8000/library">
         <img src="bibliotheque.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Bibliotheque
         <span class="pop-up">Ce Service est en cours de développement...</span>

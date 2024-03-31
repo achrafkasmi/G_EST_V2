@@ -5,7 +5,8 @@ use App\Http\Controllers\UploadManager;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AvisController;
 use App\Models\Avis;
-
+use App\Http\Controllers\libraryController;
+use App\Models\Library;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/messtages', [App\Http\Controllers\DashboardController::class, 'myIntern'])->name('messtages');
 
-    Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
+    //Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
 
     Route::get('/addUser', [App\Http\Controllers\AuthenticationController::class, 'addUserForm'])->name('ADD-USER-FORM');
 
@@ -66,6 +67,14 @@ Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 
 Route::get('/gestionstage', function () { return view('gestionstage');})->name('gestionstage');
 
 Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
+
+
+
+
+
+
+Route::get('/library', [App\Http\Controllers\libraryController::class, 'fetchlibrary'])->name('fetch.library');
+
 
 
 

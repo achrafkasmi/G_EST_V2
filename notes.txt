@@ -49,11 +49,7 @@ migration {
 }
 
 
-web.php a verifier
 
-
-Save approvals : mn mora maki validi teacher l les etudiant o ki  
-clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 😁 en cours
 
 
 jib les teachers f les filiere bach ndiro correspondance mabin l etudiant li uploada stage
@@ -84,13 +80,12 @@ if user teacher khassno ymchi also -> t_personnel  ✅
 
 registerController ba9i fih appogee men 100000 ->9999999 
 
+
 disconnect clickable once ✅
 
 
 prof i9ed ieawd ydir edit message plusieurs fois.✅
 
-
-khass tkon validation reversible 
 
 une fois teacher est ajouté on dois lui  ajouter aussi dans la table personnel ✅
 
@@ -99,10 +94,23 @@ il faut ajouter champs id_dip (li ankon creeit ) dans les headers d'excel ✅
 
 scenarios a verifier : creation des filieres kolhom -> creation d'un etudiant correspond a chaque filiere 
 +creation des teachers pour chaque filiere  ->upload des stages pour chaque etudiant ->  verification des uploads par les teachers 
-->envoi des texts messages au etudiants ->verification des texts->
+->envoi des texts messages au etudiants ->verification des texts-> ✅
 
 
 -> mni l prof i disapprovi khass modification t enabla
 -> datatable dyal admin mazal mam9addach
 
+🚨🚨ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l bibliotheque
 
+khass tkon validation reversible 
+
+web.php a verifier
+
+
+Save approvals : mn mora maki validi teacher l les etudiant o ki  
+clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 😁 en cours
+
+etudiant obligé ikteb sujet d rapport
+
+
+type rapport khasso ikon obligatory 

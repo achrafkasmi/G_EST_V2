@@ -53,6 +53,7 @@
                 </tr>
             </thead>
             <tbody>
+           
                 @foreach($users as $user)
                 <tr>
                     <td>{{$user->name}}</td>
@@ -61,10 +62,13 @@
                     <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
                     <td>
                         @if ($user->etudiant->stage->validation_prof)
-                        <svg width="24px" height="24px" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 48 48">
-                            <circle fill="#4CAF50" cx="24" cy="24" r="21" />
-                            <polygon fill="#CCFF90" points="34.6,14.6 21,28.2 15.4,22.6 12.6,25.4 21,33.8 37.4,17.4" />
-                        </svg>
+                        <a href="{{ route('student.validation', $user->id) }}">
+                            <svg width="24px" height="24px" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 48 48">
+                                <circle fill="#4CAF50" cx="24" cy="24" r="21" />
+                                <polygon fill="#CCFF90" points="34.6,14.6 21,28.2 15.4,22.6 12.6,25.4 21,33.8 37.4,17.4" />
+                            </svg>
+                        </a>
+
                         @else
                         <a href="{{ route('student.validation', $user->id) }}" title="Approve" onclick="approveStage(1)">
                             <svg class="approve" width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -121,6 +125,7 @@
                     </td>
                 </tr>
                 @endforeach
+         
             </tbody>
         </table>
 

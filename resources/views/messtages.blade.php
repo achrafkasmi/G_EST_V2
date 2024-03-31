@@ -91,10 +91,14 @@
   @include('tiles.actions')
 
   @if(session('success'))
-  <div id="successMessage" class="alert alert-success" role="alert">
-    {{ session('success') }}
-  </div>
-  @endif
+  <script>
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: '{{ session('success') }}',
+    });
+  </script>
+@endif
 
   @if(!auth()->user()->is_uploaded)
   <div class="container form-container">
@@ -105,8 +109,8 @@
 
       <div class="mb-3">
         <label for="fileType" class="form-label">Select Type:</label>
-        <select class="form-select form-control" id="fileType" name="fileType">
-          <option selected>Select type de dossier de stage</option>
+        <select class="form-select form-control" id="fileType" name="fileType" required>
+          <option selected disabled>Select type de dossier de stage</option>
           <option value="Stage d'initiation">Stage d'initiation</option>
           <option value="Stage professionnel">Stage professionnel</option>
           <option value="Stage technique">Stage technique</option>

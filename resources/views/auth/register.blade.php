@@ -2,15 +2,17 @@
 
 @section('app-mid')
 
+@if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+        @endif
 <div class="app-main">
     <div class="containerf form-container bg-light-gray">
-
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
-
         <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf
             <h2 class="form-title text-white">Add User</h2>
@@ -32,7 +34,7 @@
                 <label for="email" class="col-md-4 col-form-label text-md-end text-white">{{ __('Email Address') }}</label>
 
                 <div class="col-md-6">
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                     @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -98,46 +100,49 @@
     <div class="containerf form-container">
         <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data"">
             @csrf
-            <div class="excelinput mb-5">
-                <h2 class="form-title text-white">Massive Add</h2>
-                <input class="form-control" type="file" id="excel_file" name="excel_file">
-                <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
-            </div>
-
-        </form>
+            <div class=" excelinput mb-5">
+            <h2 class="form-title text-white">Massive Add</h2>
+            <input class="form-control" type="file" id="excel_file" name="excel_file">
+            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
     </div>
+
+    </form>
+</div>
 
 
 </div>
 
 <style>
     .containerf {
-    background-color: #5e6a81;
-    border-radius: 10px;
-    margin: 5%;
-    position: relative;
-    padding: 5px;
-}
-
-.excelinput {
-    width: 90%; /* Adjusted width to fit inside container */
-    margin: 0 auto; /* Center the element horizontally */
-    color: white;
-}
-
-@media only screen and (max-width: 768px) {
-    .excelinput {
-        width: 80%;
-        margin-left: 10%;
+        background-color: #5e6a81;
+        border-radius: 10px;
+        margin: 5%;
+        position: relative;
+        padding: 5px;
     }
-}
 
-@media only screen and (max-width: 480px) {
     .excelinput {
         width: 90%;
-        margin-left: 5%;
+        /* Adjusted width to fit inside container */
+        margin: 0 auto;
+        /* Center the element horizontally */
+        color: white;
     }
-}
+
+    @media only screen and (max-width: 768px) {
+        .excelinput {
+            width: 80%;
+            margin-left: 10%;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .excelinput {
+            width: 90%;
+            margin-left: 5%;
+        }
+    }
+
     @media only screen and (max-width: 992px) {
         .form {
             background-color: rgba(255, 255, 255, 0.2);

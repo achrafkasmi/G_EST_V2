@@ -25,6 +25,7 @@ class UploadManager extends Controller
         $user = auth()->user();
 
         $request->validate([
+            'fileType'  => ['required'],
             'stageFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
             'rapportFile' => 'required|mimes:pdf|max:30720', // PDF file with a maximum size of 30MB (30 * 1024 KB)
         ]);
@@ -48,7 +49,9 @@ class UploadManager extends Controller
 
         $stage->id_etu = $user->etudiant->id;
 
-        $stage->type_dossier = $request->get('fileType');
+        //$stage->type_dossier = $request->get('fileType');
+        $stage->type_dossier = $request->input('fileType');
+
 
         $stage->rapport = $path . $rapport_pdf_name . '.pdf';
 
@@ -62,7 +65,7 @@ class UploadManager extends Controller
         $user->save();
 
           // Store success message in session
-         $request->session()->flash('success', 'Files were uploaded successfully!');
+        $request->session()->flash('success', 'Files were uploaded successfully!');
 
          // Redirect back with success message
          return redirect()->back();

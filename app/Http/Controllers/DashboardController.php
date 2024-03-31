@@ -12,6 +12,8 @@ class DashboardController extends Controller
     {
         if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
 
+
+            
             $diplomes = auth()->user()->personnel->diplomes;
 
             $etudiants = [];
@@ -26,17 +28,17 @@ class DashboardController extends Controller
                     }
                 }
             }
-
+            $users = User::where('is_uploaded', true)->get();
             return  view('Dashboards.dashteacher')->with(['users' => $users]);
         }
 
         return  view('Dashboards.dashboard');
     }
 
-    public function dashteacher()
+   public function dashteacher()
     {
-        $users = User::where('is_uploaded', true)->get();
-        return view('Dashboards.dashteacher')->with(['users' => $users]);
+        $users = User::where('is_uploaded', true)->get(); // ditha l ligne 31 
+        return view('Dashboards.dashteacher')->with(['users' => $users]);          
     }
 
     public function myIntern(): View
