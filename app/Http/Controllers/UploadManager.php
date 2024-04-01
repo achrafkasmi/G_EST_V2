@@ -48,17 +48,15 @@ class UploadManager extends Controller
         $stage = Stage::where('id_etu', $user->etudiant->id)->first() ?? new Stage();
 
         $stage->id_etu = $user->etudiant->id;
-
+        
         //$stage->type_dossier = $request->get('fileType');
         $stage->type_dossier = $request->input('fileType');
-
 
         $stage->rapport = $path . $rapport_pdf_name . '.pdf';
 
         $stage->dossier_stage = $path . $dossier_pdf_name . '.pdf';
 
         $stage->save();
-
 
         $user->is_uploaded = true;
 

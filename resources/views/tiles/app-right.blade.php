@@ -38,24 +38,10 @@
          </span>
        </div>
        <div class="message-line">
-         <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2250&amp;q=80" alt="profile">
-         <div class="message-text-wrapper">
-           <p class="message-text">A.Rachida</p>
-           <p class="message-subtext">LP-GC Une séance a été programmé le 23 Mars a 08:30.</p>
-         </div>
-       </div>
-       <div class="message-line">
          <img src="535.JPEG" alt="profile picture 1">
          <div class="message-text-wrapper">
            <p class="message-text">A.Kasmi</p>
            <p class="message-subtext">Les Notes S1-S3-S5 Sont disponibles sur la plateforme</p>
-         </div>
-       </div>
-       <div class="message-line">
-         <img src="taha.PNG" alt="profile picture 2">
-         <div class="message-text-wrapper">
-           <p class="message-text">T.Boughalem</p>
-           <p class="message-subtext">les cartes sim INWI CAMPUS CONNECTE sont disponible auprès du service de scolarité</p>
          </div>
        </div>
      </div>
