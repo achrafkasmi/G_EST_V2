@@ -7,6 +7,8 @@ use App\Http\Controllers\AvisController;
 use App\Models\Avis;
 use App\Http\Controllers\libraryController;
 use App\Models\Library;
+use App\Http\Controllers\DocumentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +21,13 @@ use App\Models\Library;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 //Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'dashHome'])->name('HOME-DAWH');
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
 
     Route::get('/dash', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
@@ -74,6 +72,19 @@ Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])-
 
 
 Route::get('/library', [App\Http\Controllers\libraryController::class, 'fetchlibrary'])->name('fetch.library');
+
+
+
+
+
+Route::get('/managedocuments', [App\Http\Controllers\DocumentController::class,'managedocuments'])->name('DC');
+Route::post('/managedocuments', [DocumentController::class, 'store'])->name('document.post');
+
+// Route to show student documents
+Route::get('/student-documents', [DocumentController::class, 'showStudentDocuments'])->name('student.documents');
+// Route to show staff documents
+Route::get('/staff-documents', [DocumentController::class, 'showStaffDocuments'])->name('staff.documents');
+
 
 
 

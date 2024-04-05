@@ -24,8 +24,10 @@ class CreateTDossierStageTable extends Migration
             $table->text('observation_prof')->nullable();
             $table->string('validation_admin', 10)->nullable();
             $table->text('observation_admin')->nullable();
-            $table->timestamps();  // Created at and Updated at timestamps
             $table->boolean('is_recommanded')->default(false)->nullable();
+            $table->text('titre_rapport')->nullable();
+            $table->string('image_page_garde')->nullable();
+            $table->timestamps();
 
             // Foreign key
             $table->foreign('id_etu')->references('id')->on('t_etudiant')->onDelete('cascade');

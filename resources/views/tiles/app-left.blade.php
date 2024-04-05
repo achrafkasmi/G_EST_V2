@@ -23,11 +23,25 @@
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
+    @if(auth()->user() && auth()->user()->hasRole('teacher'))
+    <li class="nav-list-item">
+      <a class=" nav-list-link" href="http://127.0.0.1:8000/student-documents">
+        <img src="e-doc.PNG" alt="e-documentys" width="28" height="28" style="margin-right: 10px;" />
+        E-documents
+      </a>
+    </li>
+    @endif
     @if(auth()->user() && auth()->user()->hasRole('student'))
     <li class="nav-list-item">
       <a class="nav-list-link" href="http://127.0.0.1:8000/messtages">
         <img src="documentsdestage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Dossier de Stage
+      </a>
+    </li>
+    <li class="nav-list-item">
+      <a class=" nav-list-link" href="http://127.0.0.1:8000/student-documents">
+        <img src="e-doc.PNG" alt="e-documentys" width="28" height="28" style="margin-right: 10px;" />
+        E-documents
       </a>
     </li>
     @endif
@@ -38,6 +52,7 @@
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
+   
     <!--haaadi nfakrek fiha❌-->
     @if(auth()->user() && auth()->user()->hasRole('admin'))
     <li class="nav-list-item">
@@ -78,6 +93,12 @@
       <a class="nav-list-link" href="http://127.0.0.1:8000/addnotice">
         <img src="notice.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Notice.
+      </a>
+    </li>
+    <li class="nav-list-item">
+      <a class="nav-list-link" href="http://127.0.0.1:8000/managedocuments">
+        <img src="addEdoc.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        Add E-document.
       </a>
     </li>
     @endif

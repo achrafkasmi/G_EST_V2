@@ -100,17 +100,17 @@ scenarios a verifier : creation des filieres kolhom -> creation d'un etudiant co
 -> mni l prof i disapprovi khass modification t enabla
 -> datatable dyal admin mazal mam9addach
 
-🚨🚨ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l bibliotheque
+🚨🚨ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l bibliotheque (solved, student howa li kayktb title)✅
 
-khass tkon validation reversible 
+khass tkon validation reversible ✅
 
-web.php a verifier
-
+khass tkon recommendation disabled if validation not yet 1
 
 Save approvals : mn mora maki validi teacher l les etudiant o ki  
 clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 😁 en cours
 
-etudiant obligé ikteb sujet d rapport
+etudiant obligé ikteb sujet d rapport✅
 
 
-type rapport khasso ikon obligatory 
+type rapport khasso ikon obligatory ✅
+

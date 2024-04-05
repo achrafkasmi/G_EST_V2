@@ -95,10 +95,11 @@
     Swal.fire({
       icon: 'success',
       title: 'Success!',
-      text: '{{ session('success') }}',
+      text: '{{session('
+      success ')}}',
     });
   </script>
-@endif
+  @endif
 
   @if(!auth()->user()->is_uploaded)
   <div class="container form-container">
@@ -110,16 +111,20 @@
       <div class="mb-3">
         <label for="fileType" class="form-label">Select Type:</label>
         <select class="form-select form-control" id="fileType" name="fileType" required>
-          <option selected disabled>Select type de dossier de stage</option>
+          <option selected disabled>Selectionner le type du dossier de stage</option>
           <option value="Stage d'initiation">Stage d'initiation</option>
           <option value="Stage professionnel">Stage professionnel</option>
           <option value="Stage technique">Stage technique</option>
+          <option value="PFE">PFE</option>
         </select>
       </div>
 
-      <div class="mb-3">
+      <div class="mb-3" id="stageFileInput">
         <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
+        <!-- Added conditional display for stageFile input -->
+        @if(old('fileType') !== 'PFE')
         <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="30M" data-height="100" />
+        @endif
       </div>
 
       <div class="mb-3">
@@ -127,10 +132,16 @@
         <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="30M" data-height="100" />
       </div>
 
+      <div class="mb-3">
+        <label for="textInput" class="form-label">Titre Du Rapport:</label>
+        <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
+      </div>
+
       <div class="d-grid gap-2 mt-3">
         <button class="btn submit-btn" type="submit">Envoyer</button>
       </div>
     </form>
+
   </div>
 
   @else
@@ -141,6 +152,11 @@
       <thead>
         <tr>
           <th scope="col">type de stage</th>
+          <!--@if(auth()->user()->etudiant->stage->type_dossier !== 'PFE')
+          <th scope="col">dossier de stage</th>
+          @else
+          <th scope="col">pas de dossier</th>
+          @endif-->
           <th scope="col">dossier de stage</th>
           <th scope="col">rapport</th>
           <th scope="col">date delivrence</th>
@@ -151,10 +167,17 @@
       <tbody>
         <tr>
           <th scope="row">{{ auth()->user()->etudiant->stage->type_dossier }}</th>
-          <td data-title="PDF dossier de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->dossier_stage) }}" target="_blank">cliquer ici </a></td>
-          <td data-title="PDF rapport de stage"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
-          <td data-title="date de delivrence de dossier" class="date"></a>{{ auth()->user()->etudiant->stage->created_at}}</td>
-          <td data-title="modification"><a href="#"></a>modification temporairement impossible</td>
+          @if(auth()->user()->etudiant->stage->type_dossier !== 'PFE')
+          <td data-title="PDF dossier de stage">
+            <a href="{{ Storage::url(auth()->user()->etudiant->stage->dossier_stage) }}" target="_blank">cliquer ici </a>
+          </td>
+          @else
+          <td data-title="PDF du Dossier de stage">----</td>
+          @endif
+
+          <td data-title="PDF du Rapport"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="date de delivrence de dossier" class="date">{{ auth()->user()->etudiant->stage->created_at}}</td>
+          <td data-title="modification"><a>modification temporairement impossible</a></td>
           @foreach(auth()->user()->etudiant->notifications as $notification)
           <td data-title="observation de l'encadrant">
             <p class="font-weight-normal">{{ $notification->text_message }}</p>
@@ -176,6 +199,7 @@
 
     // Initialize Dropify on rapportFile input
     $('#rapportFile').dropify();
+
   });
 </script>
 @endsection
@@ -196,6 +220,26 @@
   setTimeout(function() {
     document.getElementById('successMessage').style.display = 'none';
   }, 2000);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const fileTypeSelect = document.getElementById("fileType");
+    const stageFileInput = document.getElementById("stageFileInput");
+
+    fileTypeSelect.addEventListener("change", function() {
+      if (fileTypeSelect.value === "PFE") {
+        stageFileInput.style.display = "none";
+      } else {
+        stageFileInput.style.display = "block";
+      }
+    });
+
+    // Initial check in case "PFE" is pre-selected
+    if (fileTypeSelect.value === "PFE") {
+      stageFileInput.style.display = "none";
+    }
+  });
 </script>
 
 <style>

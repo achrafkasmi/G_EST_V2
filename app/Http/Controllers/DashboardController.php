@@ -17,6 +17,7 @@ class DashboardController extends Controller
             $diplomes = auth()->user()->personnel->diplomes;
 
             $etudiants = [];
+            $users = [];
 
             foreach ($diplomes as $diplome) {
 
@@ -28,7 +29,7 @@ class DashboardController extends Controller
                     }
                 }
             }
-            $users = User::where('is_uploaded', true)->get();
+            
             return  view('Dashboards.dashteacher')->with(['users' => $users]);
         }
 
@@ -37,7 +38,7 @@ class DashboardController extends Controller
 
    public function dashteacher()
     {
-        $users = User::where('is_uploaded', true)->get(); // ditha l ligne 31 
+        $users = User::where('is_uploaded', true)->get();
         return view('Dashboards.dashteacher')->with(['users' => $users]);          
     }
 
