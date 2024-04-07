@@ -83,7 +83,13 @@
     /* sorting and search design*/
     /* .search-sort-container styles */
     .search-sort-container {
-        display: flex;
+        display: absolute;
+    }
+
+    @media screen and (min-width: 750px) {
+        .search-sort-container {
+            display: flex;
+        }
     }
 
     /* .search-container, .sorting-container, .items-per-page-container styles */
@@ -93,7 +99,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100px;
+        height: 60px;
         margin-right: 10px;
         margin-left: 30px;
         /* Adjust spacing between containers */
@@ -438,6 +444,5 @@
             filterAndSortItems();
         });
     });
-
 </script>
 @endsection

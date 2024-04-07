@@ -30,10 +30,10 @@ class DashboardController extends Controller
                 }
             }
             
-            return  view('Dashboards.dashteacher')->with(['users' => $users]);
+            return  view('Dashboards.dashteacher')->with(['users' => $users,'active_tab' => 'dash']);
         }
 
-        return  view('Dashboards.dashboard');
+        return  view('Dashboards.dashboard')->with(['active_tab' => 'dash']);
     }
 
    public function dashteacher()
@@ -50,6 +50,6 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        return view('messtages');
+        return view('messtages')->with(['active_tab' => 'messtages']);
     }
 }

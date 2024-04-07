@@ -1,7 +1,6 @@
 @extends('master')
 @section("app-mid")
 
-
 <div class="app-main">
   @include('tiles.actions')
   @if(auth()->user() && auth()->user()->hasRole('etudiant'))

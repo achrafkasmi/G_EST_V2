@@ -12,10 +12,9 @@ class Document extends Model
     protected $table = 't_documents'; // Specify the table name
 
     protected $fillable = [
-        'id_etu',
-        'id_perso',
         'intitule_document',
         'type_document',
         'document'
     ];
 }
+

@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
             abort(403);
         }
 
-        return view('auth.register');
+        return view('auth.register')->with(['active_tab' => 'addusers']);
     }
 
     protected function postUser(Request $data)

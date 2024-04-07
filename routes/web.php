@@ -41,51 +41,50 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function (){ return view('gridetudiant');})->name('gridetudiant');
+    Route::get('/gridetudiant', function () {
+        return view('gridetudiant');
+    })->name('gridetudiant');
+
+    Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
+
+    Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
+
+    Route::get('/student-recommendation/{id}', [App\Http\Controllers\libraryController::class, 'recommand'])->name('student.recomandation');
+
+    Route::get('/student-validation/{id}', [App\Http\Controllers\libraryController::class, 'validationstage'])->name('student.validation');
+
+    Route::get('/student-unvalidation/{id}', [App\Http\Controllers\libraryController::class, 'unvalidatestage'])->name('student.unvalidation');
+
+    Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
+
+    Route::get('/gestionstage', function () {
+        return view('gestionstage');
+    })->name('gestionstage');
+
+    Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
+
+
+
+
+
+
+    Route::get('/library', [App\Http\Controllers\libraryController::class, 'fetchlibrary'])->name('fetch.library');
+
+
+
+
+
+    Route::get('/managedocuments', [App\Http\Controllers\DocumentController::class, 'managedocuments'])->name('DC');
+    Route::post('/managedocuments', [DocumentController::class, 'store'])->name('document.post');
+
+
+    Route::get('/documents', [DocumentController::class, 'showDocuments'])->name('documents');
 });
+
+
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
 
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
-
-Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
-
-Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
-
-Route::get('/student-recommendation/{id}', [App\Http\Controllers\libraryController::class, 'recommand'])->name('student.recomandation');
-
-Route::get('/student-validation/{id}', [App\Http\Controllers\libraryController::class, 'validationstage'])->name('student.validation');
-
-Route::get('/student-unvalidation/{id}', [App\Http\Controllers\libraryController::class, 'unvalidatestage'])->name('student.unvalidation');
-
-Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
-
-Route::get('/gestionstage', function () { return view('gestionstage');})->name('gestionstage');
-
-Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
-
-
-
-
-
-
-Route::get('/library', [App\Http\Controllers\libraryController::class, 'fetchlibrary'])->name('fetch.library');
-
-
-
-
-
-Route::get('/managedocuments', [App\Http\Controllers\DocumentController::class,'managedocuments'])->name('DC');
-Route::post('/managedocuments', [DocumentController::class, 'store'])->name('document.post');
-
-// Route to show student documents
-Route::get('/student-documents', [DocumentController::class, 'showStudentDocuments'])->name('student.documents');
-// Route to show staff documents
-Route::get('/staff-documents', [DocumentController::class, 'showStaffDocuments'])->name('staff.documents');
-
-
-
-
-

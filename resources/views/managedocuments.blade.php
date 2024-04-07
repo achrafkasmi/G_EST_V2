@@ -123,13 +123,14 @@
 
             <div class="mb-3">
                 <label for="textInput" class="form-label">Title:</label>
-                <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
+                <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Enter the document title">
             </div>
 
             <div class="d-grid gap-2 mt-3">
-                <button class="btn submit-btn" type="submit">Envoyer</button>
+                <button class="btn submit-btn" type="submit">Upload</button>
             </div>
         </form>
+
 
     </div>
 
@@ -169,7 +170,6 @@
 
 
 <style>
- 
     html {
         box-sizing: border-box;
     }

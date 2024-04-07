@@ -61,7 +61,7 @@ class libraryController extends Controller
     public function index()
     {
         $dossierStages = Stage::all();
-        return view('gestionstage', compact('dossierStages'));
+        return view('gestionstage', compact('dossierStages'))->with(['active_tab' => 'gestionstage']);
     }
 
 
@@ -69,6 +69,6 @@ class libraryController extends Controller
     public function fetchlibrary()
     {
         $dossierStages = Library::where('is_recommanded', 1)->get();
-        return view('library')->with(['dossierStages' => $dossierStages]);
+        return view('library')->with(['dossierStages' => $dossierStages,'active_tab' => 'library']);
     }
 }

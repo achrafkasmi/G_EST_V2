@@ -10,43 +10,37 @@
     <span>EST-FBS</span>
   </div>
   <ul class="nav-list">
-    <li class="nav-list-item active">
+    <li class="nav-list-item  @if($active_tab === 'dash') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/dash">
         <img src="dashboard.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Dashboard
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'library') active @endif" >
       <a class="pop-cont nav-list-link" href="http://127.0.0.1:8000/library">
         <img src="bibliotheque.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Bibliotheque
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
-    @if(auth()->user() && auth()->user()->hasRole('teacher'))
-    <li class="nav-list-item">
-      <a class=" nav-list-link" href="http://127.0.0.1:8000/student-documents">
+    @if(auth()->user() && auth()->user()->hasRole('teacher')|| auth()->user()->hasRole('student'))
+    <li class="nav-list-item @if($active_tab == 'documents') active @endif" >
+      <a class=" nav-list-link" href="http://127.0.0.1:8000/documents">
         <img src="e-doc.PNG" alt="e-documentys" width="28" height="28" style="margin-right: 10px;" />
         E-documents
       </a>
     </li>
     @endif
     @if(auth()->user() && auth()->user()->hasRole('student'))
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'messtages') active @endif" >
       <a class="nav-list-link" href="http://127.0.0.1:8000/messtages">
         <img src="documentsdestage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Dossier de Stage
       </a>
     </li>
-    <li class="nav-list-item">
-      <a class=" nav-list-link" href="http://127.0.0.1:8000/student-documents">
-        <img src="e-doc.PNG" alt="e-documentys" width="28" height="28" style="margin-right: 10px;" />
-        E-documents
-      </a>
-    </li>
     @endif
     <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
+      <a class="pop-cont nav-list-link @if($active_tab == 'planning') active @endif" href="#" >
         <img src="calendar.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Plannings examens
         <span class="pop-up">Ce Service est en cours de développement...</span>
@@ -55,47 +49,47 @@
    
     <!--haaadi nfakrek fiha❌-->
     @if(auth()->user() && auth()->user()->hasRole('admin'))
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'team') active @endif" >
       <a class="pop-cont nav-list-link" href="#">
         <img src="team.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Team
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'historisation') active @endif" >
       <a class="pop-cont nav-list-link" href="#">
         <img src="reports.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Rapports
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
-    <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
+    <li class="nav-list-item @if($active_tab == 'checkstage') active @endif"  >
+      <a class="pop-cont nav-list-link" href="#" >
         <img src="historisation.PNG" alt="checkstage" width="28" height="28" style="margin-right: 10px;" />
         Historisation
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'gestionstage') active @endif"  >
       <a class="nav-list-link" href="http://127.0.0.1:8000/stages">
         <img src="checkstage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Gestion Des Stages
         
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'addusers') active @endif"  >
       <a class="nav-list-link" href="http://127.0.0.1:8000/addUser">
         <img src="adduser.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Users
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item "  >
       <a class="nav-list-link" href="http://127.0.0.1:8000/addnotice">
         <img src="notice.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Notice.
       </a>
     </li>
-    <li class="nav-list-item">
+    <li class="nav-list-item @if($active_tab == 'addedoc') active @endif"  >
       <a class="nav-list-link" href="http://127.0.0.1:8000/managedocuments">
         <img src="addEdoc.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add E-document.

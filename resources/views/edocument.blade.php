@@ -1,18 +1,21 @@
 @extends('master')
+@section("app-mid")
 
-@section('app-mid')
+
 <div class="app-main">
-    @include('tiles.actions')
+
+<div>
     <ul>
-        @foreach($documents as $document)
-            <li>
-                @if($userRole == 'student' && auth()->user()->hasRole('student'))
-                    <a href="{{ Storage::url($document->document) }}" target="_blank">{{ $document->intitule_document }}</a>
-                @elseif($userRole == 'teacher' && auth()->user()->hasRole('teacher'))
-                    <a href="{{ Storage::url($document->document) }}" target="_blank">{{ $document->intitule_document }}</a>
-                @endif
-            </li>
+        @foreach ($documents as $document)
+            @if(auth()->user()->hasRole('student') && $document->type_document == 'student')
+                <li>{{ $document->intitule_document }}</li>
+                <a href="{{ Storage::url($document->document) }}" target="_blank">View Document</a>
+            @elseif (auth()->user()->hasRole('teacher') && $document->type_document == 'teacher')
+                <li>{{ $document->intitule_document }}</li>
+                <a href="{{ Storage::url($document->document) }}" target="_blank">View Document</a>
+            @endif
         @endforeach
     </ul>
+</div>
 </div>
 @endsection
