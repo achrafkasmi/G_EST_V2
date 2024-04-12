@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\Notification;
 
 class DashboardController extends Controller
 {
@@ -52,4 +53,5 @@ class DashboardController extends Controller
 
         return view('messtages')->with(['active_tab' => 'messtages']);
     }
+    
 }

@@ -49,11 +49,11 @@
                     <th>Dossier de stage</th>
                     <th>Rapport</th>
                     <th>Actions</th>
-                    <th>Statut</th>
+                    <th>Bibliothèque</th>
                 </tr>
             </thead>
             <tbody>
-           
+
                 @foreach($users as $user)
                 <tr>
                     <td>{{$user->name}}</td>
@@ -85,47 +85,30 @@
                         @endif
                     </td>
                     <td>
-                        @if ($user->etudiant->stage->is_recommanded)
-                        <svg width="24px" height="24px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="48" height="48" fill="white" fill-opacity="0.01" />
-                            <path d="M24 4L29.2533 7.83204L35.7557 7.81966L37.7533 14.0077L43.0211 17.8197L41 24L43.0211 30.1803L37.7533 33.9923L35.7557 40.1803L29.2533 40.168L24 44L18.7467 40.168L12.2443 40.1803L10.2467 33.9923L4.97887 30.1803L7 24L4.97887 17.8197L10.2467 14.0077L12.2443 7.81966L18.7467 7.83204L24 4Z" fill="#2F88FF" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M17 24L22 29L32 19" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        @else
+                        @if ($user->etudiant->stage->is_recommanded && $user->etudiant->stage->validation_prof)
                         <a href="{{ route('student.recomandation', $user->id) }}">
-                            <svg height=" 24px" width="24px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 395.78 395.78" xml:space="preserve">
-                                <g>
-                                    <g>
-                                        <path style="fill:#010002;" d="M184.291,30.445l-47.162-0.057c-12.453,0-22.549,10.071-22.557,22.581l-0.163,289.792
-			c0,12.445,10.079,22.606,22.557,22.606l47.129,0.024c12.485,0,22.597-10.112,22.597-22.549l0.154-289.816
-			C206.889,40.566,196.768,30.445,184.291,30.445z M179.788,331.951l-38.261,0.041c-4.357,0-7.925-3.56-7.925-7.917
-			c0.008-4.357,3.552-7.925,7.933-7.925l38.269,0.049c4.349,0,7.909,3.56,7.909,7.909
-			C187.713,328.472,184.169,331.951,179.788,331.951z M179.829,105.139l-38.261-0.024c-4.357,0-7.925-3.56-7.925-7.925
-			s3.568-7.917,7.925-7.917l38.261-0.041c4.357,0,7.909,3.633,7.909,7.99C187.721,101.57,184.185,105.139,179.829,105.139z" />
-                                        <path style="fill:#010002;" d="M69.849,30.437L22.744,30.38c-12.477,0-22.597,10.071-22.622,22.581L0,342.77
-			c-0.033,12.445,10.071,22.606,22.524,22.606l47.113,0.024c12.494,0,22.622-10.112,22.638-22.549l0.122-289.816
-			C92.43,40.557,82.334,30.437,69.849,30.437z M65.394,331.951l-38.277,0.041c-4.341,0-7.917-3.56-7.917-7.917
-			c0.024-4.357,3.56-7.925,7.925-7.925l38.269,0.049c4.357,0,7.893,3.56,7.893,7.909C73.295,328.472,69.743,331.951,65.394,331.951z
-			 M65.394,105.139l-38.245-0.024c-4.349,0-7.901-3.56-7.901-7.925s3.552-7.917,7.901-7.917l38.245-0.041
-			c4.365,0,7.901,3.633,7.901,7.99C73.295,101.57,69.743,105.139,65.394,105.139z" />
-                                        <path style="fill:#010002;" d="M248.417,62.228c-1.561-7.186-8.649-11.746-15.843-10.169c-7.186,1.561-11.738,8.657-10.177,15.843
-			l61.988,284.208c1.561,7.186,8.657,11.738,15.843,10.185c7.186-1.569,11.746-8.665,10.177-15.851L248.417,62.228z" />
-                                        <path style="fill:#010002;" d="M395.471,327.886L333.483,43.671c-1.561-7.186-8.657-11.738-15.843-10.169
-			c-7.186,1.569-11.746,8.657-10.177,15.843l61.989,284.216c1.561,7.186,8.657,11.73,15.843,10.169
-			C392.472,342.16,397.04,335.072,395.471,327.886z" />
-                                        <path style="fill:#010002;" d="M270.909,49.987c-0.723-3.316-3.991-5.422-7.308-4.698s-5.422,3.999-4.698,7.316l65.037,298.221
-			c0.732,3.316,3.999,5.414,7.308,4.698c3.325-0.732,5.422-4.007,4.698-7.316L270.909,49.987z" />
-                                        <path style="fill:#010002;" d="M292.247,45.329c-0.723-3.316-3.991-5.422-7.308-4.698c-3.308,0.723-5.414,3.999-4.698,7.308
-			l65.045,298.229c0.723,3.308,3.991,5.414,7.308,4.682c3.316-0.723,5.422-3.991,4.69-7.308L292.247,45.329z" />
-                                    </g>
-                                </g>
+                            <svg width="24px" height="24px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.5 9.32001H7.5C6.37366 9.25709 5.2682 9.64244 4.42505 10.3919C3.5819 11.1414 3.06958 12.1941 3 13.32V18.32C3.06958 19.446 3.5819 20.4986 4.42505 21.2481C5.2682 21.9976 6.37366 22.3829 7.5 22.32H16.5C17.6263 22.3829 18.7318 21.9976 19.575 21.2481C20.4181 20.4986 20.9304 19.446 21 18.32V13.32C20.9304 12.1941 20.4181 11.1414 19.575 10.3919C18.7318 9.64244 17.6263 9.25709 16.5 9.32001Z" stroke="green" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M17 9.32001V7.32001C17 5.99392 16.4732 4.72217 15.5355 3.78448C14.5978 2.8468 13.3261 2.32001 12 2.32001" stroke="green" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </a>
+                        @elseif ($user->etudiant->stage->validation_prof)
+                        <a href="{{ route('student.recomandation', $user->id) }}">
+                            <svg width="24px" height="24px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.5 9.32001H7.5C6.37366 9.25709 5.26818 9.64244 4.42503 10.3919C3.58188 11.1414 3.06958 12.1941 3 13.32V18.32C3.06958 19.446 3.58188 20.4986 4.42503 21.2481C5.26818 21.9976 6.37366 22.3829 7.5 22.32H16.5C17.6263 22.3829 18.7318 21.9976 19.575 21.2481C20.4181 20.4986 20.9304 19.446 21 18.32V13.32C20.9304 12.1941 20.4181 11.1414 19.575 10.3919C18.7318 9.64244 17.6263 9.25709 16.5 9.32001Z" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M17 9.32001V7.32001C17 5.99392 16.4732 4.72217 15.5355 3.78448C14.5979 2.8468 13.3261 2.32001 12 2.32001C10.6739 2.32001 9.40214 2.8468 8.46446 3.78448C7.52678 4.72217 7 5.99392 7 7.32001V9.32001" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                        @else
+                        <svg width="24px" height="24px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.5 9.32001H7.5C6.37366 9.25709 5.26818 9.64244 4.42503 10.3919C3.58188 11.1414 3.06958 12.1941 3 13.32V18.32C3.06958 19.446 3.58188 20.4986 4.42503 21.2481C5.26818 21.9976 6.37366 22.3829 7.5 22.32H16.5C17.6263 22.3829 18.7318 21.9976 19.575 21.2481C20.4181 20.4986 20.9304 19.446 21 18.32V13.32C20.9304 12.1941 20.4181 11.1414 19.575 10.3919C18.7318 9.64244 17.6263 9.25709 16.5 9.32001Z" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17 9.32001V7.32001C17 5.99392 16.4732 4.72217 15.5355 3.78448C14.5979 2.8468 13.3261 2.32001 12 2.32001C10.6739 2.32001 9.40214 2.8468 8.46446 3.78448C7.52678 4.72217 7 5.99392 7 7.32001V9.32001" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                         @endif
                     </td>
                 </tr>
                 @endforeach
-         
+
             </tbody>
         </table>
 
@@ -133,11 +116,11 @@
             @csrf
             <div class="disapprove-popup" id="disapprovePopup">
                 <div class="popup-content">
-                    <label for="disapproveNote" style="font-weight: bold;">Disapproval Note:</label>
+                    <label for="disapproveNote" style="font-weight: bold;">Notes de l'encadrant:</label>
                     <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
                     <div class="popup-buttons">
-                        <button type="button" onclick="hideDisapprovePopup()">Cancel</button>
-                        <button type="button" style="background-color: red; color: #fff;" onclick="submitForm()">Send updates</button>
+                        <button type="button" class="button-cancel"onclick="hideDisapprovePopup()">Annuler</button>
+                        <button type="button" class="button-send" onclick="submitForm()">Envoyer les mises à jours</button>
                     </div>
                 </div>
             </div>
@@ -411,7 +394,7 @@
         text-decoration: underline;
     }
 
-    .disapprove-popup {
+   .disapprove-popup {
         display: none;
         position: fixed;
         top: 0;
@@ -438,7 +421,7 @@
         margin-bottom: 10px;
         padding: 8px;
         box-sizing: border-box;
-    }
+    } 
 
     .popup-buttons {
         display: flex;
@@ -455,7 +438,26 @@
         cursor: pointer;
         margin-top: 20px;
     }
+    .button-send{
 
+       background-color: red; 
+       color: #fff;
+       border-radius: 10px;
+       padding: 9px;
+       border-width: 1px;
+      
+    }
+    .button-cancel{
+        background-color: #aaa; 
+       color: #fff;
+       border-radius: 10px;
+       padding: 9px;
+       border-width: 1px;
+    }
+
+
+
+    
 
 
 

@@ -25,6 +25,6 @@ class Stage extends Model
         'observation_prof',
         'validation_admin',
         'observation_admin',
-        'is_recommended',
+        'is_recommanded',
     ];
 }

@@ -25,7 +25,7 @@ use App\Http\Controllers\DocumentController;
 //Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
 
@@ -41,9 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function () {
-        return view('gridetudiant');
-    })->name('gridetudiant');
+    Route::get('/gridetudiant', function () { return view('gridetudiant');})->name('gridetudiant');
 
     Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
 
@@ -57,28 +55,22 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
-    Route::get('/gestionstage', function () {
-        return view('gestionstage');
-    })->name('gestionstage');
+    Route::get('/gestionstage', function () { return view('gestionstage');})->name('gestionstage');
 
     Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
 
-
-
-
-
-
     Route::get('/library', [App\Http\Controllers\libraryController::class, 'fetchlibrary'])->name('fetch.library');
 
-
-
-
-
     Route::get('/managedocuments', [App\Http\Controllers\DocumentController::class, 'managedocuments'])->name('DC');
+
     Route::post('/managedocuments', [DocumentController::class, 'store'])->name('document.post');
 
-
     Route::get('/documents', [DocumentController::class, 'showDocuments'])->name('documents');
+
+    Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
+    
+    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
+
 });
 
 
@@ -88,3 +80,6 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
+
+
+

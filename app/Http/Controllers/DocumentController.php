@@ -40,7 +40,7 @@ class DocumentController extends Controller
     {
         $request->validate([
             'fileType' => 'required',
-            'stageFile' => 'required|file|max:30720',
+            'stageFile' => 'required|file|mimes:pdf|max:30720',
             'textInput' => 'required|string|max:100',
         ]);
 

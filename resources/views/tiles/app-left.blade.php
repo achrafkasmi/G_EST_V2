@@ -84,9 +84,10 @@
       </a>
     </li>
     <li class="nav-list-item "  >
-      <a class="nav-list-link" href="http://127.0.0.1:8000/addnotice">
+      <a class="pop-cont nav-list-link" href="#">
         <img src="notice.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
         Add Notice.
+        <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addedoc') active @endif"  >

@@ -22,7 +22,7 @@ class CreateTDossierStageTable extends Migration
             $table->longText('rapport')->nullable();
             $table->string('validation_prof', 10)->nullable();
             $table->text('observation_prof')->nullable();
-            $table->string('validation_admin', 10)->nullable();
+            $table->boolean('validation_admin')->default(false)->nullable();
             $table->text('observation_admin')->nullable();
             $table->boolean('is_recommanded')->default(false)->nullable();
             $table->text('titre_rapport')->nullable();

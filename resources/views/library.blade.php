@@ -90,6 +90,27 @@
         .search-sort-container {
             display: flex;
         }
+        #searchInput,
+        #sorting{
+            --in-out-duration: 0.5s;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            background-color: #fff;
+            transition: transform var(--in-out-duration);
+            width: 100%;
+        }
+        #itemsPerPage {
+            --in-out-duration: 0.5s;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            background-color: #fff;
+            transition: transform var(--in-out-duration);
+            width: 90%;
+        }
     }
 
     /* .search-container, .sorting-container, .items-per-page-container styles */
@@ -107,16 +128,26 @@
 
     /* #searchInput, #sorting, #itemsPerPage styles */
     #searchInput,
-    #sorting,
-    #itemsPerPage {
-        --in-out-duration: 0.5s;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        outline: none;
-        background-color: #fff;
-        transition: transform var(--in-out-duration);
-    }
+        #sorting{
+            --in-out-duration: 0.5s;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            background-color: #fff;
+            transition: transform var(--in-out-duration);
+            width: 100%;
+        }
+        #itemsPerPage {
+            --in-out-duration: 0.5s;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            background-color: #fff;
+            transition: transform var(--in-out-duration);
+            width: 60%;
+        }
 
     /* .search-container:hover #searchInput, .sorting-container:hover #sorting, .items-per-page-container:hover #itemsPerPage styles */
     .search-container:hover #searchInput,
