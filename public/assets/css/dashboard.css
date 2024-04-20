@@ -670,12 +670,17 @@ button {
   color: var(--secondary-color);
   width: 100%;
   margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  word-wrap: break-word;
+}
 
-  strong {
-    color: #fff;
-    opacity: 0.4;
-    font-weight: 500;
-  }
+.activity-text strong {
+  color: #fff;
+  opacity: 0.4;
+  font-weight: 500;
 }
 
 .activity-icon {

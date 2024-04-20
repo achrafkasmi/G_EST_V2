@@ -17,7 +17,7 @@ class ExcelImport implements ToCollection
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 360);
 
-        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin','id_dip','sexe','pays_naissance'];
+        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin', 'id_dip', 'sexe', 'pays_naissance'];//id_dip haydo o dir f blasto id li jay men t_etape_diplome
 
         $firstRow = null;
 
@@ -54,15 +54,13 @@ class ExcelImport implements ToCollection
             $user->save();
 
             $student->user_id = $user->id;
-            
+
             $student->save();
 
             $user->assignRole('student');
         }
     }
 }
-
-
 
 
 

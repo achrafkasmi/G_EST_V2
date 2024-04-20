@@ -17,11 +17,11 @@ class CreateTProfElementTable extends Migration
             $table->id();  // Primary key
             $table->string('annee_universitaire', 9)->nullable();
             $table->unsignedBigInteger('id_personnel');
-            $table->unsignedBigInteger('id_element_etape');
+            $table->unsignedBigInteger('id_modules_etape');
 
             // Foreign key constraints
             $table->foreign('id_personnel')->references('id')->on('t_personnel')->onDelete('cascade');
-            $table->foreign('id_element_etape')->references('id')->on('t_element_etape')->onDelete('cascade');
+            $table->foreign('id_modules_etape')->references('id')->on('t_modules_etape')->onDelete('cascade');
 
             $table->timestamps();  // Created at and Updated at timestamps
         });

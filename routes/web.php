@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadManager;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AvisController;
+use App\Http\Controllers\Diplome;
 use App\Models\Avis;
 use App\Http\Controllers\libraryController;
 use App\Models\Library;
@@ -25,7 +26,7 @@ use App\Http\Controllers\DocumentController;
 //Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
-    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
 
@@ -35,13 +36,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/messtages', [App\Http\Controllers\DashboardController::class, 'myIntern'])->name('messtages');
 
-    //Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
+    Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
 
     Route::get('/addUser', [App\Http\Controllers\AuthenticationController::class, 'addUserForm'])->name('ADD-USER-FORM');
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function () { return view('gridetudiant');})->name('gridetudiant');
+    Route::get('/gridetudiant', function () {return view('gridetudiant');})->name('gridetudiant');
 
     Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
 
@@ -55,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
-    Route::get('/gestionstage', function () { return view('gestionstage');})->name('gestionstage');
+    Route::get('/gestionstage', function () {return view('gestionstage');})->name('gestionstage');
 
     Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
 
@@ -68,11 +69,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/documents', [DocumentController::class, 'showDocuments'])->name('documents');
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
-    
+
     Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
-
 });
-
 
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -83,3 +82,11 @@ Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 
 
 
 
+
+
+Route::get('/modules', function () {
+    $active_tab = 'modules'; // Define the variable here
+    return view('modules', compact('active_tab'));
+})->name('modules');
+
+Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');

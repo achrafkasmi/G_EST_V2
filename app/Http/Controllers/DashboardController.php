@@ -16,12 +16,12 @@ class DashboardController extends Controller
 
             
             $diplomes = auth()->user()->personnel->diplomes;
-
+            
             $etudiants = [];
             $users = [];
 
             foreach ($diplomes as $diplome) {
-
+                
                 foreach ($diplome->etudiants as $etudiant) {
 
                     if($etudiant->user->is_uploaded){
@@ -37,7 +37,7 @@ class DashboardController extends Controller
         return  view('Dashboards.dashboard')->with(['active_tab' => 'dash']);
     }
 
-   public function dashteacher()
+    public function dashteacher()
     {
         $users = User::where('is_uploaded', true)->get();
         return view('Dashboards.dashteacher')->with(['users' => $users]);          
@@ -55,3 +55,7 @@ class DashboardController extends Controller
     }
     
 }
+
+
+    
+    

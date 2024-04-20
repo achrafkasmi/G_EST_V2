@@ -104,7 +104,7 @@ ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l biblio
 
 khass tkon validation reversible ✅ normally no 
 
-khass tkon recommendation disabled if validation not yet 1
+khass tkon recommendation disabled if validation not yet 1✅
 
 Save approvals : mn mora maki validi teacher l les etudiant o ki  
 clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 😁 en cours✅
@@ -114,9 +114,15 @@ etudiant obligé ikteb sujet d rapport✅
 
 type rapport khasso ikon obligatory ✅
 
-etudiant ila kan 2eme année khass itle3lo l form dyal upload 2 merrat loogic : 
+etudiant ila kan 2eme année khass itle3lo l form dyal upload 2 merrat ❌
 
 ila lprof hayed l validation katb9a recommandation 1 f mysql.✅
 
-ila admin valida chi dossier stage khass l prof mayb9ach 9aaad idir ta ACTION ❌
+ila admin valida chi dossier stage khass l prof mayb9ach 9aaad idir ta ACTION ✅
+
+popup sending notif to student should handle emptiness.
+
+add matricule for teacher 
+
+parametrage and l admin bach ikhtar l kolla annee nbr des stages 
 

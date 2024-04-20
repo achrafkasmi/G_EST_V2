@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Document;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
@@ -50,6 +52,7 @@ class DocumentController extends Controller
         $document->intitule_document = $request->input('textInput');
         $document->type_document = $request->input('fileType');
         $document->document = $filePath;
+
 
         $document->save();
 

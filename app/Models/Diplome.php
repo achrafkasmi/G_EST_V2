@@ -17,5 +17,11 @@ class Diplome extends Model
 
         return $this->hasMany(Etudiant::class,'id_dip');
     }
+    
+    public function personnels()
+    {
+        return $this->belongsToMany(Personnel::class, 't_personnel_for_diplome', 't_diplome_id', 't_personnel_id');
+    }
 
+    
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_role')->nullable(false);
+            $table->unsignedBigInteger('user_role')->nullable();
             $table->string('intitule_document', 100)->nullable();
             $table->string('type_document')->nullable();
             $table->longText('document')->nullable();
