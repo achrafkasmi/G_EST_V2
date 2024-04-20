@@ -126,3 +126,5 @@ add matricule for teacher
 
 parametrage and l admin bach ikhtar l kolla annee nbr des stages 
 
+notes historique mayb99ach i t écrasa.
+

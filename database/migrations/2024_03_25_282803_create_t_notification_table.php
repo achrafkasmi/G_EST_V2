@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('t_notification', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_etu')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();   // Foreign key
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->longText('text_message')->nullable();
+            $table->string('voice_message_url')->nullable(); //voice message
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);

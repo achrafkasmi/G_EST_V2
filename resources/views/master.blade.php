@@ -1,4 +1,4 @@
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
 
 
 
-  <meta name="apple-mobile-web-app-title" content="CodePen">
+  <!--<meta name="apple-mobile-web-app-title" content="CodePen">
 
   <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
 
@@ -18,7 +18,7 @@
 
   <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
 
-  <link rel="canonical" href="https://codepen.io/Dark-Blood/pen/KKEjXoz">
+  <link rel="canonical" href="https://codepen.io/Dark-Blood/pen/KKEjXoz">-->
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
@@ -27,10 +27,10 @@
   <link rel="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
 
-  <!-- Include SweetAlert JavaScript -->
+ 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
-  <!-- Include SweetAlert CSS -->
+
 
 
 

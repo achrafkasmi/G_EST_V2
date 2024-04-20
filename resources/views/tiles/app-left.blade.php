@@ -94,8 +94,8 @@
         E-documents
       </a>
     </li>
-    <li class="nav-list-item @if($active_tab == 'modules') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/modules">
+    <li class="nav-list-item @if($active_tab == 'diplomes') active @endif">
+      <a class="nav-list-link" href="http://127.0.0.1:8000/diplomes">
         <img src="Mmanagement.PNG" alt="historisation" width="25" height="25" style="margin-right: 10px;" />
         Modules management
       </a>

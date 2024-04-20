@@ -90,3 +90,5 @@ Route::get('/modules', function () {
 })->name('modules');
 
 Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
+Route::get('/diplomes', [App\Http\Controllers\Diplome::class, 'index'])->name('diplomes.index');
+

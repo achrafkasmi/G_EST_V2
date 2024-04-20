@@ -112,7 +112,7 @@
             </tbody>
         </table>
 
-        <form id="commentForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
+        <!--<form id="commentForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
             @csrf
             <div class="disapprove-popup" id="disapprovePopup">
                 <div class="popup-content">
@@ -120,6 +120,22 @@
                     <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
                     <div class="popup-buttons">
                         <button type="button" class="button-cancel"onclick="hideDisapprovePopup()">Annuler</button>
+                        <button type="button" class="button-send" onclick="submitForm()">Envoyer les mises à jours</button>
+                    </div>
+                </div>
+            </div>
+        </form>-->
+        <form id="commentForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
+            @csrf
+            <div class="disapprove-popup" id="disapprovePopup">
+                <div class="popup-content">
+                    <label for="disapproveNote" style="font-weight: bold;">Notes de l'encadrant:</label>
+                    <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
+                    <button type="button" id="startRecordBtn" onclick="startRecording()">Record Voice Message</button>
+                    <button type="button" id="stopRecordBtn" style="display: none;" onclick="stopRecording()">Stop Recording</button>
+                    <audio id="audioPlayer" controls style="display: none;"></audio>
+                    <div class="popup-buttons">
+                        <button type="button" class="button-cancel" onclick="hideDisapprovePopup()">Annuler</button>
                         <button type="button" class="button-send" onclick="submitForm()">Envoyer les mises à jours</button>
                     </div>
                 </div>
@@ -136,6 +152,99 @@
     let table = new DataTable('#myTable');
 </script>
 <script>
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    const startRecordBtn = document.getElementById('startRecordBtn');
+    const stopRecordBtn = document.getElementById('stopRecordBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    function startRecording() {
+        navigator.mediaDevices.getUserMedia({
+                audio: true
+            })
+            .then(function(stream) {
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = function(event) {
+                    recordedChunks.push(event.data);
+                };
+                mediaRecorder.onstop = function() {
+                    const blob = new Blob(recordedChunks, {
+                        type: 'audio/wav'
+                    });
+                    const audioUrl = URL.createObjectURL(blob);
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.style.display = 'block';
+                    stopRecordBtn.style.display = 'none';
+                    startRecordBtn.style.display = 'inline-block';
+
+                    // Add voice message data to form
+                    const formData = new FormData(document.getElementById('commentForm'));
+                    formData.append('voice_message', blob); // Append voice recording data
+                    formData.append('notification', document.getElementById('disapproveNote').value); // Append text message
+
+                    // Send form data via AJAX
+                    submitForm(formData);
+                };
+                recordedChunks = [];
+                mediaRecorder.start();
+                startRecordBtn.style.display = 'none';
+                stopRecordBtn.style.display = 'inline-block';
+            })
+            .catch(function(err) {
+                console.error('Error accessing microphone:', err);
+            });
+    }
+
+    function stopRecording() {
+        mediaRecorder.stop();
+    }
+
+    function submitForm(formData) {
+        // Send AJAX request
+        $.ajax({
+            url: $('#commentForm').attr('action'),
+            type: 'POST',
+            data: formData, // Use FormData object here
+            processData: false, // Prevent jQuery from processing the form data
+            contentType: false, // Prevent jQuery from setting contentType
+            success: function(response) {
+                // Show success message using SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Comment added successfully!',
+                    willClose: () => {
+                        // Clear textarea
+                        $('#disapproveNote').val('');
+
+                        // Hide popup
+                        hideDisapprovePopup();
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                // Show error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Error occurred while adding comment. Please try again.'
+                });
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function hideDisapprovePopup() {
+        var popup = document.getElementById("disapprovePopup");
+        popup.style.display = "none";
+    }
+
+
+
+
+
+
     // Function to toggle the visibility of the .crud-container
     function toggleCrudContainer() {
         var datatabcontainer = document.querySelector('.datatabcontainer');
@@ -229,8 +338,7 @@
 
 
 
-
-    function submitForm() {
+    /*function submitForm() {
         // Send AJAX request
         $.ajax({
             url: $('#commentForm').attr('action'),
@@ -261,12 +369,9 @@
                 console.error(xhr.responseText);
             }
         });
-    }
+    }*/
 
-    function hideDisapprovePopup() {
-        var popup = document.getElementById("disapprovePopup");
-        popup.style.display = "none";
-    }
+   
 </script>
 
 
@@ -394,7 +499,7 @@
         text-decoration: underline;
     }
 
-   .disapprove-popup {
+    .disapprove-popup {
         display: none;
         position: fixed;
         top: 0;
@@ -421,7 +526,7 @@
         margin-bottom: 10px;
         padding: 8px;
         box-sizing: border-box;
-    } 
+    }
 
     .popup-buttons {
         display: flex;
@@ -438,26 +543,28 @@
         cursor: pointer;
         margin-top: 20px;
     }
-    .button-send{
 
-       background-color: red; 
-       color: #fff;
-       border-radius: 10px;
-       padding: 9px;
-       border-width: 1px;
-      
-    }
-    .button-cancel{
-        background-color: #aaa; 
-       color: #fff;
-       border-radius: 10px;
-       padding: 9px;
-       border-width: 1px;
+    .button-send {
+
+        background-color: red;
+        color: #fff;
+        border-radius: 10px;
+        padding: 9px;
+        border-width: 1px;
+
     }
 
+    .button-cancel {
+        background-color: #aaa;
+        color: #fff;
+        border-radius: 10px;
+        padding: 9px;
+        border-width: 1px;
+    }
 
 
-    
+
+
 
 
 

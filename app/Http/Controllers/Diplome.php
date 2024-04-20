@@ -40,4 +40,10 @@ class Diplome extends Controller
         // Redirect back with success message
         return redirect()->back()->with('success', 'Diplome ajouté avec succès.');
     }
+    public function index()
+    {
+        $diplomes = ModelsDiplome::all();
+        $active_tab = 'diplomes'; // Define the value of the active_tab variable
+    return view('modules', compact('diplomes', 'active_tab'));
+    }
 }

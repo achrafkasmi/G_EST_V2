@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <div class="app-main">
-    <div class="containerf form-container bg-light-gray">
+    <!--<div class="containerf form-container bg-light-gray">
         <form action="{{ route('diplomes.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="container2">
@@ -47,6 +47,33 @@
 
             </div>
         </form>
+    </div>-->
+
+
+    <div class="datatabcontainer mt-4">
+        <table class="tab" id="myTable">
+
+            <thead>
+                <tr>
+                    <th>Intitulé du Diplome</th>
+                    <th>Date accreditation</th>
+                    <th>Code diplome</th>
+                    <!--<th>Chef Filière</th>-->
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach($diplomes as $diplome)
+            <tr>
+                <td>{{ $diplome->intitule_diplome_fr }}</td>
+                <td>{{ $diplome->date_accreditation }}</td>
+                <td>{{ $diplome->code_diplome }}</td>
+                <!--<td>{{ $diplome->chef_filiere }}</td> --><!-- Assuming you have a chef_filiere column in your Diplome model -->
+            </tr>
+            @endforeach
+            </tbody>
+        </table>
+
     </div>
 </div>
 @if(session('success'))
@@ -59,6 +86,18 @@
     });
 </script>
 @endif
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
+<script>
+    let table = new DataTable('#myTable');
+</script>
+
+
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script>
@@ -153,5 +192,5 @@
 
 
 @endsection
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
