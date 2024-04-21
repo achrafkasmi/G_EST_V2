@@ -143,20 +143,20 @@ class NotificatioController extends Controller
                 $notification->text_message = $textMessage;
             }
 
-            // Handle voice message upload
+            //  voice message upload
             if ($request->hasFile('voice_message')) {
                 $file = $request->file('voice_message');
 
                 // Generate a unique filename
-                $fileName = 'audio_' . time() . '.wav'; // You can use any naming convention here
+                $fileName = 'audio_' . time() . '.wav';
 
-                // Store the file in the storage directory with the '.wav' extension
-                $path = $file->storeAs('public/audios', $fileName); // Note: 'public/' prefix is required for Laravel 5.4+
+                
+                $path = $file->storeAs('public/audios', $fileName);
 
-                // Construct the full URL of the audio file
+                // full URL of the audio file
                 $audioUrl = env('APP_URL') . Storage::url($path);
 
-                // Save the URL reference in the database
+                // URL reference in the database
                 $notification->voice_message_url = $audioUrl;
             }
 
