@@ -122,10 +122,10 @@
                 <!-- Text Input -->
                 <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
             </div>
-            <div id="voiceContainer" style="display: none;">
+            <div id="voiceContainer">
                 <div class="voice-controls-container">
                     <button type="button" id="startRecordBtn" onclick="startRecording()" class="record-button">
-                        <svg width="50px" height="50px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
+                        <svg width="30px" height="30px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
                             <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
                             <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
                             <line x1="31.73" y1="57.34" x2="31.73" y2="47.71" stroke-linecap="round" />
@@ -133,21 +133,14 @@
                         </svg>
                     </button>
                     <button type="button" id="stopRecordBtn" style="display: none;" onclick="stopRecording()" class="stop-record-button">
-                        <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00bd6b">
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00bd6b">
                             <path d="M3 10L3 14M7.5 11V13M12 6V18M16.5 3V21M21 10V14" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
                 </div>
-                <audio id="audioPlayer" controls style="display: none;"></audio>
             </div>
+            <audio id="audioPlayer" controls style="display: none;"></audio>
 
-            <!-- Toggle Button -->
-            <div>
-                <label>Choose input method:</label>
-                <label><input type="radio" name="inputMethod" value="text" checked> Text</label>
-                <label><input type="radio" name="inputMethod" value="voice"> Voice</label>
-                <label><input type="radio" name="inputMethod" value="both"> Both</label>
-            </div>
             <div class="popup-buttons">
                 <button type="button" class="button-cancel" onclick="hideDisapprovePopup()">Annuler</button>
                 <button type="button" class="button-send" onclick="submitForm()">Envoyer les mises à jours</button>
@@ -155,23 +148,7 @@
         </div>
     </div>
 </form>
-<script>
-    // Function to handle toggle between text and voice input
-    document.querySelectorAll('input[name="inputMethod"]').forEach(function(elem) {
-        elem.addEventListener('change', function() {
-            if (this.value === 'text') {
-                document.getElementById('inputContainer').style.display = 'block';
-                document.getElementById('voiceContainer').style.display = 'none';
-            } else if (this.value === 'voice') {
-                document.getElementById('inputContainer').style.display = 'none';
-                document.getElementById('voiceContainer').style.display = 'block';
-            } else {
-                document.getElementById('inputContainer').style.display = 'block';
-                document.getElementById('voiceContainer').style.display = 'block';
-            }
-        });
-    });
-</script>
+
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
@@ -383,97 +360,134 @@
 @endsection
 
 <style>
-.voice-controls-container {
-    display: flex;
-    align-items: center;
-}
+    .input-container {
+        display: flex;
+        flex-direction: row-reverse;
+        /* Reverse the direction to align from right */
+        align-items: center;
+        margin-top: 10px;
+        /* Add margin if needed */
+    }
 
-.record-button, .stop-record-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 10px; /* Add some space between buttons */
-}
+    .popup-input {
+        flex: 1;
+        /* Expand to fill available space */
+        margin-right: 10px;
+        /* Add some space between input and voice controls */
+    }
 
-.record-button:hover, .stop-record-button:hover {
-    background-color: #0056b3;
-}
+    .voice-controls-container {
+        display: flex;
+        align-items: center;
+    }
 
-.button-cancel {
-    position: absolute;
-    bottom: 10px; /* Adjust this value to set the distance from the bottom */
-    left: 10px; /* Adjust this value to set the distance from the left */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #ccc; /* Background color */
-    color: #000; /* Text color */
-    transition: background-color 0.3s ease; /* Transition effect */
-}
+    .record-button,
+    .stop-record-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+        /* Add some space between buttons */
+    }
 
-/* Hover effect for cancel button */
-.button-cancel:hover {
-    background-color: #bbb; /* Darken the background color on hover */
-}
-/* Send button */
-.button-send {
-    position: absolute;
-    bottom: 10px; /* Adjust this value to set the distance from the bottom */
-    right: 10px; /* Adjust this value to set the distance from the left */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #ff0000; /* Red background color */
-    color: #fff; /* Text color */
-    transition: background-color 0.3s ease; /* Transition effect */
-}
+    .record-button:hover,
+    .stop-record-button:hover {
+        background-color: #0056b3;
+    }
 
-/* Hover effect for send button */
-.button-send:hover {
-    background-color: #cc0000; /* Darker red on hover */
-}
+    .button-cancel {
+        position: absolute;
+        bottom: 10px;
+        /* Adjust this value to set the distance from the bottom */
+        left: 10px;
+        /* Adjust this value to set the distance from the left */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #ccc;
+        /* Background color */
+        color: #000;
+        /* Text color */
+        transition: background-color 0.3s ease;
+        /* Transition effect */
+    }
 
-.popup-content {
-    position: relative; /* Add relative positioning */
-    background-color: rgba(211, 211, 211, 0.8);
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    padding: 30px;
-    min-width: 600px;
-    min-height: 400px;
-    margin: 0 auto;
-}
-.popup-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px; /* Border radius */
-    resize: none;
-    background-color: #f2f2f2; /* Light grey background color */
-    transition: border-color 0.3s ease; /* Transition effect for border color */
-}
+    /* Hover effect for cancel button */
+    .button-cancel:hover {
+        background-color: #bbb;
+        /* Darken the background color on hover */
+    }
 
-/* Hover effect for text input area */
-.popup-input:hover {
-    border-color: #007bff; /* Change border color on hover */
-}
+    /* Send button */
+    .button-send {
+        position: absolute;
+        bottom: 10px;
+        /* Adjust this value to set the distance from the bottom */
+        right: 10px;
+        /* Adjust this value to set the distance from the left */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #ff0000;
+        /* Red background color */
+        color: #fff;
+        /* Text color */
+        transition: background-color 0.3s ease;
+        /* Transition effect */
+    }
 
-/* Focus effect for text input area */
-.popup-input:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: #007bff; /* Change border color on focus */
-}
+    /* Hover effect for send button */
+    .button-send:hover {
+        background-color: #cc0000;
+        /* Darker red on hover */
+    }
 
+    .popup-content {
+        position: relative;
+        /* Add relative positioning */
+        background-color: rgba(211, 211, 211, 0.8);
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 30px;
+        min-width: 600px;
+        min-height: 400px;
+        margin: 0 auto;
+    }
 
-   
+    .popup-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        /* Border radius */
+        resize: none;
+        background-color: #f2f2f2;
+        /* Light grey background color */
+        transition: border-color 0.3s ease;
+        /* Transition effect for border color */
+    }
+
+    /* Hover effect for text input area */
+    .popup-input:hover {
+        border-color: #007bff;
+        /* Change border color on hover */
+    }
+
+    /* Focus effect for text input area */
+    .popup-input:focus {
+        outline: none;
+        /* Remove default focus outline */
+        border-color: #007bff;
+        /* Change border color on focus */
+    }
 </style>
 
 
 
-<script src="{{ asset('assets/js/dashboard.js') }}"></script>
+<script src="{{ asset('assets/js/dashboard.js') }}"></script><div class=""></div>
