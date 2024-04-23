@@ -78,7 +78,7 @@
                         </a>
 
                         <a title="Disapprove" onclick="showVoiceForm({{ $user->etudiant->id }})" style="margin-left:5px;">
-                            <svg width="30px" height="30px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
+                            <svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
                                 <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
                                 <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
                                 <line x1="31.73" y1="57.34" x2="31.73" y2="47.71" stroke-linecap="round" />
@@ -87,7 +87,7 @@
                         </a>
 
                         <a title="Disapprove" onclick="showTextForm({{ $user->etudiant->id }})" style="margin-left:5px;">
-                            <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4.99951 16.55V19.9C4.99922 20.3102 5.11905 20.7114 5.34418 21.0542C5.56931 21.397 5.88994 21.6665 6.26642 21.8292C6.6429 21.9919 7.05875 22.0408 7.46271 21.9698C7.86666 21.8989 8.24103 21.7113 8.53955 21.4301L11.1495 18.9701H12.0195C17.5395 18.9701 22.0195 15.1701 22.0195 10.4701C22.0195 5.77009 17.5395 1.97009 12.0195 1.97009C6.49953 1.97009 2.01953 5.78009 2.01953 10.4701C2.042 11.6389 2.32261 12.7882 2.84125 13.8358C3.35989 14.8835 4.10373 15.8035 5.01953 16.53L4.99951 16.55Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M17 9.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M13 12.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -127,6 +127,8 @@
 <!-- Voice Form -->
 <form id="voiceForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
     @csrf
+    <input type="hidden" name="id_etu" id="id_etu_voice"> <!-- Add this hidden input field -->
+
     <div class="disapprove-popup" id="voicePopup" style="display: none;">
         <div class="popup-content">
             <div id="voiceContainer">
@@ -164,7 +166,7 @@
 
             <div class="popup-buttons">
                 <button type="button" class="button-cancel" onclick="hideVoicePopup()">Annuler</button>
-                <button type="button" class="button-send" onclick="submitVoiceForm()">Envoyer les mises à jours</button>
+                <button type="button" class="button-send" onclick="submitVoiceForm({{ $user->etudiant->id }})">Envoyer les mises à jours</button>
             </div>
         </div>
     </div>
@@ -173,6 +175,8 @@
 <!-- Text Form -->
 <form id="textForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
     @csrf
+    <input type="hidden" name="id_etu" id="id_etu_text"> <!-- Add this hidden input field -->
+
     <div class="disapprove-popup" id="textPopup" style="display: none;">
         <div class="popup-content">
             <label for="disapproveNote" style="font-weight: bold; color:#000">Notes de l'encadrant:</label>
@@ -182,7 +186,7 @@
             </div>
             <div class="popup-buttons">
                 <button type="button" class="button-cancel" onclick="hideTextPopup()">Annuler</button>
-                <button type="button" class="button-send" onclick="submitTextForm()">
+                <button type="button" class="button-send" onclick="submitTextForm({{ $user->etudiant->id }})">
                     <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
@@ -396,17 +400,25 @@
         // Implement your approve logic here
         alert("Stage approved for row " + rowId);
     }
+
     // Function to show the voice recording form
     function showVoiceForm(idEtu) {
         var voicePopup = document.getElementById("voicePopup");
         voicePopup.style.display = "block";
+
+        // Set the value of the hidden input field
+        document.getElementById("id_etu_voice").value = idEtu;
     }
 
     // Function to show the text sending form
     function showTextForm(idEtu) {
         var textPopup = document.getElementById("textPopup");
         textPopup.style.display = "block";
+
+        // Set the value of the hidden input field
+        document.getElementById("id_etu_text").value = idEtu;
     }
+
     // Function to hide the voice popup
     function hideVoicePopup() {
         var voicePopup = document.getElementById("voicePopup");
@@ -414,7 +426,7 @@
     }
 
     // Function to submit the text form
-    function submitTextForm() {
+    function submitTextForm(idEtu) {
         const textMessage = document.getElementById('disapproveNote').value.trim();
 
         // Create FormData object
@@ -424,6 +436,9 @@
         if (textMessage !== '') {
             formData.append('notification', textMessage);
         }
+
+        // Append id_etu
+        formData.append('id_etu', idEtu);
 
         // Send AJAX request
         $.ajax({
@@ -460,7 +475,7 @@
     }
 
     // Function to submit the voice form
-    function submitVoiceForm() {
+    function submitVoiceForm(idEtu) {
         const voiceBlob = recordedChunks.length > 0 ? new Blob(recordedChunks, {
             type: 'audio/wav'
         }) : null;
@@ -472,6 +487,9 @@
         if (voiceBlob !== null) {
             formData.append('voice_message', voiceBlob);
         }
+
+        // Append id_etu
+        formData.append('id_etu', idEtu);
 
         // Send AJAX request
         $.ajax({

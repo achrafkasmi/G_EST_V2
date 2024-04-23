@@ -119,52 +119,40 @@ class NotificatioController extends Controller
     {
         // Retrieve the authenticated user's ID
         $userId = auth()->user()->id;
-
+    
         // Retrieve the id_etu from the request
         $idEtu = $request->get('id_etu');
-
+    
         // Retrieve the notification text from the request
         $textMessage = $request->get('notification');
-
-        // Check if a notification already exists for the given user and id_etu
-        $notification = Notification::where('user_id', $userId)
-            ->where('id_etu', $idEtu)
-            ->first();
-
-        
-            if ($notification) {
-                // If the notification exists, update its text_message
-                $notification->text_message = $textMessage;
-            } else {
-                // If the notification doesn't exist, create a new one
-                $notification = new Notification();
-                $notification->user_id = $userId;
-                $notification->id_etu = $idEtu;
-                $notification->text_message = $textMessage;
-            }
-
-            //  voice message upload
-            if ($request->hasFile('voice_message')) {
-                $file = $request->file('voice_message');
-
-                // Generate a unique filename
-                $fileName = 'audio_' . time() . '.wav';
-
-                
-                $path = $file->storeAs('public/audios', $fileName);
-
-                // full URL of the audio file
-                $audioUrl = env('APP_URL') . Storage::url($path);
-
-                // URL reference in the database
-                $notification->voice_message_url = $audioUrl;
-            }
-
-            $notification->save();
-
-
-
-
-      
+    
+        // Create a new notification instance
+        $notification = new Notification();
+        $notification->user_id = $userId;
+        $notification->id_etu = $idEtu;
+    
+        // Set the text message
+        $notification->text_message = $textMessage;
+    
+        // Voice message upload
+        if ($request->hasFile('voice_message')) {
+            $file = $request->file('voice_message');
+    
+            // Generate a unique filename
+            $fileName = 'audio_' . time() . '.wav';
+    
+            $path = $file->storeAs('public/audios', $fileName);
+    
+            // Full URL of the audio file
+            $audioUrl = env('APP_URL') . Storage::url($path);
+    
+            // Set the voice message URL
+            $notification->voice_message_url = $audioUrl;
+        }
+    
+        // Save the notification
+        $notification->save();
     }
+    
+
 }
