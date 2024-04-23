@@ -131,7 +131,7 @@ class NotificatioController extends Controller
             ->where('id_etu', $idEtu)
             ->first();
 
-        try {
+        
             if ($notification) {
                 // If the notification exists, update its text_message
                 $notification->text_message = $textMessage;
@@ -165,11 +165,6 @@ class NotificatioController extends Controller
 
 
 
-            // Return success response
-            return response()->json(['success' => true, 'message' => 'Comment added successfully']);
-        } catch (\Exception $e) {
-            // Return error response
-            return response()->json(['success' => false, 'message' => 'Error occurred while adding comment. Please try again.']);
-        }
+      
     }
 }
