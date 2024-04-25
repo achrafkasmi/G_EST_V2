@@ -119,40 +119,41 @@ class NotificatioController extends Controller
     {
         // Retrieve the authenticated user's ID
         $userId = auth()->user()->id;
-    
+
         // Retrieve the id_etu from the request
         $idEtu = $request->get('id_etu');
-    
+
         // Retrieve the notification text from the request
         $textMessage = $request->get('notification');
-    
+
         // Create a new notification instance
         $notification = new Notification();
         $notification->user_id = $userId;
         $notification->id_etu = $idEtu;
-    
+
         // Set the text message
         $notification->text_message = $textMessage;
-    
+        $notification->is_sent = true;
+
         // Voice message upload
         if ($request->hasFile('voice_message')) {
             $file = $request->file('voice_message');
-    
+
             // Generate a unique filename
             $fileName = 'audio_' . time() . '.wav';
-    
+
             $path = $file->storeAs('public/audios', $fileName);
-    
+
             // Full URL of the audio file
             $audioUrl = env('APP_URL') . Storage::url($path);
-    
+
             // Set the voice message URL
             $notification->voice_message_url = $audioUrl;
         }
-    
+
         // Save the notification
         $notification->save();
     }
-    
 
+    
 }
