@@ -106,13 +106,29 @@ ila lprof hayed l validation katb9a recommandation 1 f mysql.✅
 
 ila admin valida chi dossier stage khass l prof mayb9ach 9aaad idir ta ACTION ✅
 
-popup sending notif to student should handle emptiness.(notification par audio khass materselch ila kan audio vide.)
-
-add matricule for teacher 
-
-parametrage and l admin bach ikhtar l kolla annee nbr des stages 
+popup sending notif to student should handle emptiness.(notification par audio khass materselch ila kan audio vide.)✅
 
 notes historique mayb99ach i t écrasa.✅
+
+les accounts 
+
+admin {
+    offiziellkonto@gmail.com 
+
+    achrafk
+}
+
+teacher{
+    a.amin@gmail.com
+
+    12345678
+}
+
+student{
+    rachida@gmail.com
+
+    12345678
+}
 
 
 
