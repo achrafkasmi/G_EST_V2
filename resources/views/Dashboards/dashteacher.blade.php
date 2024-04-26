@@ -464,7 +464,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Error occurred while adding text comment. Please try again.'
+                    text: 'Error occurred while adding text comment. Please type a text message.'
                 });
                 console.error(xhr.responseText);
             }
@@ -520,7 +520,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Error occurred while adding voice comment. Please try again.'
+                    text: 'Error occurred while adding voice comment. please register a voice.'
                 });
                 console.error(xhr.responseText);
             }

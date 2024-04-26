@@ -108,7 +108,7 @@
     <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
       @csrf
 
-      
+
       <div class="mb-3">
         <label for="fileType" class="form-label">Select Type:</label>
         <select class="form-select form-control" id="fileType" name="fileType" required>
@@ -124,13 +124,13 @@
         <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
         <!-- Added conditional display for stageFile input -->
         @if(old('fileType') !== 'PFE')
-        <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100"/>
+        <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100" />
         @endif
       </div>
 
       <div class="mb-3">
         <label for="rapportFile" class="form-label">Rapport en PDF:</label>
-        <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="7M" data-height="100"/>
+        <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="7M" data-height="100" />
       </div>
 
       <div class="mb-3">
@@ -186,8 +186,10 @@
           @foreach(auth()->user()->etudiant->notifications as $notification)
           @endforeach
           <td data-title="observation de l'encadrant">
-          <p class="font-weight-normal"> --- </p>
-            <!--<p class="font-weight-normal">{{ $notification->text_message }} </p>-->
+            @if(false)
+            <p class="font-weight-normal">{{ $notification->text_message }}</p>
+            @endif
+            <p class="font-weight-normal">---</p>
           </td>
         </tr>
       </tbody>
