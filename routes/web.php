@@ -71,6 +71,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
 
     Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
+
+    Route::get('/modules', function () {$active_tab = 'modules';return view('modules', compact('active_tab'));})->name('modules');
+
+    Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
+
+    Route::get('/diplomes', [App\Http\Controllers\Diplome::class, 'index'])->name('diplomes.index');
+
+    Route::post('/mark-notification-as-seen/{notification}', [App\Http\Controllers\NotificatioController::class, 'markAsSeen'])->name('mark-notification-as-seen');
+
 });
 
 
@@ -84,11 +93,7 @@ Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 
 
 
 
-Route::get('/modules', function () {
-    $active_tab = 'modules'; // Define the variable here
-    return view('modules', compact('active_tab'));
-})->name('modules');
 
-Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
-Route::get('/diplomes', [App\Http\Controllers\Diplome::class, 'index'])->name('diplomes.index');
+
+
 

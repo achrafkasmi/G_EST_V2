@@ -116,44 +116,49 @@ class NotificatioController extends Controller
         }
     }*/
     public function addComment(Request $request)
-    {
-        // Retrieve the authenticated user's ID
-        $userId = auth()->user()->id;
+{
+    $userId = auth()->user()->id;
 
-        // Retrieve the id_etu from the request
-        $idEtu = $request->get('id_etu');
+    $idEtu = $request->get('id_etu');
 
-        // Retrieve the notification text from the request
-        $textMessage = $request->get('notification');
+    // Validate the request data
+    $request->validate([
+        'notification' => 'required_without:voice_message|string',
+    ]);
 
-        // Create a new notification instance
-        $notification = new Notification();
-        $notification->user_id = $userId;
-        $notification->id_etu = $idEtu;
+   
 
-        // Set the text message
-        $notification->text_message = $textMessage;
-        $notification->is_sent = true;
+    $textMessage = $request->get('notification');
 
-        // Voice message upload
-        if ($request->hasFile('voice_message')) {
-            $file = $request->file('voice_message');
+    $notification = new Notification();
+    $notification->user_id = $userId;
+    $notification->id_etu = $idEtu;
 
-            // Generate a unique filename
-            $fileName = 'audio_' . time() . '.wav';
+    $notification->text_message = $textMessage;
 
-            $path = $file->storeAs('public/audios', $fileName);
+    if ($request->hasFile('voice_message')) {
+        $file = $request->file('voice_message');
 
-            // Full URL of the audio file
-            $audioUrl = env('APP_URL') . Storage::url($path);
+        $fileName = 'audio_' . time() . '.wav';
 
-            // Set the voice message URL
-            $notification->voice_message_url = $audioUrl;
-        }
+        $path = $file->storeAs('public/audios', $fileName);
 
-        // Save the notification
-        $notification->save();
+        $audioUrl = env('APP_URL') . Storage::url($path);
+
+        $notification->voice_message_url = $audioUrl;
     }
 
+    $notification->save();
+
+    return redirect()->back()->with('success', 'Notification added successfully.');
+}
+
     
+    public function markAsSeen(Notification $notification)
+{
+    $notification->update(['is_seen' => true]);
+
+    return redirect()->back();
+}
+
 }

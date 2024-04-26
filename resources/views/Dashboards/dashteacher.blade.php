@@ -125,7 +125,7 @@
     </div>
 </div>
 <!-- Voice Form -->
-<form id="voiceForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
+<form id="voiceForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="id_etu" id="id_etu_voice"> <!-- Add this hidden input field -->
 
@@ -155,7 +155,7 @@
             <div class="divaudio" style="display: flex;">
                 <audio id="audioPlayer" controls style="display: none;"></audio>
                 <button id="deleteVoiceBtn" onclick="deleteRecordedVoice(event)" style="display: none;" class="delete-voice-button">
-                    <svg fill="#000000" width="24px" height="24px" viewBox="0 0 24 24" id="delete-alt-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
+                    <svg fill="#000000" width="50px" height="50px" viewBox="0 0 24 24" id="delete-alt-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
                         <path d="M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: rgb(44, 169, 188); stroke-width: 2;"></path>
                         <path d="M16,7V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
                         <path d="M12,11v6M4,7H20M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
@@ -195,6 +195,7 @@
         </div>
     </div>
 </form>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
 <script>

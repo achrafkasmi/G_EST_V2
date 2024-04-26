@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Notification extends Model
 {
     protected $table='t_notification';
+    protected $fillable = [
+        'is_seen', 
+    ];
     
     public function user() : BelongsTo
     {

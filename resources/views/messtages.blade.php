@@ -184,10 +184,11 @@
           <td data-title="Modification">Votre dossier est approuvé</td>
           @endif
           @foreach(auth()->user()->etudiant->notifications as $notification)
-          <td data-title="observation de l'encadrant">
-            <p class="font-weight-normal">{{ $notification->text_message }}</p>
-          </td>
           @endforeach
+          <td data-title="observation de l'encadrant">
+          <p class="font-weight-normal"> --- </p>
+            <!--<p class="font-weight-normal">{{ $notification->text_message }} </p>-->
+          </td>
         </tr>
       </tbody>
     </table>

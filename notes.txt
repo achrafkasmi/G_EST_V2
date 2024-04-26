@@ -55,49 +55,36 @@ migration {
 jib les teachers f les filiere bach ndiro correspondance mabin l etudiant li uploada stage
 o teacher dyalo bach mankhltoch bin kolchi. ✅
 
-
 Encadrement nzido foreign key end etudiant dyal teacher bach kola encadrant ybano lih gher les etudiant li m encadre ✅
-
-
 
 ntestew ila kan user deja m connecter ydiiiiih l dash machi /hooo✅
 
-
 teacher rah mazal kimchi l dash admin f lewel ✅
-
 
 id on null f upload ✅ (ila kan student khassk trslo b excel)
 
-
 authenticationcontroller mazal kigenerer apogee men 1 tal 99999 ... ✅
-
 
 n9alleb ela notif ✅
 
-
 if user teacher khassno ymchi also -> t_personnel  ✅
-
 
 registerController ba9i fih appogee men 100000 ->9999999 
 
-
 disconnect clickable once ✅
 
-
 prof i9ed ieawd ydir edit message plusieurs fois.✅
-
 
 une fois teacher est ajouté on dois lui  ajouter aussi dans la table personnel ✅
 
 il faut ajouter champs id_dip (li ankon creeit ) dans les headers d'excel ✅
 
-
 scenarios a verifier : creation des filieres kolhom -> creation d'un etudiant correspond a chaque filiere 
 +creation des teachers pour chaque filiere  ->upload des stages pour chaque etudiant ->  verification des uploads par les teachers 
 ->envoi des texts messages au etudiants ->verification des texts-> ✅
 
-
 -> mni l prof i disapprovi khass modification t enabla
+
 -> datatable dyal admin mazal mam9addach
 
 ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l bibliotheque (solved, student howa li kayktb title)✅
@@ -111,7 +98,6 @@ clique ela save approval kanakhdo les etudiants validé o kanssiftohom l admin. 
 
 etudiant obligé ikteb sujet d rapport✅
 
-
 type rapport khasso ikon obligatory ✅
 
 etudiant ila kan 2eme année khass itle3lo l form dyal upload 2 merrat ❌
@@ -120,11 +106,13 @@ ila lprof hayed l validation katb9a recommandation 1 f mysql.✅
 
 ila admin valida chi dossier stage khass l prof mayb9ach 9aaad idir ta ACTION ✅
 
-popup sending notif to student should handle emptiness.
+popup sending notif to student should handle emptiness.(notification par audio khass materselch ila kan audio vide.)
 
 add matricule for teacher 
 
 parametrage and l admin bach ikhtar l kolla annee nbr des stages 
 
-notes historique mayb99ach i t écrasa.
+notes historique mayb99ach i t écrasa.✅
+
+
 
