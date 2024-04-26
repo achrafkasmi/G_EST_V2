@@ -110,7 +110,15 @@ popup sending notif to student should handle emptiness.(notification par audio k
 
 notes historique mayb99ach i t écrasa.✅
 
-les accounts 
+-> l'etudiant khasso itsejel b id_dip f t_etudiant_filiere
+-> t_etudiant_filiere howa table associatif mabin diplome o l'etudiant.
+-> kolla t_diplome(filière) ando t_etape_diplome (etapes s1,s2,s3,...).
+->kolla semestre (t_etape_diplome) andha des modules dyawlha t_modules_etape.
+->kolla module (t_modules_etape) y9d ikon ando des elements math{algèbre,analyse}aykono f t_element_modules.
+->kolla element ando prof dyalo. ...
+
+
+les accounts :
 
 admin {
     offiziellkonto@gmail.com 
@@ -129,6 +137,7 @@ student{
 
     12345678
 }
+
 
 
 
