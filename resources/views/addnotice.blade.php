@@ -30,7 +30,7 @@
 
     </div>
     <form action="#">
-        <h1>chouse for notice</h1>
+        <h1>choisir la filière</h1>
 
         <div class="form-group">
             <input class="form-control" id="checkbox-1" type="checkbox">

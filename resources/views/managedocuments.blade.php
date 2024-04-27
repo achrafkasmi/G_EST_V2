@@ -94,7 +94,7 @@
     <script>
         Swal.fire({
             icon: 'success',
-            title: 'Success!',
+            title: 'Succès!',
             text: '{{session('
             success ')}}',
         });
@@ -102,32 +102,32 @@
     @endif
 
     <div class="container form-container">
-        <h2 class="form-title">Add documents</h2>
+        <h2 class="form-title">Ajouter des documents à diffuser</h2>
 
         <form action="{{ route('document.post') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
-                <label for="fileType" class="form-label">Select Type:</label>
+                <label for="fileType" class="form-label">Sélectionner Type de destination :</label>
                 <select class="form-select form-control" id="fileType" name="fileType" required>
-                    <option selected disabled>This doc is:</option>
-                    <option value="student">For Students</option>
-                    <option value="teacher">For Staff</option>
+                    <option selected disabled>Ce document est :</option>
+                    <option value="student">Pour les étudiants</option>
+                    <option value="teacher">pour le Staff</option>
                 </select>
             </div>
 
             <div class="mb-3" id="stageFileInput">
-                <label for="stageFile" class="form-label">Document to upload:</label>
+                <label for="stageFile" class="form-label">Document à télécharger :</label>
                 <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="30M" data-height="100" />
             </div>
 
             <div class="mb-3">
-                <label for="textInput" class="form-label">Title:</label>
+                <label for="textInput" class="form-label">Titre et/ou désignation :</label>
                 <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Enter the document title">
             </div>
 
             <div class="d-grid gap-2 mt-3">
-                <button class="btn submit-btn" type="submit">Upload</button>
+                <button class="btn submit-btn" type="submit">Envoyer</button>
             </div>
         </form>
 

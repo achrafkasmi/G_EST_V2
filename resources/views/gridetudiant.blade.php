@@ -29,10 +29,10 @@
       <tbody>
         <tr>
           <th scope="row">Type de Stage</th>
-          <td data-title="PDF dossier de stage"><a <a href="{{ Storage::url(auth()->user()->stage_file) }}" target="_blank">cliquer ici </a></td>
-          <td data-title="PDF rapport de stage"><a <a href="{{ Storage::url(auth()->user()->rapport_file) }}" target="_blank">cliquer ici </a></td>
+          <td data-title="PDF dossier de stage"><a <a href="{{ Storage::url(auth()->user()->stage_file) }}" target="_blank">Cliquez ici</a></td>
+          <td data-title="PDF rapport de stage"><a <a href="{{ Storage::url(auth()->user()->rapport_file) }}" target="_blank">Cliquez ici</a></td>
           <td data-title="date de delivrence de dossier" <a href="#" class="date"></a>--/--/----</td>
-          <td data-title="vous puvez modifier que avant la confirmation de Professeur encadrant"><a href="http://127.0.0.1:8000/messtages">Clicker ici</a></td>
+          <td data-title="vous puvez modifier que avant la confirmation de Professeur encadrant"><a href="http://127.0.0.1:8000/messtages">Cliquez ici</a></td>
           <td data-title="observation de l'encadrant">
             <p class="font-weight-normal"> bon travail A+</p>
           </td>

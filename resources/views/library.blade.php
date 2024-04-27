@@ -6,19 +6,19 @@
     @include('tiles.actions')
     <div class="search-sort-container">
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search...">
+            <input type="text" id="searchInput" placeholder="Recherche...">
         </div>
         <div class="sorting-container">
             <select id="sorting" style="color: grey;">
-                <option value="date_desc" selected>Newest First</option>
-                <option value="date_asc">Oldest First</option>
+                <option value="date_desc" selected>plus récent en premier</option>
+                <option value="date_asc">plus ancien en premier</option>
                 <option value="initiation">Rapport d'initiation</option>
                 <option value="technique">Rapport technique</option>
                 <option value="PFE">Rapport PFE</option>
             </select>
         </div>
         <div class="items-per-page-container">
-            <label for="itemsPerPage" style="color: grey; font-weight: bold; margin-right:8px;">Items Per Page:</label>
+            <label for="itemsPerPage" style="color: grey; font-weight: bold; margin-right:8px;">rapports par page:</label>
             <select id="itemsPerPage">
                 <option value="6">6</option>
                 <option value="12">12</option>

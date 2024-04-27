@@ -12,13 +12,13 @@
   <ul class="nav-list">
     <li class="nav-list-item  @if($active_tab === 'dash') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/dash">
-        <img src="dashboard.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="dashboard.PNG" alt="Acceuil" width="28" height="28" style="margin-right: 10px;" />
         Acceuil
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'library') active @endif">
       <a class="pop-cont nav-list-link" href="http://127.0.0.1:8000/library">
-        <img src="bibliotheque.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="bibliotheque.PNG" alt="Bibliotheque" width="28" height="28" style="margin-right: 10px;" />
         Bibliotheque
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
@@ -34,14 +34,14 @@
     @if(auth()->user() && auth()->user()->hasRole('student'))
     <li class="nav-list-item @if($active_tab == 'messtages') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/messtages">
-        <img src="documentsdestage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="documentsdestage.PNG" alt="Dossier de Stage" width="28" height="28" style="margin-right: 10px;" />
         Dossier de Stage
       </a>
     </li>
     @endif
     <li class="nav-list-item">
       <a class="pop-cont nav-list-link @if($active_tab == 'planning') active @endif" href="#">
-        <img src="calendar.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="calendar.PNG" alt="Plannings Examens" width="28" height="28" style="margin-right: 10px;" />
         Plannings Examens
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
@@ -50,53 +50,53 @@
     @if(auth()->user() && auth()->user()->hasRole('admin'))
     <li class="nav-list-item @if($active_tab == 'team') active @endif">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="team.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="team.PNG" alt="Equipe" width="28" height="28" style="margin-right: 10px;" />
         Equipe
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'historisation') active @endif">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="reports.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="reports.PNG" alt="Rapports" width="28" height="28" style="margin-right: 10px;" />
         Rapports
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'checkstage') active @endif">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="historisation.PNG" alt="checkstage" width="28" height="28" style="margin-right: 10px;" />
+        <img src="historisation.PNG" alt="Historisation" width="28" height="28" style="margin-right: 10px;" />
         Historisation
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'gestionstage') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/stages">
-        <img src="checkstage.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="checkstage.PNG" alt="Gestion Des Stages" width="28" height="28" style="margin-right: 10px;" />
         Gestion Des Stages
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addusers') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/addUser">
-        <img src="adduser.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="adduser.PNG" alt="Ajouter Utilistatuers" width="28" height="28" style="margin-right: 10px;" />
         Ajouter Utilistatuers
       </a>
     </li>
     <li class="nav-list-item ">
       <a class="pop-cont nav-list-link" href="#">
-        <img src="notice.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="notice.PNG" alt="Avis" width="28" height="28" style="margin-right: 10px;" />
         Avis
         <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addedoc') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/managedocuments">
-        <img src="addEdoc.PNG" alt="historisation" width="28" height="28" style="margin-right: 10px;" />
+        <img src="addEdoc.PNG" alt="E-documents" width="28" height="28" style="margin-right: 10px;" />
         E-documents
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'diplomes') active @endif">
       <a class="nav-list-link" href="http://127.0.0.1:8000/diplomes">
-        <img src="Mmanagement.PNG" alt="historisation" width="25" height="25" style="margin-right: 10px;" />
+        <img src="Mmanagement.PNG" alt="Modules management" width="25" height="25" style="margin-right: 10px;" />
         Modules management
       </a>
     </li>

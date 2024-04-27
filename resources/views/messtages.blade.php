@@ -110,7 +110,7 @@
 
 
       <div class="mb-3">
-        <label for="fileType" class="form-label">Select Type:</label>
+        <label for="fileType" class="form-label">Type de dossier:</label>
         <select class="form-select form-control" id="fileType" name="fileType" required>
           <option selected disabled>Selectionner le type du dossier de stage</option>
           <option value="Stage d'initiation">Stage d'initiation</option>

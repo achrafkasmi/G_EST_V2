@@ -27,7 +27,7 @@
             <script>
                Swal.fire({
                   icon: 'success',
-                  title: 'Success!',
+                  title: 'Succès!',
                   text: '{{ session('
                   success ') }}',
                });
@@ -37,8 +37,8 @@
             <tr>
                <td>{{ $dossierStage->etudiant->nom_fr. " " .$dossierStage->etudiant->prenom_fr}}</td>
                <td>{{ $dossierStage->type_dossier }}</td>
-               <td><a href="{{ Storage::url($dossierStage->dossier_stage)}}" target="_blank">click here</a></td>
-               <td><a href="{{ Storage::url($dossierStage->rapport) }}" target="_blank">click here </a></td>
+               <td><a href="{{ Storage::url($dossierStage->dossier_stage)}}" target="_blank">Cliquez ici</a></td>
+               <td><a href="{{ Storage::url($dossierStage->rapport) }}" target="_blank">Cliquez ici</a></td>
 
                @if($dossierStage->validation_prof)
 
@@ -114,7 +114,7 @@
    // Function to approve a stage
    function approveStage(rowId) {
       // Implement your approve logic here
-      alert("Stage approved for row " + rowId);
+      alert("Étape approuvée pour cette rangée" + rowId);
    }
 </script>
 

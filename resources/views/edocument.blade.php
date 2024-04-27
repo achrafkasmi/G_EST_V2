@@ -5,7 +5,7 @@
     @include('tiles.actions')
 
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search...">
+        <input type="text" id="searchInput" placeholder="Recherche...">
     </div>
 
     <div class="document-list" id="data-container">
@@ -52,10 +52,6 @@
 
 @endsection
 
-<style>
 
-   
-
-</style>
 
 

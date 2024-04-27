@@ -58,8 +58,8 @@
                 <tr>
                     <td>{{$user->name}}</td>
                     <td>{{$user->etudiant->stage->type_dossier}}</td>
-                    <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">click here</a></td>
-                    <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">click here </a></td>
+                    <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">Cliquez ici</a></td>
+                    <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">Cliquez ici</a></td>
                     <td>
                         @if ($user->etudiant->stage->validation_prof)
                         <a href="{{ route('student.validation', $user->id) }}">
@@ -239,7 +239,7 @@
                 stopRecordBtn.style.display = 'inline-block';
             })
             .catch(function(err) {
-                console.error('Error accessing microphone:', err);
+                console.error("Erreur lors de l'accès au microphone :", err);
             });
     }
 
@@ -279,7 +279,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Comment added successfully!',
+                    text: 'Commentaire ajouté avec succès !',
                     willClose: () => {
                         // Clear textarea
                         $('#disapproveNote').val('');
@@ -302,7 +302,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Error occurred while adding comment. Please try again.'
+                    text: "Une erreur s'est produite lors de l'ajout d'un commentaire. Veuillez réessayer."
                 });
                 console.error(xhr.responseText);
             }
@@ -395,7 +395,7 @@
     // Function to approve a stage
     function approveStage(rowId) {
         // Implement your approve logic here
-        alert("Stage approved for row " + rowId);
+        alert("Étape approuvée pour cette rangée " + rowId);
     }
 
     // Function to show the voice recording form
@@ -449,7 +449,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Text comment added successfully!',
+                    text: 'Commentaire texte ajouté avec succès !',
                     willClose: () => {
                         // Clear textarea
                         $('#disapproveNote').val('');
@@ -464,7 +464,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Error occurred while adding text comment. Please type a text message.'
+                    text: "Une erreur s'est produite lors de l'ajout d'un commentaire textuel. Veuillez saisir un message texte."
                 });
                 console.error(xhr.responseText);
             }
@@ -500,7 +500,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Voice comment added successfully!',
+                    text: 'Commentaire vocal ajouté avec succès!',
                     willClose: () => {
                         // Clear audio player
                         audioPlayer.pause();
@@ -520,7 +520,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Error occurred while adding voice comment. please register a voice.'
+                    text: "Une erreur s'est produite lors de l'ajout d'un commentaire vocal, veuillez enregistrer un."
                 });
                 console.error(xhr.responseText);
             }
@@ -537,14 +537,14 @@
 
         // Display Swal confirmation dialogue
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover the recorded voice!',
+            title: 'êtes-vous sûr?',
+            text: "Vous ne pourrez pas récupérer la voix enregistrée !",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel'
+            confirmButtonText: 'Oui, supprimez!',
+            cancelButtonText: 'Non, annulez'
         }).then((result) => {
             if (result.isConfirmed) {
                 // If user confirms deletion, execute delete operation
@@ -562,8 +562,8 @@
                 // Show success message using SweetAlert
                 Swal.fire({
                     icon: 'success',
-                    title: 'Deleted!',
-                    text: 'Your recorded voice has been deleted.',
+                    title: 'Supprimé!',
+                    text: 'Votre message vocal a été supprimé.',
                     timer: 2000, // Automatically close after 2 seconds
                     showConfirmButton: false
                 });
