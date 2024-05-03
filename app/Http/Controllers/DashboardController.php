@@ -13,8 +13,6 @@ class DashboardController extends Controller
     {
         if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
 
-
-            
             $diplomes = auth()->user()->personnel->diplomes;
             
             $etudiants = [];
@@ -45,15 +43,12 @@ class DashboardController extends Controller
 
     public function myIntern(): View
     {
-
         if (!auth()->user()->hasRole('student')) {
 
             abort(403);
         }
-
         return view('messtages')->with(['active_tab' => 'messtages']);
-    }
-    
+    }   
 }
 
 

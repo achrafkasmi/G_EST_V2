@@ -3,10 +3,8 @@
 
 <div class="app-main">
   @include('tiles.actions')
-  @if(auth()->user() && auth()->user()->hasRole('etudiant'))
-
-  @endif
-  <div class="chart-row three">
+  @if(auth()->user() && auth()->user()->hasRole('student'))
+  <div class="chart-row three" id="chart-row">
     <div class="chart-container-wrapper">
       <div class="chart-container">
         <div class="chart-info-wrapper">
@@ -65,6 +63,13 @@
       </div>
     </div>
   </div>
+
+  <div class="program-container" id="program-container">
+    <h1>Nouveautés</h1>
+  </div>
+
+  @else
+
   <div class="chart-row two">
     <div class="chart-container-wrapper big">
       <div class="chart-container">
@@ -123,8 +128,24 @@
       </div>
     </div>
   </div>
+  @endif
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#program-container').click(function() {
+      $('.chart-container-wrapper').fadeOut(600);
+      $('#chart-row').slideUp(600);
+    });
+
+    // Revert action when clicking outside the program-container
+    $(document).click(function(e) {
+      if (!$(e.target).closest('#program-container').length) {
+        $('.chart-container-wrapper').fadeIn(600);
+        $('#chart-row').slideDown(600);
+      }
+    });
+  });
+</script>
 @endsection
-
-
-

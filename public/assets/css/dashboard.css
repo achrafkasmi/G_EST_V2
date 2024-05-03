@@ -314,6 +314,21 @@ button {
   }
 }
 
+.program-container {
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--app-bg-dark);
+  padding: 16px;
+  display: flex;
+  min-height: 300px;
+ 
+
+  &.applicants {
+    max-height: 336px;
+    overflow-y: auto;
+  }
+}
+
 .chart-container-wrapper {
   padding: 8px;
 }
