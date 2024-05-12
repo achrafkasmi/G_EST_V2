@@ -36,10 +36,9 @@ Artisan::command('createUser', function () {
 
     $user = new User();
 
-    $user->email = 'offiziellkonto@gmail.com';
-    $user->name = 'Achraf KASMI';
-    $user->apogee = '0000000';
-    $user->password = bcrypt('achrafk');
+    $user->email = 'initial@gmail.com';
+    $user->name = 'ACCOUNTS CREATOR';
+    $user->password = bcrypt('account');
     $user->save();
     $user->assignRole('admin');
 });

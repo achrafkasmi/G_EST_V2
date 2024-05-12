@@ -9,6 +9,8 @@ use App\Models\Avis;
 use App\Http\Controllers\libraryController;
 use App\Models\Library;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ElementController;
+use App\Http\Controllers\ElementPedagogiqueController;
 
 
 /*
@@ -42,9 +44,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function () {return view('gridetudiant');})->name('gridetudiant');
+    Route::get('/gridetudiant', function () {
+        return view('gridetudiant');
+    })->name('gridetudiant');
 
-    Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
+    Route::get('/addnotice', function () {
+        return view('addnotice');
+    })->name('gridetudiant');
 
     Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
@@ -56,7 +62,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
-    Route::get('/gestionstage', function () {return view('gestionstage');})->name('gestionstage');
+    Route::get('/gestionstage', function () {
+        return view('gestionstage');
+    })->name('gestionstage');
 
     Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
 
@@ -72,7 +80,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
 
-    Route::get('/modules', function () {$active_tab = 'modules';return view('modules', compact('active_tab'));})->name('modules');
+    Route::get('/modules', function () {
+        $active_tab = 'modules';
+        return view('modules', compact('active_tab'));
+    })->name('modules');
 
     Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
 
@@ -80,20 +91,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/mark-notification-as-seen/{notification}', [App\Http\Controllers\NotificatioController::class, 'markAsSeen'])->name('mark-notification-as-seen');
 
-});
 
+
+    Route::get('/gestionelements/{module_id}', [ElementController::class, 'index'])->name('gestionelements');
+    Route::post('/element', [ElementController::class, 'store'])->name('element.store');
+    Route::get('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'fetchData'])->name('elementspedago');
+
+
+    Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class,'voiceFormUrl'])->name('VOICE-FORM_URL');
+
+});
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
 
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
-
-
-
-
-
-
-
-
-

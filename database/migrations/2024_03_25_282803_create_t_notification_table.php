@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_etu')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->longText('text_message')->nullable();
-            $table->string('voice_message_url')->nullable(); //voice message
-            $table->boolean('is_sent')->default(false); // Added is_sent column
-            $table->boolean('is_seen')->default(false); // Added is_seen column
+            $table->string('voice_message_url')->nullable();
+            $table->boolean('is_sent')->default(false);
+            $table->boolean('is_seen')->default(false); 
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);

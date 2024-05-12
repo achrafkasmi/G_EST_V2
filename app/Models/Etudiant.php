@@ -27,8 +27,11 @@ class Etudiant extends Model
      return $this->hasOne(Stage::class,'id_etu');
    }
 
-   public function diplome() : BelongsTo
+   public function diplome(): BelongsTo
    {
-     return $this->belongsTo(Diplome::class,'id_dip');
+       return $this->belongsTo(Diplome::class, 'id_etape');
+   }
+   public function etapes(){
+    return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
    }
 }

@@ -181,7 +181,7 @@
           @if(!auth()->user()->etudiant->stage->validation_prof)
           <td data-title="modification"><a href="{{ route('upload.edit', auth()->user()->id) }}" class="btn btn-danger">Mettre à jour les fichiers</a></td>
           @else
-          <td data-title="Modification">Votre dossier est approuvé</td>
+          <td data-title="Modification">Votre rapport est approuvé</td>
           @endif
           @foreach(auth()->user()->etudiant->notifications as $notification)
           @endforeach

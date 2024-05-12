@@ -10,30 +10,25 @@ use App\Models\Notification;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
+{
+    if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
+        $diplomes = auth()->user()->personnel->diplomes;
+        $users = [];
 
-            $diplomes = auth()->user()->personnel->diplomes;
-            
-            $etudiants = [];
-            $users = [];
-
-            foreach ($diplomes as $diplome) {
-                
-                foreach ($diplome->etudiants as $etudiant) {
-
-                    if($etudiant->user->is_uploaded){
-
-                        $users[] = $etudiant->user;
-                    }
+        foreach ($diplomes as $diplome) {
+            foreach ($diplome->etudiants as $etudiant) {
+                if ($etudiant->user->is_uploaded) {
+                    $users[] = $etudiant->user;
                 }
             }
-            
-            return  view('Dashboards.dashteacher')->with(['users' => $users,'active_tab' => 'dash']);
         }
-
-        return  view('Dashboards.dashboard')->with(['active_tab' => 'dash']);
+        
+        return view('Dashboards.dashteacher')->with(['users' => $users, 'active_tab' => 'dash']);
     }
+
+    return view('Dashboards.dashboard')->with(['active_tab' => 'dash']);
+}
+
 
     public function dashteacher()
     {

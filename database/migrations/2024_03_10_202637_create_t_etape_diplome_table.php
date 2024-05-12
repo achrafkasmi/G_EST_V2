@@ -16,7 +16,7 @@ class CreateTEtapeDiplomeTable extends Migration
        Schema::create('t_etape_diplome', function (Blueprint $table) {
             $table->id();  // Primary key
             $table->string('code_etape_diplome', 50)->nullable();
-            $table->string('nom_etape_diplome', 50)->nullable();
+            $table->string('nom_etape_diplome', 500)->nullable();
             $table->unsignedBigInteger('id_diplome')->nullable();
             $table->timestamps();  // Created at and Updated at timestamps
 

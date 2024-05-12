@@ -9,7 +9,7 @@
   </button>
   <div class="profile-box">
     <div class="profile-photo-wrapper">
-      <img alt="{{ auth()->user()->name}}" @if(auth()->user()->image) src="{{ Storage::url(auth()->user()->image) }}" @else src="profile.PNG" @endif
+      <img alt="{{ auth()->user()->name}}" @if(auth()->user()->image) src="{{ Storage::url(auth()->user()->image) }}" @else src="/profile.PNG" @endif
       class="dense-image dense-loading">
     </div>
     <form id="logout-form" action="{{ route('AUTH-LOGOUT') }}" method="POST" class="d-none">

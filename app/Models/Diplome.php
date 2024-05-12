@@ -13,9 +13,9 @@ class Diplome extends Model
 {
     protected $table='t_diplome';
 
-    public function etudiants(){
-
-        return $this->hasMany(Etudiant::class,'id_dip');
+    public function etudiants()
+    {
+        return $this->hasMany(Etudiant::class, 'id_etape');
     }
     
     public function personnels()

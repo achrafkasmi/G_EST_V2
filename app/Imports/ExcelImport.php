@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Etudiant;
+use App\Models\EtudiantEtape;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -17,7 +18,7 @@ class ExcelImport implements ToCollection
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 360);
 
-        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin', 'id_dip', 'sexe', 'pays_naissance'];//id_dip haydo o dir f blasto id li jay men t_etape_diplome
+        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin', 'id_etape'];
 
         $firstRow = null;
 
@@ -58,6 +59,15 @@ class ExcelImport implements ToCollection
             $student->save();
 
             $user->assignRole('student');
+
+           // Check if the student is already registered for the given id_etape
+           if (!empty($student->id_etape) && !$student->etapes->contains('id_etape', $student->id_etape)) {
+            // If not registered, register the student in t_etudiant_etape
+            $etudiantEtape = new EtudiantEtape();
+            $etudiantEtape->id_etu = $student->id;
+            $etudiantEtape->id_etape = $student->id_etape;
+            $etudiantEtape->save();
+        }
         }
     }
 }

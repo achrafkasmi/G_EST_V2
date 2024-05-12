@@ -15,6 +15,7 @@ class CreateTModulesEtapeTable extends Migration
         Schema::create('t_modules_etape', function (Blueprint $table) {
             $table->id();  // Primary key
             $table->string('code_etape', 50)->nullable();
+            $table->unsignedBigInteger('id_etape')->nullable();
             $table->string('type_etape_element', 30)->nullable();
             $table->string('intitule_element', 100)->nullable();
             $table->double('nbr_heures_cours')->nullable();
@@ -24,7 +25,10 @@ class CreateTModulesEtapeTable extends Migration
             $table->double('nbr_heures_evaluation')->nullable();
             $table->text('decription_module')->nullable();
             $table->double('coefficient')->nullable();
-            $table->timestamps();  // Created at and Updated at timestamps
+            $table->timestamps();  
+            //here is the fk that refused to come from t_etape_diplome. 
+            $table->foreign('id_etape')->references('id')->on('t_etape_diplome')->onDelete('cascade');
+
         });
     }
     /**
