@@ -281,7 +281,6 @@
         }
 
         @media (min-width: 48em) {
-          /* Don’t show data-title labels*/
           content: none;
         }
       }

@@ -21,9 +21,9 @@ class Personnel extends Model
         return $this->belongsToMany(Diplome::class, 't_personnel_for_diplome', 't_personnel_id', 't_diplome_id');
     }*/
 
-    public function diplomes(){
-    
-        return $this->hasMany(Diplome::class,'id_personnel');
+    public function diplomes()
+    {
 
+        return $this->hasMany(Diplome::class, 'id_personnel');
     }
 }

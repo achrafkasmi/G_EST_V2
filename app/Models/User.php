@@ -69,6 +69,10 @@ class User extends Authenticatable
         return $this->hasOne(Personnel::class, "user_id");
         
     }
-    
-    
+
+  
+    public function dossierStage()
+    {
+        return $this->hasMany(Stage::class, 'professeur_encadrant_id');
+    }
 }

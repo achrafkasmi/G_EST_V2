@@ -26,5 +26,6 @@ class Stage extends Model
         'validation_admin',
         'observation_admin',
         'is_recommanded',
+        'professeur_encadrant_id'
     ];
 }

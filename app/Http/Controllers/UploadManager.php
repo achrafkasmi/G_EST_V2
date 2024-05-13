@@ -27,6 +27,7 @@ class UploadManager extends Controller
             'stageFile'    => $request->input('fileType') !== 'PFE' ? 'required|mimes:pdf|max:7168' : 'nullable|mimes:pdf|max:7168',
             'rapportFile'  => 'required|mimes:pdf|max:7168',
             'textInput'    => 'required|string|max:255',
+            'teacherSelect'=> 'required',
         ]);
 
         $apogee = $user->apogee;
@@ -36,7 +37,7 @@ class UploadManager extends Controller
         $pagegarde_image_name = 'PageGarde-' . $apogee . '.jpg';
 
         $path = "public/uploads/";
-
+        $selectedTeacherId = $request->input('teacherSelect');
         $stageFilePath = $request->file('stageFile') ? $request->file('stageFile')->storeAs('uploads', $dossier_pdf_name, 'public') : null;
         $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapport_pdf_name, 'public');
 
@@ -55,6 +56,7 @@ class UploadManager extends Controller
         $stage->dossier_stage = $request->input('fileType') === 'PFE' ? 'none' : ($stageFilePath ? $path . $dossier_pdf_name : null);
         $stage->image_page_garde = $path . $pagegarde_image_name; // Store image path with .jpg extension
         $stage->titre_rapport = $request->input('textInput');
+        $stage->professeur_encadrant_id = $selectedTeacherId;
 
         $stage->save();
 

@@ -122,7 +122,6 @@
 
       <div class="mb-3" id="stageFileInput">
         <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
-        <!-- Added conditional display for stageFile input -->
         @if(old('fileType') !== 'PFE')
         <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100" />
         @endif
@@ -136,6 +135,16 @@
       <div class="mb-3">
         <label for="textInput" class="form-label">Titre Du Rapport:</label>
         <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
+      </div>
+
+      <div class="mb-3">
+        <label for="teacherSelect" class="form-label">Professeur encadrant:</label>
+        <select class="form-select form-control" id="teacherSelect" name="teacherSelect" required>
+          <option selected disabled>Selectionner l'encadrant superviseur</option>
+          @foreach($teachers as $id => $name)
+          <option value="{{ $id }}">{{ $name }}</option>
+          @endforeach
+        </select>
       </div>
 
       <div class="d-grid gap-2 mt-3">

@@ -14,7 +14,7 @@ class CreateTDossierStageTable extends Migration
     public function up()
     {
         Schema::create('t_dossier_stage', function (Blueprint $table) {
-            $table->id();  // Primary key
+            $table->id();
             $table->unsignedBigInteger('id_etu')->nullable();
             $table->string('type_dossier', 50)->nullable();
             $table->longText('dossier_stage')->nullable();
@@ -28,8 +28,10 @@ class CreateTDossierStageTable extends Migration
             $table->text('titre_rapport')->nullable();
             $table->string('image_page_garde')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('professeur_encadrant_id')->nullable();
 
-            // Foreign key
+             // Foreign key
+            $table->foreign('professeur_encadrant_id')->references('id')->on('t_personnel');
             $table->foreign('id_etu')->references('id')->on('t_etudiant')->onDelete('cascade');
         });
     }
