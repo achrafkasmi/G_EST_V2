@@ -11,6 +11,9 @@ use App\Models\Library;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ElementController;
 use App\Http\Controllers\ElementPedagogiqueController;
+use App\Http\Controllers\PersonnelElementPedagoguiqueController;
+
+
 
 
 /*
@@ -99,6 +102,18 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class,'voiceFormUrl'])->name('VOICE-FORM_URL');
+
+    Route::post('/store-etape-diplome', [Diplome::class, 'storeEtapeDiplome'])->name('store-etape-diplome');
+   
+   
+   
+   
+   
+   
+   
+   
+    Route::post('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'store'])->name('store-module-etape');
+    Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
 
 });
 

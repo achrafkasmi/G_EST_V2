@@ -3,6 +3,8 @@
 @section('app-mid')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 <div class="app-main">
     @include('tiles.actions')
     <a href="http://127.0.0.1:8000/diplomes" id="">
@@ -29,6 +31,8 @@
                 <tr>
                     <th>code etape</th>
                     <th>intitule element</th>
+                    <th>Professeur d'élement</th>
+                    <th>nouvelle liaison</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,28 +40,175 @@
                 <tr>
                     <td>{{ $element->code_etape}}</td>
                     <td>{{ $element->intitule_element }}</td>
+                    <td>personnel should displayed here c</td>
+                    <td>
+                        <select class="form-select form-control small-select teacher-select" data-element-id="{{ $element->id }}" required>
+                            <option selected disabled>Selectionner l'encadrant superviseur</option>
+                            @foreach($teachers as $id => $name)
+                            <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <div id="formContainer" class="containerf form-container bg-light-gray" style="display: none;">
+        <form action="{{ route('store-module-etape', ['id' => $id, 'etape_id' => $etape_id]) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="container2">
+                <h2 class="form-title text-white">Ajouter un nouveau Module à cette Etape</h2>
+
+                <div class="mb-3">
+                    <label for="code_etape" class="form-label" style="color: white;">Code Etape</label>
+                    <input type="text" class="form-control" id="code_etape" name="code_etape" maxlength="50">
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_etape" class="form-label" style="color: white;">ID Etape</label>
+                    <input type="number" class="form-control" id="id_etape" name="id_etape">
+                </div>
+
+                <div class="mb-3">
+                    <label for="type_etape_element" class="form-label" style="color: white;">Type Etape Element</label>
+                    <input type="text" class="form-control" id="type_etape_element" name="type_etape_element" maxlength="30">
+                </div>
+
+                <div class="mb-3">
+                    <label for="intitule_element" class="form-label" style="color: white;">Intitulé Element</label>
+                    <input type="text" class="form-control" id="intitule_element" name="intitule_element" maxlength="100">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nbr_heures_cours" class="form-label" style="color: white;">Nombre d'heures de cours</label>
+                    <input type="number" step="0.01" class="form-control" id="nbr_heures_cours" name="nbr_heures_cours">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nbr_heures_td" class="form-label" style="color: white;">Nombre d'heures de TD</label>
+                    <input type="number" step="0.01" class="form-control" id="nbr_heures_td" name="nbr_heures_td">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nbr_heures_tp" class="form-label" style="color: white;">Nombre d'heures de TP</label>
+                    <input type="number" step="0.01" class="form-control" id="nbr_heures_tp" name="nbr_heures_tp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nbr_heures_ap" class="form-label" style="color: white;">Nombre d'heures d'AP</label>
+                    <input type="number" step="0.01" class="form-control" id="nbr_heures_ap" name="nbr_heures_ap">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nbr_heures_evaluation" class="form-label" style="color: white;">Nombre d'heures d'évaluation</label>
+                    <input type="number" step="0.01" class="form-control" id="nbr_heures_evaluation" name="nbr_heures_evaluation">
+                </div>
+
+                <div class="mb-3">
+                    <label for="decription_module" class="form-label" style="color: white;">Description du Module</label>
+                    <textarea class="form-control" id="decription_module" name="decription_module" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="coefficient" class="form-label" style="color: white;">Coefficient</label>
+                    <input type="number" step="0.01" class="form-control" id="coefficient" name="coefficient">
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn submit-btn" type="submit">Enregistrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@if(session('success'))
 <script>
-    $(document).ready(function() {
-        $('#toggleFormBtn').click(function() {
-            $('#formContainer').toggle();
+    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: '{{ session('
+        success ') }}',
+    });
+</script>
+@endif
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selects = document.querySelectorAll('.teacher-select');
+
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                const elementId = this.dataset.elementId;
+                const teacherId = this.value;
+                const teacherName = this.options[this.selectedIndex].text;
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = '{{ $id }}';
+                const etapeId = '{{ $etape_id }}';
+
+                Swal.fire({
+                    title: 'Confirmer la sélection',
+                    text: `Voulez-vous vraiment assigner ${teacherName} à cet élément pédagogique?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, confirmer!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/store-teacher-element/${id}/${etapeId}`, {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                element_id: elementId,
+                                teacher_id: teacherId
+                            })
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire(
+                                    'Enregistré!',
+                                    'Le professeur a été assigné avec succès.',
+                                    'success'
+                                )
+                            } else {
+                                Swal.fire(
+                                    'Erreur!',
+                                    'Il y a eu un problème lors de l\'enregistrement.',
+                                    'error'
+                                )
+                            }
+                        }).catch(error => {
+                            Swal.fire(
+                                'Erreur!',
+                                'Il y a eu un problème lors de l\'enregistrement.',
+                                'error'
+                            )
+                        });
+                    }
+                });
+            });
         });
     });
 </script>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
-<script>
-    let table = new DataTable('#myTable');
-</script>
+
+
 <style>
+    .datatabcontainer1 {
+        border-radius: 12px;
+        background-color: #6497b1;
+        color: #000000;
+    }
+
     .container2 {
         max-width: 500px;
         margin: 0 auto;
@@ -141,4 +292,24 @@
         background-color: #0056b3;
     }
 </style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#toggleFormBtn').click(function() {
+            $('#formContainer').toggle();
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
+<script>
+    let table = new DataTable('#myTable');
+</script>
+
 @endsection
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">

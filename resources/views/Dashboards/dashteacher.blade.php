@@ -77,7 +77,7 @@
                             </svg>
                         </a>
 
-                        <a title="Disapprove" onclick="showVoiceForm({{ $user->etudiant->id }})" style="margin-left:5px;">
+                        <!--<a title="Disapprove" onclick="showVoiceForm({{ $user->etudiant->id }})" style="margin-left:5px;">
                             <svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
                                 <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
                                 <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
@@ -92,7 +92,7 @@
                                 <path d="M17 9.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M13 12.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                        </a>
+                        </a>-->
 
                         @endif
                     </td>

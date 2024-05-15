@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diplome as ModelsDiplome;
+use App\Models\EtapeDiplome;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -45,5 +46,29 @@ class Diplome extends Controller
         $diplomes = ModelsDiplome::all();
         $active_tab = 'diplomes'; // Define the value of the active_tab variable
     return view('modules', compact('diplomes', 'active_tab'));
+    }
+
+    public function storeEtapeDiplome(Request $request)
+    {try {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'code_etape_diplome' => 'required|string|max:50',
+            'nom_etape_diplome' => 'required|string|max:500',
+            'id_diplome' => 'required',
+        ]);
+
+        // Create a new TEtapeDiplome instance
+        $etapeDiplome = new EtapeDiplome();
+        $etapeDiplome->code_etape_diplome = $validatedData['code_etape_diplome'];
+        $etapeDiplome->nom_etape_diplome = $validatedData['nom_etape_diplome'];
+        $etapeDiplome->id_diplome = $validatedData['id_diplome'];
+        $etapeDiplome->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Etape Diplome ajoutée avec succès!');
+    } catch (\Exception $e) {
+        // Handle the exception
+        return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'ajout de l\'étape du diplôme. Veuillez réessayer.');
+    }
     }
 }
