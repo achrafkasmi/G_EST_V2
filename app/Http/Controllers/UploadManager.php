@@ -57,6 +57,7 @@ class UploadManager extends Controller
         $stage->image_page_garde = $path . $pagegarde_image_name; // Store image path with .jpg extension
         $stage->titre_rapport = $request->input('textInput');
         $stage->professeur_encadrant_id = $selectedTeacherId;
+    
 
         $stage->save();
 

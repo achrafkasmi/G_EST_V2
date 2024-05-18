@@ -29,6 +29,10 @@ class CreateTDossierStageTable extends Migration
             $table->string('image_page_garde')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('professeur_encadrant_id')->nullable();
+            $table->boolean('is_uploaded_initiation')->default(0);
+            $table->boolean('is_uploaded_technique')->default(0);
+            $table->boolean('is_uploaded_pfe')->default(0);
+            $table->boolean('is_uploaded_professionelle')->default(0);
 
              // Foreign key
             $table->foreign('professeur_encadrant_id')->references('id')->on('t_personnel');

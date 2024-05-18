@@ -46,14 +46,6 @@ class DashboardController extends Controller
 
 
 
-
-
-
-
-
-
-
-
     public function dashteacher()
     {
         $users = User::where('is_uploaded', true)->get();
@@ -65,7 +57,7 @@ class DashboardController extends Controller
         if (!auth()->user()->hasRole('student')) {
             abort(403);
         }
-
+        
         // Call the listPersonnel method to fetch teachers
         $teachers = $this->listPersonnel();
 

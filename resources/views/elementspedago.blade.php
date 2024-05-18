@@ -29,21 +29,34 @@
         <table class="tab" id="myTable">
             <thead>
                 <tr>
-                    <th>code etape</th>
-                    <th>intitule element</th>
+                    <th>Code etape</th>
+                    <th>Intitule element</th>
                     <th>Professeur d'élement</th>
-                    <th>nouvelle liaison</th>
+                    <th>Nouvelle liaison</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($elements as $element)
+                @foreach($elements as $element)
                 <tr>
                     <td>{{ $element->code_etape}}</td>
                     <td>{{ $element->intitule_element }}</td>
-                    <td>personnel should displayed here c</td>
+                    <td>
+                        @php
+                        // Retrieve the newest personnel data for this element
+                        $personnel = App\Models\PersonnelElementPedagoguique::where('id_element_pedago', $element->id)
+                        ->join('t_personnel', 't_personnel.id', '=', 't_personnel_element_pedago.personnel_id')
+                        ->orderBy('t_personnel_element_pedago.created_at', 'desc') // Order by timestamp in descending order
+                        ->limit(1) // Limit the result to one row
+                        ->pluck('t_personnel.nom_personnel'); // Change 'name' to 'nom_personnel'
+                        @endphp
+                        @foreach($personnel as $person)
+                        {{ $person }} <!-- Display the name of the newest personnel -->
+                        @endforeach
+                    </td>
+
                     <td>
                         <select class="form-select form-control small-select teacher-select" data-element-id="{{ $element->id }}" required>
-                            <option selected disabled>Selectionner l'encadrant superviseur</option>
+                            <option selected disabled>Selectionner l'encadrant </option>
                             @foreach($teachers as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
