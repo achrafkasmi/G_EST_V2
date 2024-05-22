@@ -15,32 +15,54 @@ class DashboardController extends Controller
     public function index()
     {
         if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
-            
             $personnelId = auth()->user()->personnel->id;
-    
-           
-            $dossierStages = Stage::where('professeur_encadrant_id', $personnelId)->get();
-    
-            $etudiantIds = $dossierStages->pluck('id_etu')->toArray();
-    
-            // Mapping  l etudiant IDs to corresponding user IDs in the users table
-            $userIds = Etudiant::whereIn('id', $etudiantIds)->pluck('user_id')->toArray();
-    
-            $users = User::whereIn('id', $userIds)->get();
-    
-         
-            $uploadedUsers = $users->filter(function ($user) {
-                return $user->is_uploaded == true;
-            });
-    
-            return view('Dashboards.dashteacher')->with(['users' => $uploadedUsers, 'active_tab' => 'dash']);
+
+            // Eager loading to fetch related models upfront
+            $dossierStages = Stage::with('etudiant.user')->where('professeur_encadrant_id', $personnelId)->get();
+
+            // Collection to store users with their stages
+            $users = collect([]);
+
+            // Group stages by user
+            foreach ($dossierStages as $stage) {
+                $userId = $stage->etudiant->user->id;
+
+                // Check if the user already exists in the collection
+                $userKey = $users->search(function ($user) use ($userId) {
+                    return $user['id'] == $userId;
+                });
+
+                if ($userKey === false) {
+                    $users->push([
+                        'id' => $userId,
+                        'name' => $stage->etudiant->user->name,
+                        'stages' => collect([$stage]), // Initialize a collection for stages
+                    ]);
+                } else {
+                    // If the user already exists, push the stage to their stages collection
+                    $users[$userKey]['stages']->push($stage);
+                }
+            }
+
+           //dd($users);
+
+            return view('Dashboards.dashteacher')->with(['users' => $users, 'active_tab' => 'dash']);
         }
-    
+
         return view('Dashboards.dashboard')->with(['active_tab' => 'dash']);
     }
-    
 
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -57,7 +79,7 @@ class DashboardController extends Controller
         if (!auth()->user()->hasRole('student')) {
             abort(403);
         }
-        
+
         // Call the listPersonnel method to fetch teachers
         $teachers = $this->listPersonnel();
 

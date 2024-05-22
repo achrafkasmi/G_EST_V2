@@ -13,42 +13,47 @@ use Illuminate\Support\Facades\Storage;
 
 class libraryController extends Controller
 {
-    public function recommand($id)
-    {
-        $student = User::where('id', $id)->first()->etudiant;
+    public function recommand($stageId)
+{
+    $stage = Stage::find($stageId);
 
-        if ($student && $student->stage) {
-            // Toggle the state of is_recommanded
-            $student->stage->is_recommanded = !$student->stage->is_recommanded;
-            $student->stage->save();
-
-            // Handle file operations
-            $rapport_pdf_name = 'Rapport-' . $student->apogee . '.pdf';
-            $sourceFilePath = storage_path('app/public/uploads/' . $rapport_pdf_name);
-            $destinationFolder = storage_path('app/public/library/stage/');
-
-            if ($student->stage->is_recommanded && file_exists($sourceFilePath)) {
-                // Move the file to the library folder if recommended
-                Storage::copy('public/uploads/' . $rapport_pdf_name, 'public/library/stage/' . $rapport_pdf_name);
-            } elseif (!$student->stage->is_recommanded && Storage::exists('public/library/stage/' . $rapport_pdf_name)) {
-                // Remove the file from the library folder if not recommended
-                Storage::delete('public/library/stage/' . $rapport_pdf_name);
-            }
-
-            return redirect('/dash');
-        } else {
-            // Handle case where user or student is not found
+    if ($stage) {
+        $student = $stage->etudiant;
+        if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }
+
+        // Toggle the state of is_recommanded
+        $stage->is_recommanded = !$stage->is_recommanded;
+        $stage->save();
+
+        // Handle file operations
+        $rapport_pdf_name = 'Rapport-' . $student->apogee . '.pdf';
+        $sourceFilePath = storage_path('app/public/uploads/' . $rapport_pdf_name);
+        $destinationFolder = storage_path('app/public/library/stage/');
+
+        if ($stage->is_recommanded && file_exists($sourceFilePath)) {
+            // Move the file to the library folder if recommended
+            Storage::copy('public/uploads/' . $rapport_pdf_name, 'public/library/stage/' . $rapport_pdf_name);
+        } elseif (!$stage->is_recommanded && Storage::exists('public/library/stage/' . $rapport_pdf_name)) {
+            // Remove the file from the library folder if not recommended
+            Storage::delete('public/library/stage/' . $rapport_pdf_name);
+        }
+
+        return redirect('/dash');
+    } else {
+        // Handle case where stage is not found
+        return redirect()->back()->with('error', 'Stage not found');
     }
+}
 
-    public function validationstage($id)
+
+
+    public function validationstage($stageId)
     {
-        $student = User::where('id', $id)->first()->etudiant;
+        $stage = Stage::find($stageId);
 
-        if ($student) {
-            $stage = $student->stage;
-
+        if ($stage) {
             // Check if validation_admin is 1, if so, return without performing any actions
             if ($stage->validation_admin == 1) {
                 return redirect('/dash')->with('error', 'Validation admin is enabled. Actions disabled.');

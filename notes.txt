@@ -117,3 +117,79 @@ logo Codepen kitla3 f favicon
 
 
 
+
+
+
+<!-- Voice Form -->
+    <!--<form id="voiceForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="id_etu" id="id_etu_voice">
+
+        <div class="disapprove-popup" id="voicePopup" style="display: none;">
+            <div class="popup-content">
+                <div id="voiceContainer">
+                    <div class="voice-controls-container">
+                        <button type="button" id="startRecordBtn" onclick="startRecording()" class="record-button">
+                            <svg width="45px" height="45px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
+                                <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
+                                <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
+                                <line x1="31.73" y1="57.34" x2="31.73" y2="47.71" stroke-linecap="round" />
+                                <line x1="37.14" y1="57.55" x2="26.43" y2="57.55" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                        <button type="button" id="stopRecordBtn" style="display: none;" onclick="stopRecording()" class="stop-record-button">
+                            <svg width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00bd6b">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M3 10L3 14M7.5 11V13M12 6V18M16.5 3V21M21 10V14" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="divaudio" style="display: flex;">
+                    <audio id="audioPlayer" controls style="display: none;"></audio>
+                    <button id="deleteVoiceBtn" onclick="deleteRecordedVoice(event)" style="display: none;" class="delete-voice-button">
+                        <svg fill="#000000" width="50px" height="50px" viewBox="0 0 24 24" id="delete-alt-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
+                            <path d="M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: rgb(44, 169, 188); stroke-width: 2;"></path>
+                            <path d="M16,7V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                            <path d="M12,11v6M4,7H20M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="popup-buttons">
+                    <button type="button" class="button-cancel" onclick="hideVoicePopup()">Annuler</button>
+                    <button type="button" class="button-send" onclick="submitVoiceForm({{ $user['id'] }})">Envoyer les mises à jours</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    <form id="textForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
+        @csrf
+        <input type="hidden" name="id_etu" id="id_etu_text"> 
+
+        <div class="disapprove-popup" id="textPopup" style="display: none;">
+            <div class="popup-content">
+                <label for="disapproveNote" style="font-weight: bold; color:#000">Notes de l'encadrant:</label>
+                <div id="inputContainer">
+                   
+                    <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
+                </div>
+                <div class="popup-buttons">
+                    <button type="button" class="button-cancel" onclick="hideTextPopup()">Annuler</button>
+                    <button type="button" class="button-send" onclick="submitTextForm({{ $user['id'] }})">
+                        <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>-->
+
+
+
+

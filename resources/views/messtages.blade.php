@@ -101,13 +101,125 @@
   </script>
   @endif
 
-  @if(!auth()->user()->is_uploaded)
-  <div class="container form-container">
-    <h2 class="form-title">Dossier de Stage</h2>
+  @if(auth()->user()->etudiant && auth()->user()->etudiant->stages && auth()->user()->etudiant->stages->isNotEmpty())
+  <div class="containers">
+  @if(!(auth()->user()->etudiant->stages->where('type_dossier', 'Stage d\'initiation')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage professionnel')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage technique')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'PFE')->isNotEmpty()))
+    <div class="mt-3">
+      <button class="btn submit-btn" type="button" data-bs-toggle="collapse" data-bs-target="#uploadForm" aria-expanded="false" aria-controls="uploadForm">
+        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 20L18.5 14M18.5 14L21 16.5M18.5 14L16 16.5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M12 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+    @endif
+    <h1 style="margin-bottom: 1em;font-size: 1em;font-weight: bold;text-align: center; color:aliceblue;">Recapitulatif des informations de stages</h1>
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th scope="col">Type de stage</th>
+          <th scope="col">Dossier de stage</th>
+          <th scope="col">Rapport</th>
+          <th scope="col">Date de délivrance</th>
+          <th scope="col">Modification</th>
+          <th scope="col">Observations</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach(auth()->user()->etudiant->stages as $stage)
+        <tr>
+          <th scope="row">{{ $stage->type_dossier }}</th>
+          @if($stage->type_dossier !== 'PFE')
+          <td data-title="PDF dossier de stage">
+            <a href="{{ Storage::url($stage->dossier_stage) }}" target="_blank">cliquer ici</a>
+          </td>
+          @else
+          <td data-title="PDF du Dossier de stage">----</td>
+          @endif
 
+          <td data-title="PDF du Rapport"><a href="{{ Storage::url($stage->rapport) }}" target="_blank">cliquer ici</a></td>
+          <td data-title="Date de délivrance de dossier" class="date">{{ $stage->created_at }}</td>
+          @if(!$stage->validation_prof)
+          <td data-title="Modification"><a href="{{ route('upload.edit', $stage->id) }}" class="btn btn-danger">Mettre à jour les fichiers</a></td>
+          @else
+          <td data-title="Modification">Votre rapport est approuvé</td>
+          @endif
+          @foreach(auth()->user()->etudiant->notifications as $notification)
+          @endforeach
+          <td data-title="Observation de l'encadrant">
+            @if(false)
+            <p class="font-weight-normal">{{ $notification->text_message }}</p>
+            @endif
+            <p class="font-weight-normal">---</p>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container form-container collapse" id="uploadForm">
+    <h2 class="form-title">Dossier de Stage</h2>
     <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
       @csrf
 
+      <div class="mb-3">
+        <label for="fileType" class="form-label">Type de dossier:</label>
+        <select class="form-select form-control" id="fileType" name="fileType" required>
+          <option selected disabled>Selectionner le type du dossier de stage</option>
+          @if(!auth()->user()->etudiant->stages->where('type_dossier', 'Stage d\'initiation')->isNotEmpty())
+          <option value="Stage d'initiation">Stage d'initiation</option>
+          @endif
+          @if(!auth()->user()->etudiant->stages->where('type_dossier', 'Stage professionnel')->isNotEmpty())
+          <option value="Stage professionnel">Stage professionnel</option>
+          @endif
+          @if(!auth()->user()->etudiant->stages->where('type_dossier', 'Stage technique')->isNotEmpty())
+          <option value="Stage technique">Stage technique</option>
+          @endif
+          @if(!auth()->user()->etudiant->stages->where('type_dossier', 'PFE')->isNotEmpty())
+          <option value="PFE">PFE</option>
+          @endif
+        </select>
+      </div>
+
+      <div class="mb-3" id="stageFileInput">
+        <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
+        @if(old('fileType') !== 'PFE')
+        <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100" />
+        @endif
+      </div>
+
+      <div class="mb-3">
+        <label for="rapportFile" class="form-label">Rapport en PDF:</label>
+        <input type="file" id="rapportFile" name="rapportFile" class="dropify" data-max-file-size="7M" data-height="100" />
+      </div>
+
+      <div class="mb-3">
+        <label for="textInput" class="form-label">Titre Du Rapport:</label>
+        <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
+      </div>
+
+      <div class="mb-3">
+        <label for="teacherSelect" class="form-label">Professeur encadrant:</label>
+        <select class="form-select form-control" id="teacherSelect" name="teacherSelect" required>
+          <option selected disabled>Selectionner l'encadrant superviseur</option>
+          @foreach($teachers as $id => $name)
+          <option value="{{ $id }}">{{ $name }}</option>
+          @endforeach
+        </select>
+      </div>
+
+      <div class="d-grid gap-2 mt-3">
+        <button class="btn submit-btn" type="submit">Envoyer</button>
+      </div>
+    </form>
+  </div>
+
+  @else
+  <div class="container form-container">
+    <h2 class="form-title">Dossier de Stage</h2>
+    <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
+      @csrf
 
       <div class="mb-3">
         <label for="fileType" class="form-label">Type de dossier:</label>
@@ -151,63 +263,8 @@
         <button class="btn submit-btn" type="submit">Envoyer</button>
       </div>
     </form>
-
   </div>
-
-  @else
-
-  <div class="containers">
-    <h1 style="margin-bottom: 1em;font-size: 1em;font-weight: bold;text-align: center; color:aliceblue;">recapitulatif des informations de stages</h1>
-    <table class="responsive-table">
-      <thead>
-        <tr>
-          <th scope="col">type de stage</th>
-          <!--@if(auth()->user()->etudiant->stage->type_dossier !== 'PFE')
-          <th scope="col">dossier de stage</th>
-          @else
-          <th scope="col">pas de dossier</th>
-          @endif-->
-          <th scope="col">dossier de stage</th>
-          <th scope="col">rapport</th>
-          <th scope="col">date delivrence</th>
-          <th scope="col">modification</th>
-          <th scope="col">observations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">{{ auth()->user()->etudiant->stage->type_dossier }}</th>
-          @if(auth()->user()->etudiant->stage->type_dossier !== 'PFE')
-          <td data-title="PDF dossier de stage">
-            <a href="{{ Storage::url(auth()->user()->etudiant->stage->dossier_stage) }}" target="_blank">cliquer ici </a>
-          </td>
-          @else
-          <td data-title="PDF du Dossier de stage">----</td>
-          @endif
-
-          <td data-title="PDF du Rapport"><a href="{{ Storage::url(auth()->user()->etudiant->stage->rapport) }}" target="_blank">cliquer ici </a></td>
-          <td data-title="date de delivrence de dossier" class="date">{{ auth()->user()->etudiant->stage->created_at}}</td>
-          @if(!auth()->user()->etudiant->stage->validation_prof)
-          <td data-title="modification"><a href="{{ route('upload.edit', auth()->user()->id) }}" class="btn btn-danger">Mettre à jour les fichiers</a></td>
-          @else
-          <td data-title="Modification">Votre rapport est approuvé</td>
-          @endif
-          @foreach(auth()->user()->etudiant->notifications as $notification)
-          @endforeach
-          <td data-title="observation de l'encadrant">
-            @if(false)
-            <p class="font-weight-normal">{{ $notification->text_message }}</p>
-            @endif
-            <p class="font-weight-normal">---</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
   @endif
-
-
 </div>
 <script>
   $(document).ready(function() {

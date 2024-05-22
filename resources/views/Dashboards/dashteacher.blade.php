@@ -22,12 +22,14 @@
         </div>
 
         <div class="chart-container-wrapper">
-            <div class="chart-container">
-                <div class="chart-info-wrapper">
-                    <h2>Attendance</h2>
-                    <span>Commencer</span>
+            <a href="{{ url('/attendance') }}" style="text-decoration: none; color: inherit;">
+                <div class="chart-container">
+                    <div class="chart-info-wrapper">
+                        <h2>Attendance</h2>
+                        <span>Commencer</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="chart-container-wrapper">
             <div class="chart-container">
@@ -41,7 +43,6 @@
 
     <div class="datatabcontainer mt-4">
         <table class="tab" id="myTable">
-
             <thead>
                 <tr>
                     <th>Nom complet</th>
@@ -53,59 +54,40 @@
                 </tr>
             </thead>
             <tbody>
-
                 @foreach($users as $user)
+                @foreach($user['stages'] as $stage)
                 <tr>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->etudiant->stage->type_dossier}}</td>
-                    <td><a href="{{ Storage::url($user->etudiant->stage->dossier_stage)}}" target="_blank">Cliquez ici</a></td>
-                    <td><a href="{{ Storage::url($user->etudiant->stage->rapport) }}" target="_blank">Cliquez ici</a></td>
+                    <td>{{ $user['name'] }}</td>
+                    <td>{{ $stage->type_dossier }}</td>
+                    <td><a href="{{ Storage::url($stage->dossier_stage) }}" target="_blank">Cliquez ici</a></td>
+                    <td><a href="{{ Storage::url($stage->rapport) }}" target="_blank">Cliquez ici</a></td>
                     <td>
-                        @if ($user->etudiant->stage->validation_prof)
-                        <a href="{{ route('student.validation', $user->id) }}">
+                        @if ($stage->validation_prof)
+                        <a href="{{ route('student.validation', $stage->id) }}">
                             <svg width="24px" height="24px" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 48 48">
                                 <circle fill="#4CAF50" cx="24" cy="24" r="21" />
                                 <polygon fill="#CCFF90" points="34.6,14.6 21,28.2 15.4,22.6 12.6,25.4 21,33.8 37.4,17.4" />
                             </svg>
                         </a>
-
                         @else
-                        <a href="{{ route('student.validation', $user->id) }}" title="Approve" onclick="approveStage(1)">
+                        <a href="{{ route('student.validation', $stage->id) }}" title="Approve" onclick="approveStage(1)">
                             <svg class="approve" width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                                <path class="approve-fill" fill="{{ auth()->check() ? 'black' : 'yellow' }}" d="M26,24c-0.553,0-1,0.448-1,1v4H7V3h10v7c0,0.552,0.447,1,1,1h7v4c0,0.552,0.447,1,1,1s1-0.448,1-1v-4.903    c0.003-0.033,0.02-0.063,0.02-0.097c0-0.337-0.166-0.635-0.421-0.816l-7.892-7.891c-0.086-0.085-0.187-0.147-0.292-0.195    c-0.031-0.015-0.063-0.023-0.097-0.034c-0.082-0.028-0.166-0.045-0.253-0.05C18.043,1.012,18.022,1,18,1H6C5.447,1,5,1.448,5,2v28    c0,0.552,0.447,1,1,1h20c0.553,0,1-0.448,1-1v-5C27,24.448,26.553,24,26,24z M19,9V4.414L23.586,9H19z" />
-                                <path class="approve-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M30.73,15.317c-0.379-0.404-1.01-0.424-1.414-0.047l-10.004,9.36l-4.629-4.332c-0.404-0.378-1.036-0.357-1.414,0.047    c-0.377,0.403-0.356,1.036,0.047,1.413l5.313,4.971c0.192,0.18,0.438,0.27,0.684,0.27s0.491-0.09,0.684-0.27l10.688-10    C31.087,16.353,31.107,15.72,30.73,15.317z" />
+                                <path class="approve-fill" fill="{{ auth()->check() ? 'black' : 'yellow' }}" d="M26,24c-0.553,0-1,0.448-1,1v4H7V3h10v7c0,0.552,0.447,1,1,1h7v4c0,0.552,0.447,1,1,1s1-0.448,1-1v-4.903 c0.003-0.033,0.02-0.063,0.02-0.097c0-0.337-0.166-0.635-0.421-0.816l-7.892-7.891c-0.086-0.085-0.187-0.147-0.292-0.195 c-0.031-0.015-0.063-0.023-0.097-0.034c-0.082-0.028-0.166-0.045-0.253-0.05C18.043,1.012,18.022,1,18,1H6C5.447,1,5,1.448,5,2v28 c0,0.552,0.447,1,1,1h20c0.553,0,1-0.448,1-1v-5C27,24.448,26.553,24,26,24z M19,9V4.414L23.586,9H19z" />
+                                <path class="approve-fill" fill="{{ auth()->check() ? 'green' : 'yellow' }}" d="M30.73,15.317c-0.379-0.404-1.01-0.424-1.414-0.047l-10.004,9.36l-4.629-4.332c-0.404-0.378-1.036-0.357-1.414,0.047 c-0.377,0.403-0.356,1.036,0.047,1.413l5.313,4.971c0.192,0.18,0.438,0.27,0.684,0.27s0.491-0.09,0.684-0.27l10.688-10 C31.087,16.353,31.107,15.72,30.73,15.317z" />
                             </svg>
                         </a>
-
-                        <!--<a title="Disapprove" onclick="showVoiceForm({{ $user->etudiant->id }})" style="margin-left:5px;">
-                            <svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
-                                <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
-                                <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
-                                <line x1="31.73" y1="57.34" x2="31.73" y2="47.71" stroke-linecap="round" />
-                                <line x1="37.14" y1="57.55" x2="26.43" y2="57.55" stroke-linecap="round" />
-                            </svg>
-                        </a>
-
-                        <a title="Disapprove" onclick="showTextForm({{ $user->etudiant->id }})" style="margin-left:5px;">
-                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.99951 16.55V19.9C4.99922 20.3102 5.11905 20.7114 5.34418 21.0542C5.56931 21.397 5.88994 21.6665 6.26642 21.8292C6.6429 21.9919 7.05875 22.0408 7.46271 21.9698C7.86666 21.8989 8.24103 21.7113 8.53955 21.4301L11.1495 18.9701H12.0195C17.5395 18.9701 22.0195 15.1701 22.0195 10.4701C22.0195 5.77009 17.5395 1.97009 12.0195 1.97009C6.49953 1.97009 2.01953 5.78009 2.01953 10.4701C2.042 11.6389 2.32261 12.7882 2.84125 13.8358C3.35989 14.8835 4.10373 15.8035 5.01953 16.53L4.99951 16.55Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M17 9.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M13 12.5H7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </a>-->
-
                         @endif
                     </td>
                     <td>
-                        @if ($user->etudiant->stage->is_recommanded && $user->etudiant->stage->validation_prof)
-                        <a href="{{ route('student.recomandation', $user->id) }}">
+                        @if ($stage->is_recommanded && $stage->validation_prof)
+                        <a href="{{ route('student.recomandation', $stage->id) }}">
                             <svg width="24px" height="24px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16.5 9.32001H7.5C6.37366 9.25709 5.2682 9.64244 4.42505 10.3919C3.5819 11.1414 3.06958 12.1941 3 13.32V18.32C3.06958 19.446 3.5819 20.4986 4.42505 21.2481C5.2682 21.9976 6.37366 22.3829 7.5 22.32H16.5C17.6263 22.3829 18.7318 21.9976 19.575 21.2481C20.4181 20.4986 20.9304 19.446 21 18.32V13.32C20.9304 12.1941 20.4181 11.1414 19.575 10.3919C18.7318 9.64244 17.6263 9.25709 16.5 9.32001Z" stroke="green" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M17 9.32001V7.32001C17 5.99392 16.4732 4.72217 15.5355 3.78448C14.5978 2.8468 13.3261 2.32001 12 2.32001" stroke="green" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </a>
-                        @elseif ($user->etudiant->stage->validation_prof)
-                        <a href="{{ route('student.recomandation', $user->id) }}">
+                        @elseif ($stage->validation_prof)
+                        <a href="{{ route('student.recomandation', $stage->id) }}">
                             <svg width="24px" height="24px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16.5 9.32001H7.5C6.37366 9.25709 5.26818 9.64244 4.42503 10.3919C3.58188 11.1414 3.06958 12.1941 3 13.32V18.32C3.06958 19.446 3.58188 20.4986 4.42503 21.2481C5.26818 21.9976 6.37366 22.3829 7.5 22.32H16.5C17.6263 22.3829 18.7318 21.9976 19.575 21.2481C20.4181 20.4986 20.9304 19.446 21 18.32V13.32C20.9304 12.1941 20.4181 11.1414 19.575 10.3919C18.7318 9.64244 17.6263 9.25709 16.5 9.32001Z" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M17 9.32001V7.32001C17 5.99392 16.4732 4.72217 15.5355 3.78448C14.5979 2.8468 13.3261 2.32001 12 2.32001C10.6739 2.32001 9.40214 2.8468 8.46446 3.78448C7.52678 4.72217 7 5.99392 7 7.32001V9.32001" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -119,81 +101,13 @@
                         @endif
                     </td>
                 </tr>
-                <!-- Voice Form -->
-                <form id="voiceForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id_etu" id="id_etu_voice"> <!-- Add this hidden input field -->
-
-                    <div class="disapprove-popup" id="voicePopup" style="display: none;">
-                        <div class="popup-content">
-                            <div id="voiceContainer">
-                                <div class="voice-controls-container">
-                                    <button type="button" id="startRecordBtn" onclick="startRecording()" class="record-button">
-                                        <svg width="45px" height="45px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="black" fill="none">
-                                            <path d="M47.67,28.43v3.38a15.67,15.67,0,0,1-31.34,0V28.43" stroke-linecap="round" />
-                                            <rect x="22.51" y="6.45" width="18.44" height="34.22" rx="8.89" stroke-linecap="round" />
-                                            <line x1="31.73" y1="57.34" x2="31.73" y2="47.71" stroke-linecap="round" />
-                                            <line x1="37.14" y1="57.55" x2="26.43" y2="57.55" stroke-linecap="round" />
-                                        </svg>
-                                    </button>
-                                    <button type="button" id="stopRecordBtn" style="display: none;" onclick="stopRecording()" class="stop-record-button">
-                                        <svg width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00bd6b">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path d="M3 10L3 14M7.5 11V13M12 6V18M16.5 3V21M21 10V14" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </g>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="divaudio" style="display: flex;">
-                                <audio id="audioPlayer" controls style="display: none;"></audio>
-                                <button id="deleteVoiceBtn" onclick="deleteRecordedVoice(event)" style="display: none;" class="delete-voice-button">
-                                    <svg fill="#000000" width="50px" height="50px" viewBox="0 0 24 24" id="delete-alt-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
-                                        <path d="M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: rgb(44, 169, 188); stroke-width: 2;"></path>
-                                        <path d="M16,7V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
-                                        <path d="M12,11v6M4,7H20M17.07,20.07,18,7H6l.93,13.07a1,1,0,0,0,1,.93h8.14A1,1,0,0,0,17.07,20.07Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
-                                    </svg>
-                                </button>
-                            </div>
-
-
-                            <div class="popup-buttons">
-                                <button type="button" class="button-cancel" onclick="hideVoicePopup()">Annuler</button>
-                                <button type="button" class="button-send" onclick="submitVoiceForm({{ $user->etudiant->id }})">Envoyer les mises à jours</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Text Form -->
-                <form id="textForm" method="POST" action="{{ route('ADD-RAPPORT-COMMENT') }}">
-                    @csrf
-                    <input type="hidden" name="id_etu" id="id_etu_text"> <!-- Add this hidden input field -->
-
-                    <div class="disapprove-popup" id="textPopup" style="display: none;">
-                        <div class="popup-content">
-                            <label for="disapproveNote" style="font-weight: bold; color:#000">Notes de l'encadrant:</label>
-                            <div id="inputContainer">
-                                <!-- Text Input -->
-                                <textarea name="notification" id="disapproveNote" class="popup-input" rows="4"></textarea>
-                            </div>
-                            <div class="popup-buttons">
-                                <button type="button" class="button-cancel" onclick="hideTextPopup()">Annuler</button>
-                                <button type="button" class="button-send" onclick="submitTextForm({{ $user->etudiant->id }})">
-                                    <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                @endforeach
                 @endforeach
             </tbody>
         </table>
     </div>
+    
+
 </div>
 
 

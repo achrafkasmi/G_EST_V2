@@ -12,6 +12,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ElementController;
 use App\Http\Controllers\ElementPedagogiqueController;
 use App\Http\Controllers\PersonnelElementPedagoguiqueController;
+use App\Http\Controllers\AttendanceController;
 
 
 
@@ -81,7 +82,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
 
-    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
+    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');//
+    Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');//
+
 
     Route::get('/modules', function () {
         $active_tab = 'modules';
@@ -122,3 +125,15 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
+
+
+
+
+
+// Route to show the attendance form
+Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
+
+// Route to handle the form submission and generate the QR code
+Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
+
+Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');

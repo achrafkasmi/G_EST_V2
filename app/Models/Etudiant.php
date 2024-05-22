@@ -34,4 +34,8 @@ class Etudiant extends Model
    public function etapes(){
     return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
    }
+   public function stages()
+    {
+        return $this->hasMany(Stage::class, 'id_etu');
+    }
 }

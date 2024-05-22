@@ -46,7 +46,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    
+
+
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class);
@@ -57,20 +62,20 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    
-    public function etudiant(){
+
+    public function etudiant()
+    {
 
         return $this->hasOne(Etudiant::class, "user_id");
-        
     }
 
-    public function personnel(){
+    public function personnel()
+    {
 
         return $this->hasOne(Personnel::class, "user_id");
-        
     }
 
-  
+
     public function dossierStage()
     {
         return $this->hasMany(Stage::class, 'professeur_encadrant_id');
