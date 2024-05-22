@@ -3,15 +3,17 @@
 @section('app-mid')
 
 @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: '{{ session('success') }}',
-            });
-        </script>
-        @endif
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: '{{ session('
+        success ') }}',
+    });
+</script>
+@endif
 <div class="app-main">
+    @include('tiles.actions')
     <div class="containerf form-container bg-light-gray">
         <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf

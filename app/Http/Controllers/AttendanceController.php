@@ -51,17 +51,30 @@ class AttendanceController extends Controller
     {
         // Check if the user is logged in
         if (!auth()->check()) {
-            // Return a message instructing the user to log in
             return response()->json(['message' => 'Please log in to mark your attendance']);
         }
-    
+
         // Get the logged-in user's ID
         $studentId = auth()->user()->id;
-    
+
         // Extract data from the request
         $qrData = $request->input('qr_data');
-       
-           
+        $macAddress = $request->input('mac_address'); // Ensure you send this from the client side
+
+        // Check if the same MAC address has already been used for the same QR code data
+        $existingAttendance = Attendance::where('id_local', $qrData['id_local'])
+            ->where('id_personnel', $qrData['id_personnel'])
+            ->where('id_element_pedago', $qrData['id_element_pedago'])
+            ->where('annee_uni', $qrData['annee_uni'])
+            ->where('heure_debut_séance', $qrData['heure_debut_seance'])
+            ->where('heure_fin_séance', $qrData['heure_fin_seance'])
+            ->where('mac_address', $macAddress)
+            ->first();
+
+        if ($existingAttendance) {
+            return response()->json(['message' => 'This device has already been used to mark attendance for this session.']);
+        }
+
         // Mark the student as present in the attendance table
         Attendance::updateOrCreate(
             [
@@ -73,11 +86,12 @@ class AttendanceController extends Controller
                 'heure_debut_séance' => $qrData['heure_debut_seance'],
                 'heure_fin_séance' => $qrData['heure_fin_seance'],
             ],
-            ['is_present' => true]
+            ['is_present' => true, 'mac_address' => $macAddress]
         );
-    
+
         // Return success response
         return response()->json(['message' => 'Attendance marked successfully']);
     }
-    
 }
+//imei 10 .12 
+//ADRESSE MAC ET ADRESSE IP A RECUPERER POUR COMPARER SI UN UTILISATEUR TENTE DE VALIDER L ABSCENCE A SON COLLEGU

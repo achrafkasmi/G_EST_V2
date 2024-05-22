@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('t_attendance', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_etu')->nullable();
+            $table->string('mac_address')->nullable();
             $table->unsignedBigInteger('id_local')->nullable();
             $table->unsignedBigInteger('id_personnel')->nullable();
             $table->unsignedBigInteger('id_element_pedago');

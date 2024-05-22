@@ -82,8 +82,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
 
-    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');//
-    Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');//
+    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit'); //
+    Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit'); //
 
 
     Route::get('/modules', function () {
@@ -104,20 +104,35 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'fetchData'])->name('elementspedago');
 
 
-    Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class,'voiceFormUrl'])->name('VOICE-FORM_URL');
+    Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class, 'voiceFormUrl'])->name('VOICE-FORM_URL');
 
     Route::post('/store-etape-diplome', [Diplome::class, 'storeEtapeDiplome'])->name('store-etape-diplome');
-   
-   
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+
+
+
     Route::post('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'store'])->name('store-module-etape');
     Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
 
+
+    Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
+
+    Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
+
+    Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
+
+
+    Route::get('/manuallibrary', function () {
+        $active_tab = 'manuallibrary';
+        return view('manuallibrary', compact('active_tab'));
+    })->name('manuallibrary');
+
+
+    Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -125,15 +140,3 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
-
-
-
-
-
-// Route to show the attendance form
-Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
-
-// Route to handle the form submission and generate the QR code
-Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
-
-Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');

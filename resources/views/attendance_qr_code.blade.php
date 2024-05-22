@@ -3,7 +3,6 @@
 
 <div class="app-main">
     @include('tiles.actions')
-
     
         <h1>Generated QR Code</h1>
         <div class="qr-code-container">

@@ -22,6 +22,7 @@ class Attendance extends Model
         'heure_fin_séance',
         'is_present',
         'is_justified',
+        'mac_address'
     ];
 
     // Define relationships if any
