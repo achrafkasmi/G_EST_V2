@@ -16,18 +16,27 @@
 
     @include('tiles.actions')
     @if(session('success'))
-  <script>
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: '{{session('
-      success ')}}',
-    });
-  </script>
-  @endif
+<script>
+  Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+  });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+  Swal.fire({
+    icon: 'error',
+    title: 'Error!',
+    text: '{{ session('error') }}',
+  });
+</script>
+@endif
 
     <div class="container form-container">
-        <div class="form-title">Submit Dossier Stage</div>
+        <div class="form-title">Ajout Manuel des Dossiers de Stage</div>
         <form action="{{ route('dossier-stage.manualstore') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">

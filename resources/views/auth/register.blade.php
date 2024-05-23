@@ -17,7 +17,7 @@
     <div class="containerf form-container bg-light-gray">
         <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf
-            <h2 class="form-title text-white">Add User</h2>
+            <h2 class="form-title text-white">Ajout d'Utilisateurs</h2>
             <div class="row mb-3">
                 <label for="name" class="col-md-4 col-form-label text-md-end text-white">{{ __('Name') }}</label>
 
@@ -72,7 +72,7 @@
                 <label for="role" class="col-md-4 col-form-label text-md-end text-white">{{ __('Role') }}</label>
                 <div class="col-md-6">
                     <select id="role" class="form-select" name="role" required>
-                        <option value="">Select Role</option>
+                        <option value="">Selection de Rôle</option>
                         <option value="admin">Admin</option>
                         <option value="teacher">Teacher</option>
                         <option value="student">Student</option>
@@ -103,9 +103,9 @@
         <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data"">
             @csrf
             <div class=" excelinput mb-5">
-            <h2 class="form-title text-white">Massive Add</h2>
+            <h2 class="form-title text-white">Addition Masse</h2>
             <input class="form-control" type="file" id="excel_file" name="excel_file">
-            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Upload</button>
+            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Go</button>
     </div>
 
     </form>

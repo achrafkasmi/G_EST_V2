@@ -129,36 +129,42 @@ class UploadManager extends Controller
 
 
     public function manualstore(Request $request)
-{
-    $request->validate([
-        'annee_universitaire' => 'required|string|max:9',
-        'rapport' => 'required|file|mimes:pdf',
-        'titre_rapport' => 'required|string',
-        'uploaded_type' => 'required|in:is_uploaded_initiation,is_uploaded_technique,is_uploaded_pfe,is_uploaded_professionelle',
-    ]);
-
-    // Upload rapport PDF
-    $rapportPath = $request->file('rapport')->store('rapports');
-
-    // Extract first page of rapport PDF and save as JPG image
-    $pdf = new Pdf($request->file('rapport'));
-    $pdf->setPage(1);
-    $pdf->setResolution(300);
-    $pdf->setOutputFormat('jpg');
-    $imagePath = $pdf->saveImage(storage_path("app/public/{$rapportPath}_page1.jpg"));
-
-    // Create DossierStage instance and save data
-    $dossierStage = new Stage();
-    $dossierStage->annee_universitaire = $request->annee_universitaire;
-    $dossierStage->titre_rapport = $request->titre_rapport;
-    $dossierStage->{$request->uploaded_type} = 1;
-    $dossierStage->rapport = $rapportPath;
-    $dossierStage->image_page_garde = "{$rapportPath}_page1.jpg";
-    $dossierStage->is_recommanded = 1; // Set is_recommanded to 1
-    $dossierStage->save();
-
-    return redirect()->back()->with('success', 'Dossier stage submitted successfully.');
-}
+    {
+       
+    
+        try {
+             // Validate the request data
+        $request->validate([
+            'annee_universitaire' => 'required|string|max:9',
+            'rapport' => 'required|file|mimes:pdf',
+            'titre_rapport' => 'required|string',
+            'uploaded_type' => 'required|in:is_uploaded_initiation,is_uploaded_technique,is_uploaded_pfe,is_uploaded_professionelle',
+        ]);
+            // Upload rapport PDF
+            $rapportPath = $request->file('rapport')->store('rapports');
+    
+            // Extract first page of rapport PDF and save as JPG image
+            $pdf = new \Spatie\PdfToImage\Pdf($request->file('rapport')->getPathname());
+            $pdf->setPage(1);
+            $pdf->setResolution(300);
+            $imagePath = "public/{$rapportPath}_page1.jpg";
+            $pdf->saveImage(storage_path("app/{$imagePath}"));
+    
+            // Create DossierStage instance and save data
+            $dossierStage = new Stage();
+            $dossierStage->annee_universitaire = $request->annee_universitaire;
+            $dossierStage->titre_rapport = $request->titre_rapport;
+            $dossierStage->{$request->uploaded_type} = 1;
+            $dossierStage->rapport = $rapportPath;
+            $dossierStage->image_page_garde = "{$rapportPath}_page1.jpg";
+            $dossierStage->is_recommanded = 1; // Set is_recommanded to 1
+            $dossierStage->save();
+    
+            return redirect()->back()->with('success', 'Dossier de stage stocké à la bibliothèque.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
+        }
+    }
 
 
 }
