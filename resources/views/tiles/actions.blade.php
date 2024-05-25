@@ -1,5 +1,5 @@
 <div class="main-header-line">
-    <h4 class="header-ds"><b>Ecole Supérieure de Technologie Fkih Ben Salah-CURSUS V.0 </b></h4>
+    <h4 class="header-ds"><b>Ecole Supérieure de Technologie Fkih Ben Salah-CURSUS V.0 Beta</b></h4>
     <div class="action-buttons">
         <button class="open-right-area">
             <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#d3dede" stroke="#d3dede">
@@ -32,9 +32,20 @@
 
 <style>
     .header-ds {
+    font-size: 1.6vw;
+    color: whitesmoke;
+    font-family: Arial, sans-serif;
+}
 
-        size: 50px;
-        color: whitesmoke;
-        font: 1.5em arial;
+@media (max-width: 768px) {
+    .header-ds {
+        font-size: 3vw;
     }
+}
+
+@media (max-width: 576px) {
+    .header-ds {
+        font-size: 4vw;
+    }
+}
 </style>

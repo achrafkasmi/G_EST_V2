@@ -9,17 +9,17 @@
       <div class="chart-container">
         <div class="chart-info-wrapper">
           <h2>taux d'assiduité</h2>
-          <span>15 h</span>
+          <span>--h</span>
         </div>
         <div class="chart-svg">
           <svg viewBox="0 0 36 36" class="circular-chart pink">
             <path class="circle-bg" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <path class="circle" stroke-dasharray="30, 100" d="M18 2.0845
+            <path class="circle" stroke-dasharray="100, 100" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <text x="18" y="20.35" class="percentage">90%</text>
+            <text x="18" y="20.35" class="percentage">--%</text>
           </svg>
         </div>
       </div>
@@ -28,17 +28,17 @@
       <div class="chart-container">
         <div class="chart-info-wrapper">
           <h2>Rank</h2>
-          <span>2nd</span>
+          <span>--</span>
         </div>
         <div class="chart-svg">
           <svg viewBox="0 0 36 36" class="circular-chart blue">
             <path class="circle-bg" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <path class="circle" stroke-dasharray="60, 100" d="M18 2.0845
+            <path class="circle" stroke-dasharray="100, 100" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <text x="18" y="20.35" class="percentage">60%</text>
+            <text x="18" y="20.35" class="percentage">--%</text>
           </svg>
         </div>
       </div>
@@ -47,17 +47,17 @@
       <div class="chart-container">
         <div class="chart-info-wrapper">
           <h2>cursus</h2>
-          <span>24/28 module</span>
+          <span>--/--</span>
         </div>
         <div class="chart-svg">
           <svg viewBox="0 0 36 36" class="circular-chart orange">
             <path class="circle-bg" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <path class="circle" stroke-dasharray="90, 100" d="M18 2.0845
+            <path class="circle" stroke-dasharray="100, 100" d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <text x="18" y="20.35" class="percentage">90%</text>
+            <text x="18" y="20.35" class="percentage">--%</text>
           </svg>
         </div>
       </div>
@@ -65,7 +65,7 @@
   </div>
 
   <div class="program-container" id="program-container">
-    <h1>Nouveautés</h1>
+    <h4 class="header-ds"style="color:grey;"><b>Nouveautés</b></h4>
   </div>
 
   @else

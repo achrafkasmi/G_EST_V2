@@ -31,7 +31,9 @@
   --draft-icon: #e9780e;
 }
 
-body {
+body,html{
+  /*margin: 0;
+  padding: 0;*/
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -887,6 +889,8 @@ button {
     font-size: larger;
   }
 }
+
+
 
 
 
@@ -2045,21 +2049,14 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 
 /*edocument.blade*/
 
-
-@media screen and (min-width: 750px) {
-  .search-container {
-    display: flex;
-  }
-}
-
 .search-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 60px;
-  margin-right: 10px;
-  margin-left: 30px;
+  margin: 0 auto; /* Center the container horizontally */
   margin-bottom: 20px;
+  padding: 0 10px; /* Add padding to adjust for smaller screens */
 }
 
 #searchInput {
@@ -2070,7 +2067,8 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
   outline: none;
   background-color: #fff;
   transition: transform var(--in-out-duration);
-  width: 300px;
+  width: 100%; /* Make the input fill the container */
+  max-width: 250px; /* Limit the maximum width */
 }
 
 .search-container:hover #searchInput {
@@ -2108,7 +2106,7 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 
 .document-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Use auto-fit to adjust columns based on available width */
   gap: 30px;
 }
 
@@ -2149,6 +2147,13 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 
 .card:hover {
   transform: scale(1.05);
+}
+
+@media screen and (min-width: 750px) {
+  .search-container {
+    margin-left: 30px;
+    margin-right: 10px;
+  }
 }
 
 

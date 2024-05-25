@@ -131,8 +131,10 @@ Route::middleware(['auth'])->group(function () {
         return view('manuallibrary', compact('active_tab'));
     })->name('manuallibrary');
 
-
     Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
+
+    Route::get('/store-scanned-attendance', [AttendanceController::class, 'storeScannedAttendance'])->name('storeScannedAttendance');
+
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -140,3 +142,5 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
+
+

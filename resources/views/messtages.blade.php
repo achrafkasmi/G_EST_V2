@@ -91,15 +91,24 @@
   @include('tiles.actions')
 
   @if(session('success'))
-  <script>
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: '{{session('
-      success ')}}',
-    });
-  </script>
-  @endif
+<script>
+  Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+  });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+  Swal.fire({
+    icon: 'error',
+    title: 'Error!',
+    text: '{{ session('error') }}',
+  });
+</script>
+@endif
 
   @if(auth()->user()->etudiant && auth()->user()->etudiant->stages && auth()->user()->etudiant->stages->isNotEmpty())
   <div class="containers">
@@ -268,10 +277,10 @@
 </div>
 <script>
   $(document).ready(function() {
-    // Initialize Dropify on stageFile input
+    // Dropify on stageFile input
     $('#stageFile').dropify();
 
-    // Initialize Dropify on rapportFile input
+    // Dropify on rapportFile input
     $('#rapportFile').dropify();
 
   });

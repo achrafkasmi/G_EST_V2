@@ -22,6 +22,7 @@ class UploadManager extends Controller
     {
         $user = auth()->user();
 
+        try {
         $request->validate([
             'fileType'     => 'required',
             'stageFile'    => $request->input('fileType') !== 'PFE' ? 'required|mimes:pdf|max:7168' : 'nullable|mimes:pdf|max:7168',
@@ -79,6 +80,9 @@ class UploadManager extends Controller
         $request->session()->flash('success', 'Files were uploaded successfully!');
 
         return redirect()->back();
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
+    }
     }
 
 

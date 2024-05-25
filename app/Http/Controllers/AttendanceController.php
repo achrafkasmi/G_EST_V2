@@ -12,11 +12,11 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class AttendanceController extends Controller
 {
 
+
     public function showAttendanceForm()
     {
         $active_tab = 'attendance';
 
-        // Fetch the necessary data
         $locals = Local::pluck('nom_locaux', 'id');
         $personnels = Personnel::pluck('nom_personnel', 'id');
         $elementsPedago = ElementPedagogique::pluck('intitule_element', 'id');
@@ -92,6 +92,34 @@ class AttendanceController extends Controller
         // Return success response
         return response()->json(['message' => 'Attendance marked successfully']);
     }
+
+
+
+
+    public function storeScannedAttendance(Request $request)
+{
+    // Validate the QR data
+    $request->validate([
+        'qr_data' => 'required|string',
+    ]);
+
+    $qrData = json_decode($request->input('qr_data'), true);
+
+    // Mark the attendance based on the QR data
+    try {
+        Attendance::create([
+            'id_local' => $qrData['id_local'],
+            'id_personnel' => $qrData['id_personnel'],
+            'id_element_pedago' => $qrData['id_element_pedago'],
+            'annee_uni' => $qrData['annee_uni'],
+            'heure_debut_séance' => $qrData['heure_debut_seance'],
+            'heure_fin_séance' => $qrData['heure_fin_seance'],
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Attendance recorded successfully!']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Failed to record attendance.']);
+    }
 }
-//imei 10 .12 
-//ADRESSE MAC ET ADRESSE IP A RECUPERER POUR COMPARER SI UN UTILISATEUR TENTE DE VALIDER L ABSCENCE A SON COLLEGU
+
+}

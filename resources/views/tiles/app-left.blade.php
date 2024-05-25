@@ -11,29 +11,35 @@
   </div>
   <ul class="nav-list">
     <li class="nav-list-item  @if($active_tab === 'dash') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/dash">
+      <a class="nav-list-link" href="{{ route('dashboard') }}">
         <img src="/dashboard.PNG" alt="Acceuil" width="28" height="28" style="margin-right: 10px;" />
         Acceuil
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'library') active @endif">
-      <a class="pop-cont nav-list-link" href="http://127.0.0.1:8000/library">
+      <a class="nav-list-link" href="{{ route('fetch.library') }}">
         <img src="/bibliotheque.PNG" alt="Bibliotheque" width="28" height="28" style="margin-right: 10px;" />
         Bibliotheque
-        <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     @if(auth()->user() && auth()->user()->hasRole('teacher')|| auth()->user()->hasRole('student'))
     <li class="nav-list-item @if($active_tab == 'documents') active @endif">
-      <a class=" nav-list-link" href="http://127.0.0.1:8000/documents">
+      <a class=" nav-list-link" href="{{ route('documents') }}">
         <img src="/e-doc.PNG" alt="e-documentys" width="28" height="28" style="margin-right: 10px;" />
         E-documents
       </a>
     </li>
     @endif
     @if(auth()->user() && auth()->user()->hasRole('student'))
+    <li class="nav-list-item">
+      <a class="pop-cont nav-list-link" href="#">
+        <img src="/qr-code-icon.svg" alt="Attendance" width="28" height="28" style="margin-right: 10px;" />
+        Attendance
+        <span class="pop-up">le Service d'attendance est en cours de développement...</span>
+      </a>
+    </li>
     <li class="nav-list-item @if($active_tab == 'messtages') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/messtages">
+      <a class="nav-list-link" href="{{ route('messtages') }}">
         <img src="/documentsdestage.PNG" alt="Dossier de Stage" width="28" height="28" style="margin-right: 10px;" />
         Dossier de Stage
       </a>
@@ -43,7 +49,7 @@
       <a class="pop-cont nav-list-link @if($active_tab == 'planning') active @endif" href="#">
         <img src="/calendar.PNG" alt="Plannings Examens" width="28" height="28" style="margin-right: 10px;" />
         Plannings Examens
-        <span class="pop-up">Ce Service est en cours de développement...</span>
+        <span class="pop-up">le service des plannings est en cours de développement...</span>
       </a>
     </li>
 
@@ -70,13 +76,13 @@
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'gestionstage') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/stages">
+      <a class="nav-list-link" href="{{ route('all.stages') }}">
         <img src="/checkstage.PNG" alt="Gestion Des Stages" width="28" height="28" style="margin-right: 10px;" />
         Gestion Des Stages
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addusers') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/addUser">
+      <a class="nav-list-link" href="{{ route('ADD-USER-FORM') }}">
         <img src="/adduser.PNG" alt="Ajouter Utilistatuers" width="28" height="28" style="margin-right: 10px;" />
         Ajouter Utilistatuers
       </a>
@@ -89,13 +95,13 @@
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addedoc') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/managedocuments">
+      <a class="nav-list-link" href="{{ route('DC') }} ">
         <img src="/addEdoc.PNG" alt="E-documents" width="28" height="28" style="margin-right: 10px;" />
         E-documents
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'diplomes') active @endif">
-      <a class="nav-list-link" href="http://127.0.0.1:8000/diplomes">
+      <a class="nav-list-link" href="{{ route('diplomes.index') }}">
         <img src="/Mmanagement.PNG" alt="Modules management" width="25" height="25" style="margin-right: 10px;" />
         Modules management
       </a>
