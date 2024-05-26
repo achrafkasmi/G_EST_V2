@@ -38,4 +38,6 @@ class Etudiant extends Model
     {
         return $this->hasMany(Stage::class, 'id_etu');
     }
+    
 }
+

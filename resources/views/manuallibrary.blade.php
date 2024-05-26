@@ -16,24 +16,26 @@
 
     @include('tiles.actions')
     @if(session('success'))
-<script>
-  Swal.fire({
-    icon: 'success',
-    title: 'Success!',
-    text: '{{ session('success') }}',
-  });
-</script>
-@endif
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('
+            success ') }}',
+        });
+    </script>
+    @endif
 
-@if(session('error'))
-<script>
-  Swal.fire({
-    icon: 'error',
-    title: 'Error!',
-    text: '{{ session('error') }}',
-  });
-</script>
-@endif
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '{{ session('
+            error ') }}',
+        });
+    </script>
+    @endif
 
     <div class="container form-container">
         <div class="form-title">Ajout Manuel des Dossiers de Stage</div>

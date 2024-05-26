@@ -16,4 +16,5 @@ class EtapeDiplome extends Model
     {
         return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
     }
+    
 }

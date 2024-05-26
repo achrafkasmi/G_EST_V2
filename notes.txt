@@ -83,9 +83,9 @@ scenarios a verifier : creation des filieres kolhom -> creation d'un etudiant co
 +creation des teachers pour chaque filiere  ->upload des stages pour chaque etudiant ->  verification des uploads par les teachers 
 ->envoi des texts messages au etudiants ->verification des texts-> ✅
 
--> mni l prof i disapprovi khass modification t enabla
+-> mni l prof i disapprovi khass modification t enabla✅
 
--> datatable dyal admin mazal mam9addach
+-> datatable dyal admin mazal mam9addach✅
 
 ostad ila dar recommand l chi stage khasso ikteb lina l3onwan 3la hssab l bibliotheque (solved, student howa li kayktb title)✅
 
@@ -100,7 +100,7 @@ etudiant obligé ikteb sujet d rapport✅
 
 type rapport khasso ikon obligatory ✅
 
-etudiant ila kan 2eme année khass itle3lo l form dyal upload 2 merrat ❌
+etudiant ila kan 2eme année khass itle3lo l form dyal upload 2 merrat ✅
 
 ila lprof hayed l validation katb9a recommandation 1 f mysql.✅
 
@@ -112,8 +112,10 @@ notes historique mayb99ach i t écrasa.✅
 
 
 
-logo Codepen kitla3 f favicon
+logo Codepen kitla3 f favicon✅
 
+
+retour f Module Management khsso ytsla7❌
 
 
 
