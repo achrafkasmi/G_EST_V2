@@ -13,6 +13,8 @@ use App\Http\Controllers\ElementController;
 use App\Http\Controllers\ElementPedagogiqueController;
 use App\Http\Controllers\PersonnelElementPedagoguiqueController;
 use App\Http\Controllers\AttendanceController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
 
 
 
@@ -32,6 +34,7 @@ use App\Http\Controllers\AttendanceController;
 //Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
+    
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
@@ -134,7 +137,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
 
     Route::get('/store-scanned-attendance', [AttendanceController::class, 'storeScannedAttendance'])->name('storeScannedAttendance');
-
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -142,5 +144,3 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
-
-

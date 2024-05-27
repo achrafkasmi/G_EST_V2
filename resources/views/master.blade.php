@@ -75,7 +75,7 @@
   </style>
 </head>
 
-<body translate="no">
+<body>
   <div class="app-container">
 
 

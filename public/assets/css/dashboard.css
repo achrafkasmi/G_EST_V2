@@ -6,19 +6,22 @@
 
 :root {
   --app-bg-dark: #01081f;
-  --app-bg-before: linear-gradient(180deg,
-      rgba(1, 8, 31, 0) 0%,
-      rgba(1, 8, 31, 1) 100%);
-  --app-bg-before-2: linear-gradient(0deg,
-      rgba(1, 8, 31, 0) 0%,
-      rgba(1, 8, 31, 1) 100%);
+  --app-bg-before: linear-gradient(
+    180deg,
+    rgba(1, 8, 31, 0) 0%,
+    rgba(1, 8, 31, 1) 100%
+  );
+  --app-bg-before-2: linear-gradient(
+    0deg,
+    rgba(1, 8, 31, 0) 0%,
+    rgba(1, 8, 31, 1) 100%
+  );
   --app-bg-light: #151c32;
-  
   --app-logo: #3d7eff;
   --nav-link: #5e6a81;
   --nav-link-active: #fff;
   --list-item-hover: #0c1635;
-  --main-color: #e5e5e5;
+  --main-color: #fff;
   --secondary-color: #5e6a81;
   --color-light: rgba(52, 129, 210, 0.2);
   --warning-bg: #ffe5e5;
@@ -31,9 +34,7 @@
   --draft-icon: #e9780e;
 }
 
-body,html{
-  /*margin: 0;
-  padding: 0;*/
+body {
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -48,8 +49,7 @@ body,html{
   height: 100%;
   display: flex;
   position: relative;
-  max-width: 1680px;
-  background-color: #050e2d;
+  
 }
 
 .app-left {
@@ -74,9 +74,11 @@ body,html{
   overflow-x: hidden;
   background-color: var(--app-bg-light);
   padding: 24px;
-  background: radial-gradient(circle,
-      rgba(5, 19, 64, 1) 1%,
-      rgba(4, 15, 50, 1) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(5, 19, 64, 1) 1%,
+    rgba(4, 15, 50, 1) 100%
+  );
 }
 
 .app-right {
@@ -109,6 +111,14 @@ body,html{
     display: none;
   }
 }
+/* Increase the scaling for larger screens */
+@media (min-width: 1200px) {
+  .app-container {
+    transform: scale(1
+    ); /* Adjust the scale value as needed */
+  }
+}
+
 
 .app-right-content {
   flex: 1;
