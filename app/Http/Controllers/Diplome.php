@@ -6,6 +6,7 @@ use App\Models\Diplome as ModelsDiplome;
 use App\Models\EtapeDiplome;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Personnel;
 
 class Diplome extends Controller
 {
@@ -43,9 +44,10 @@ class Diplome extends Controller
     }
     public function index()
     {
+        $personnel = Personnel::all();
         $diplomes = ModelsDiplome::all();
-        $active_tab = 'diplomes'; // Define the value of the active_tab variable
-    return view('modules', compact('diplomes', 'active_tab'));
+        $active_tab = 'diplomes';
+    return view('modules', compact('diplomes','personnel', 'active_tab'));
     }
 
     public function storeEtapeDiplome(Request $request)

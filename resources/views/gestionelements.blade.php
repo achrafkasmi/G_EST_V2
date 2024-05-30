@@ -68,9 +68,13 @@
 
                 <div class="mb-3">
                     <label for="id_diplome" class="form-label" style="color: white;">ID Diplome</label>
-                    <input type="number" class="form-control" id="id_diplome" name="id_diplome">
+                    <select class="form-control" id="id_diplome" name="id_diplome">
+                        <option selected disabled>Diplome</option>
+                        @foreach ($diplomes as $diploma)
+                        <option value="{{ $diploma->id }}">{{ $diploma->intitule_diplome_fr }}</option>
+                        @endforeach
+                    </select>
                 </div>
-
                 <div class="d-grid gap-2 mt-3">
                     <button class="btn submit-btn" type="submit">Enregistrer</button>
                 </div>
@@ -79,23 +83,24 @@
     </div>
 </div>
 @if(session('success'))
-  <script>
+<script>
     Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: '{{session('
-      success ')}}',
+        icon: 'success',
+        title: 'Success!',
+        text: '{{session('
+        success ')}}',
     });
-  </script>
-  @endif
-  @if(session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: '{{ session('error') }}'
-        });
-    </script>
+</script>
+@endif
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: '{{ session('
+        error ') }}'
+    });
+</script>
 @endif
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -15,6 +15,8 @@ use App\Http\Controllers\PersonnelElementPedagoguiqueController;
 use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ErrorReportMail;
 
 
 
@@ -110,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class, 'voiceFormUrl'])->name('VOICE-FORM_URL');
 
     Route::post('/store-etape-diplome', [Diplome::class, 'storeEtapeDiplome'])->name('store-etape-diplome');
+    
 
 
 
@@ -137,6 +140,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
 
     Route::get('/store-scanned-attendance', [AttendanceController::class, 'storeScannedAttendance'])->name('storeScannedAttendance');
+
+    Route::post('/elementspedago/{id}/{etape_id}/upload', [ElementPedagogiqueController::class, 'storeByExcel'])->name('storeByExcel');
+
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -144,3 +150,17 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
+
+
+
+Route::get('/trigger-error', function () {
+    throw new Exception('This is a test exception!');
+});
+Route::get('/test-email', function () {
+    try {
+        Mail::to('aeroengine02@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
+        return 'Test email sent!';
+    } catch (Exception $e) {
+        return 'Failed to send email: ' . $e->getMessage();
+    }
+});

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
+/*@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");*/
 
 * {
   box-sizing: border-box;
@@ -1839,7 +1839,7 @@ div.dt-container .dt-paging .dt-paging-button.disabled,
 div.dt-container .dt-paging .dt-paging-button.disabled:hover,
 div.dt-container .dt-paging .dt-paging-button.disabled:active {
   cursor: default;
-  color: rgba(0, 0, 0, 0.5) !important;
+  color: rgba(34, 255, 251, 0.599) !important;
   border: 1px solid transparent;
   background: transparent;
   box-shadow: none
@@ -2053,6 +2053,9 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 *[dir=rtl] div.dt-container div.dt-search input {
   margin: 0 3px 0 0
 }
+
+
+
 
 
 

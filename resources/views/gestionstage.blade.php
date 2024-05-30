@@ -118,5 +118,43 @@
    }
 </script>
 
+<style>
+  tbody {
+    color: grey;
+  }
+ 
+  .dt-layout-row {
+    color: #808080;
+  }
 
+  .dt-layout-cell.dt-end {
+    color: grey;
+  }
+
+
+  .dt-column-order {
+    color: rgba(0, 207, 222, 1);
+  }
+
+  .dt-column-title {
+    color: #686D76;
+  }
+
+  .dt-paging {
+    color: grey;
+  }
+
+  .datatabcontainer {
+    background-color: var(--app-bg-dark);
+    color: #fff;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .tab th,
+  .tab td {
+    padding: 8px;
+    text-align: left;
+  }
+</style>
 @endsection

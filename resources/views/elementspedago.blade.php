@@ -67,73 +67,82 @@
             </tbody>
         </table>
     </div>
+
     <div id="formContainer" class="containerf form-container bg-light-gray" style="display: none;">
-        <form action="{{ route('store-module-etape', ['id' => $id, 'etape_id' => $etape_id]) }}" method="post" enctype="multipart/form-data">
-            @csrf
-            <div class="container2">
-                <h2 class="form-title text-white">Ajouter un nouveau Module à cette Etape</h2>
+    <form action="{{ route('store-module-etape', ['id' => $id, 'etape_id' => $etape_id]) }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="container2">
+            <h2 class="form-title text-white">Ajouter un nouveau Module à cette Etape</h2>
 
-                <div class="mb-3">
-                    <label for="code_etape" class="form-label" style="color: white;">Code Etape</label>
-                    <input type="text" class="form-control" id="code_etape" name="code_etape" maxlength="50">
-                </div>
-
-                <div class="mb-3">
-                    <label for="id_etape" class="form-label" style="color: white;">ID Etape</label>
-                    <input type="number" class="form-control" id="id_etape" name="id_etape">
-                </div>
-
-                <div class="mb-3">
-                    <label for="type_etape_element" class="form-label" style="color: white;">Type Etape Element</label>
-                    <input type="text" class="form-control" id="type_etape_element" name="type_etape_element" maxlength="30">
-                </div>
-
-                <div class="mb-3">
-                    <label for="intitule_element" class="form-label" style="color: white;">Intitulé Element</label>
-                    <input type="text" class="form-control" id="intitule_element" name="intitule_element" maxlength="100">
-                </div>
-
-                <div class="mb-3">
-                    <label for="nbr_heures_cours" class="form-label" style="color: white;">Nombre d'heures de cours</label>
-                    <input type="number" step="0.01" class="form-control" id="nbr_heures_cours" name="nbr_heures_cours">
-                </div>
-
-                <div class="mb-3">
-                    <label for="nbr_heures_td" class="form-label" style="color: white;">Nombre d'heures de TD</label>
-                    <input type="number" step="0.01" class="form-control" id="nbr_heures_td" name="nbr_heures_td">
-                </div>
-
-                <div class="mb-3">
-                    <label for="nbr_heures_tp" class="form-label" style="color: white;">Nombre d'heures de TP</label>
-                    <input type="number" step="0.01" class="form-control" id="nbr_heures_tp" name="nbr_heures_tp">
-                </div>
-
-                <div class="mb-3">
-                    <label for="nbr_heures_ap" class="form-label" style="color: white;">Nombre d'heures d'AP</label>
-                    <input type="number" step="0.01" class="form-control" id="nbr_heures_ap" name="nbr_heures_ap">
-                </div>
-
-                <div class="mb-3">
-                    <label for="nbr_heures_evaluation" class="form-label" style="color: white;">Nombre d'heures d'évaluation</label>
-                    <input type="number" step="0.01" class="form-control" id="nbr_heures_evaluation" name="nbr_heures_evaluation">
-                </div>
-
-                <div class="mb-3">
-                    <label for="decription_module" class="form-label" style="color: white;">Description du Module</label>
-                    <textarea class="form-control" id="decription_module" name="decription_module" rows="3"></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="coefficient" class="form-label" style="color: white;">Coefficient</label>
-                    <input type="number" step="0.01" class="form-control" id="coefficient" name="coefficient">
-                </div>
-
-                <div class="d-grid gap-2 mt-3">
-                    <button class="btn submit-btn" type="submit">Enregistrer</button>
-                </div>
+            <div class="mb-3">
+                <label for="code_etape" class="form-label" style="color: white;">Code Etape</label>
+                <input type="text" class="form-control" id="code_etape" name="code_etape" maxlength="50">
             </div>
-        </form>
-    </div>
+
+            <!-- Hidden input for id_etape -->
+            <input type="hidden" id="id_etape" name="id_etape" value="{{ $etape_id }}">
+
+            <div class="mb-3">
+                <label for="type_etape_element" class="form-label" style="color: white;">Type Etape Element</label>
+                <input type="text" class="form-control" id="type_etape_element" name="type_etape_element" maxlength="30">
+            </div>
+
+            <div class="mb-3">
+                <label for="intitule_element" class="form-label" style="color: white;">Intitulé Element</label>
+                <input type="text" class="form-control" id="intitule_element" name="intitule_element" maxlength="100">
+            </div>
+
+            <div class="mb-3">
+                <label for="nbr_heures_cours" class="form-label" style="color: white;">Nombre d'heures de cours</label>
+                <input type="number" step="0.01" class="form-control" id="nbr_heures_cours" name="nbr_heures_cours">
+            </div>
+
+            <div class="mb-3">
+                <label for="nbr_heures_td" class="form-label" style="color: white;">Nombre d'heures de TD</label>
+                <input type="number" step="0.01" class="form-control" id="nbr_heures_td" name="nbr_heures_td">
+            </div>
+
+            <div class="mb-3">
+                <label for="nbr_heures_tp" class="form-label" style="color: white;">Nombre d'heures de TP</label>
+                <input type="number" step="0.01" class="form-control" id="nbr_heures_tp" name="nbr_heures_tp">
+            </div>
+
+            <div class="mb-3">
+                <label for="nbr_heures_ap" class="form-label" style="color: white;">Nombre d'heures d'AP</label>
+                <input type="number" step="0.01" class="form-control" id="nbr_heures_ap" name="nbr_heures_ap">
+            </div>
+
+            <div class="mb-3">
+                <label for="nbr_heures_evaluation" class="form-label" style="color: white;">Nombre d'heures d'évaluation</label>
+                <input type="number" step="0.01" class="form-control" id="nbr_heures_evaluation" name="nbr_heures_evaluation">
+            </div>
+
+            <div class="mb-3">
+                <label for="decription_module" class="form-label" style="color: white;">Description du Module</label>
+                <textarea class="form-control" id="decription_module" name="decription_module" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="coefficient" class="form-label" style="color: white;">Coefficient</label>
+                <input type="number" step="0.01" class="form-control" id="coefficient" name="coefficient">
+            </div>
+
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn submit-btn" type="submit">Enregistrer</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+    <form action="{{ route('storeByExcel', ['id' => $id, 'etape_id' => $etape_id]) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="mb-3">
+            <label for="file">Upload Excel File:</label>
+            <input type="file" id="file" name="file" class="dropify" data-max-file-size="30M" data-height="100" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
 </div>
 
 
@@ -148,7 +157,11 @@
 </script>
 @endif
 
-
+<script>
+    $(document).ready(function() {
+        $('#file').dropify();
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>

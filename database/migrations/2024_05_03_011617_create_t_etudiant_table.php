@@ -100,11 +100,12 @@ use Illuminate\Support\Facades\Schema;
             $table->date('date_retrait_def')->nullable();
             $table->unsignedBigInteger('apogee')->nullable();
             $table->string('id_etape', 100)->nullable();
+            $table->string('annee_uni',255)->nullable();
 
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
 
-            $table->timestamps();  // Created at and Updated at timestamps
+            $table->timestamps();
         });
     }
 

@@ -91,28 +91,30 @@
   @include('tiles.actions')
 
   @if(session('success'))
-<script>
-  Swal.fire({
-    icon: 'success',
-    title: 'Success!',
-    text: '{{ session('success') }}',
-  });
-</script>
-@endif
+  <script>
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: '{{ session('
+      success ') }}',
+    });
+  </script>
+  @endif
 
-@if(session('error'))
-<script>
-  Swal.fire({
-    icon: 'error',
-    title: 'Error!',
-    text: '{{ session('error') }}',
-  });
-</script>
-@endif
+  @if(session('error'))
+  <script>
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: '{{ session('
+      error ') }}',
+    });
+  </script>
+  @endif
 
   @if(auth()->user()->etudiant && auth()->user()->etudiant->stages && auth()->user()->etudiant->stages->isNotEmpty())
   <div class="containers">
-  @if(!(auth()->user()->etudiant->stages->where('type_dossier', 'Stage d\'initiation')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage professionnel')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage technique')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'PFE')->isNotEmpty()))
+    @if(!(auth()->user()->etudiant->stages->where('type_dossier', 'Stage d\'initiation')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage professionnel')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'Stage technique')->isNotEmpty() && auth()->user()->etudiant->stages->where('type_dossier', 'PFE')->isNotEmpty()))
     <div class="mt-3">
       <button class="btn submit-btn" type="button" data-bs-toggle="collapse" data-bs-target="#uploadForm" aria-expanded="false" aria-controls="uploadForm">
         <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
