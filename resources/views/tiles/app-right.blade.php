@@ -1,5 +1,25 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('
+            success ') }}',
+        });
+    </script>
+    @endif
 
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'unable to set the avatar',
+            text: '{{ session('
+            error ') }}',
+        });
+    </script>
+    @endif
 <div class="app-right">
   <button class="close-right">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
@@ -8,10 +28,16 @@
     </svg>
   </button>
   <div class="profile-box">
-    <div class="profile-photo-wrapper">
-      <img alt="{{ auth()->user()->name}}" @if(auth()->user()->image) src="{{ Storage::url(auth()->user()->image) }}" @else src="/profile.PNG" @endif
-      class="dense-image dense-loading">
-    </div>
+  <div class="profile-photo-wrapper">
+    <form action="{{ route('upload.profile.picture') }}" method="POST" enctype="multipart/form-data" id="profile-form">
+        @csrf
+        <label for="image" id="image-label">
+            <img alt="{{ auth()->user()->name }}" src="{{ auth()->user()->image ? Storage::url(auth()->user()->image) : '/profile.PNG' }}" class="dense-image dense-loading" id="profile-image">
+        </label>
+        <input type="file" id="image" name="image" style="display:none;" onchange="submitForm()">
+    </form>
+</div>
+
     <form id="logout-form" action="{{ route('AUTH-LOGOUT') }}" method="POST" class="d-none">
       @csrf
     </form>
@@ -25,7 +51,16 @@
     <p class="profile-text">{{ auth()->user()->name ?? 'Connecter Vous!' }}</p>
     <p class="profile-subtext">
       @foreach(auth()->user()->roles as $role)
+      @if(auth()->user()->hasRole('student') && auth()->user()->etudiant)
+      @if(auth()->user()->etudiant->is_active)
+      <span style="color: green;">Active</span>
+      @else
+      <span style="color: red;">Inactive</span>
+      @endif
       {{ $role->name }}
+      @else
+      {{ $role->name }}
+      @endif
       @endforeach
     </p>
   </div>
@@ -113,6 +148,11 @@
   </div>
   <button id="close-popup-btn" class="close-popup-btn">Close</button>
 </div>
+<script>
+    function submitForm() {
+        document.getElementById('profile-form').submit();
+    }
+</script>
 <script>
   function showNotificationPopup(notificationId, message, audioUrl) {
     try {

@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ErrorReportMail;
+use App\Http\Controllers\ProfileController;
+
 
 
 
@@ -122,15 +124,14 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'store'])->name('store-module-etape');
+    
     Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
-
 
     Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
 
     Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
 
     Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
-
 
     Route::get('/manuallibrary', function () {
         $active_tab = 'manuallibrary';
@@ -143,6 +144,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/elementspedago/{id}/{etape_id}/upload', [ElementPedagogiqueController::class, 'storeByExcel'])->name('storeByExcel');
 
+    /* email errors*/
+    Route::get('/trigger-error', function () {
+        throw new Exception('This is a test exception!');
+    });
+    Route::get('/test-email', function () {
+        try {
+            Mail::to('aeroengine02@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
+            return 'Test email sent!';
+        } catch (Exception $e) {
+            return 'Failed to send email: ' . $e->getMessage();
+        }
+    });
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -153,14 +166,4 @@ Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 
 
 
 
-Route::get('/trigger-error', function () {
-    throw new Exception('This is a test exception!');
-});
-Route::get('/test-email', function () {
-    try {
-        Mail::to('aeroengine02@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
-        return 'Test email sent!';
-    } catch (Exception $e) {
-        return 'Failed to send email: ' . $e->getMessage();
-    }
-});
+Route::post('/upload-profile-picture', [ProfileController::class, 'uploadProfilePicture'])->name('upload.profile.picture');
