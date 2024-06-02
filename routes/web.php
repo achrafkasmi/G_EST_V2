@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ErrorReportMail;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RetraitController;
+
+
 
 
 
@@ -167,3 +170,10 @@ Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 
 
 
 Route::post('/upload-profile-picture', [ProfileController::class, 'uploadProfilePicture'])->name('upload.profile.picture');
+
+Route::get('/retrait/{id_etu}', [RetraitController::class, 'index'])->name('retrait');
+
+Route::post('/storeretrait', [RetraitController::class, 'storeretrait'])->name('storeretrait');
+
+Route::get('/activate/{id_etu}', [RetraitController::class, 'activate'])->name('activate');
+

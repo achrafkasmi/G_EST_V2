@@ -13,6 +13,10 @@ class Etudiant extends Model
 {
     protected $table='t_etudiant';
 
+    protected $fillable = [
+       'is_active'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -37,6 +41,10 @@ class Etudiant extends Model
    public function stages()
     {
         return $this->hasMany(Stage::class, 'id_etu');
+    }
+    public function retraits()
+    {
+        return $this->hasMany(Retrait::class, 'id_etu');
     }
     
 }

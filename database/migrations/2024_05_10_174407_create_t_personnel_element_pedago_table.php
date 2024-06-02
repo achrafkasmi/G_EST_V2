@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('personnel_id');
             $table->unsignedBigInteger('id_element_pedago');
+            $table->string('annee_uni')->nullable();
             $table->timestamps(); 
-             // Define foreign keys 
+
+            // Define foreign keys 
             $table->foreign('personnel_id')->references('id')->on('t_personnel')->onDelete('cascade'); 
             $table->foreign('id_element_pedago')->references('id')->on('t_modules_etape')->onDelete('cascade');
         });
