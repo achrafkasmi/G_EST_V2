@@ -17,11 +17,11 @@ class CustomDownCommand extends Command
 
     public function handle()
     {
-        // Generate the password based on the current date and time
-        $currentPassword = Carbon::now()->format('YmdHi');
+        
+        $attempt = Carbon::now()->format('YmdHi');
         $password = $this->secret('Enter the maintenance mode password:');
 
-        if ($password === $currentPassword) {
+        if ($password === $attempt) {
             Artisan::call('down');
             $this->info('Application is now in maintenance mode.');
         } else {

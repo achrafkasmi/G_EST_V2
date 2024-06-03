@@ -66,4 +66,12 @@ class RetraitController extends Controller
 
         return redirect()->back()->with('success', 'Etudiant activé avec succès');
     }
+
+    public function storelaureat($id_etu){
+
+        $active_tab = 'storelaureat';
+
+        return view('storelaureats', compact('active_tab', 'id_etu'));
+
+    }
 }

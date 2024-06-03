@@ -177,3 +177,4 @@ Route::post('/storeretrait', [RetraitController::class, 'storeretrait'])->name('
 
 Route::get('/activate/{id_etu}', [RetraitController::class, 'activate'])->name('activate');
 
+Route::get('/storelaureat/{id_etu}', [RetraitController::class, 'storelaureat'])->name('storelaureat');
