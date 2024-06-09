@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Stage;
 use App\Models\Etudiant;
+use App\Models\Laureat;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,22 +18,22 @@ class DashboardController extends Controller
         // Check if the user has the role of teacher and has a personnel record
         if (auth()->user()->hasRole('teacher') && auth()->user()->personnel) {
             $personnelId = auth()->user()->personnel->id;
-    
+
             // Eager loading to fetch related models upfront
             $dossierStages = Stage::with('etudiant.user')->where('professeur_encadrant_id', $personnelId)->get();
-    
+
             // Collection to store users with their stages
             $users = collect([]);
-    
+
             // Group stages by user
             foreach ($dossierStages as $stage) {
                 $userId = $stage->etudiant->user->id;
-    
+
                 // Check if the user already exists in the collection
                 $userKey = $users->search(function ($user) use ($userId) {
                     return $user['id'] == $userId;
                 });
-    
+
                 if ($userKey === false) {
                     $users->push([
                         'id' => $userId,
@@ -44,16 +45,16 @@ class DashboardController extends Controller
                     $users[$userKey]['stages']->push($stage);
                 }
             }
-    
+
             return view('Dashboards.dashteacher')->with(['users' => $users, 'active_tab' => 'dash']);
         }
-    
+
         // Fetch all students sorted by annee_uni
         $students = Etudiant::orderBy('annee_uni')->get();
-    
-        return view('Dashboards.dashboard')->with(['students' => $students, 'active_tab' => 'dash']);
+
+        return view('Dashboards.dashboard')->with(['students' => $students, 'active_tab' => 'dash', 'isLaureat' => 'dash']);
     }
-    
+
 
 
 
@@ -92,6 +93,4 @@ class DashboardController extends Controller
     {
         return Personnel::pluck('nom_personnel', 'id');
     }
-
-   
 }

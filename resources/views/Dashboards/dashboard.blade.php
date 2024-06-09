@@ -128,7 +128,8 @@
       </div>
     </div>
   </div>
-  <div class="datatabcontainer mt-6">
+
+  <div class="datatabcontainer-updated  mt-6">
     <table class="tab" id="myTable">
       <thead>
         <div class="chart-container-header" style="padding:15px">
@@ -151,20 +152,20 @@
           <td>{{ $student->annee_uni }}</td>
 
           <td>
-          @if($student->is_active == 1)
+            @if($student->is_active == 1)
             <a href="{{ route('retrait', ['id_etu' => $student->id]) }}">
               <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity="0.5" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22Z" fill="#1C274C" />
                 <path d="M15 12.75C15.4142 12.75 15.75 12.4142 15.75 12C15.75 11.5858 15.4142 11.25 15 11.25H9C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75H15Z" fill="red" />
               </svg>
             </a>
-            <a href="{{ route('storelaureat', ['id_etu' => $student->id]) }}">
+            <a href="{{ route('storelaureat', ['id_etu' => $student->id]) }}"> <!--if a student exist in table t_laureat means he is a laureat so iwant you to make this icon green if he is laureat-->
               <svg width="22px" height="22px" viewBox="0 -3 24 24" id="meteor-icon-kit__solid-graduation-cap" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.522074 5.12131C0.549569 5.10633 0.577846 5.09259 0.606828 5.08019L11.1724 0.27766C11.6982 0.03863 12.3018 0.03863 12.8276 0.27766L23.4138 5.08956C24.1954 5.44483 24.1954 6.555 23.4138 6.9103L12.8276 11.7222C12.3018 11.9612 11.6982 11.9612 11.1724 11.7222L2 7.5529V10.4999C2 11.0522 1.55228 11.4999 1 11.4999C0.447715 11.4999 0 11.0522 0 10.4999V5.99993C0 5.98437 0.000355195 5.9689 0.00105792 5.95352C0.015847 5.6237 0.189526 5.3001 0.522074 5.12131zM20 10.462V12.724C20 13.0995 19.8943 13.4675 19.6949 13.7858C18.1427 16.2633 15.5333 17.4999 12 17.4999C8.46671 17.4999 5.85733 16.2633 4.30518 13.7859C4.10583 13.4677 4.00009 13.0998 4 12.7241V10.462L11.1724 13.7222C11.6982 13.9612 12.3018 13.9612 12.8276 13.7222L20 10.462z" fill="#758CA3" />
               </svg>
             </a>
-          @endif
-          @if($student->is_active == 0)
+            @endif
+            @if($student->is_active == 0)
             <a href="{{ route('activate', ['id_etu' => $student->id]) }}">
               <svg width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -180,6 +181,13 @@
               </svg>
             </a>
             @endif
+            <a href="{{ route('usercard', ['id_etu' => $student->id]) }}">
+              <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" d="M12.1207 12.78C12.0507 12.77 11.9607 12.77 11.8807 12.78C10.1207 12.72 8.7207 11.28 8.7207 9.50998C8.7207 7.69998 10.1807 6.22998 12.0007 6.22998C13.8107 6.22998 15.2807 7.69998 15.2807 9.50998C15.2707 11.28 13.8807 12.72 12.1207 12.78Z" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path opacity="0.34" d="M18.7398 19.3801C16.9598 21.0101 14.5998 22.0001 11.9998 22.0001C9.39977 22.0001 7.03977 21.0101 5.25977 19.3801C5.35977 18.4401 5.95977 17.5201 7.02977 16.8001C9.76977 14.9801 14.2498 14.9801 16.9698 16.8001C18.0398 17.5201 18.6398 18.4401 18.7398 19.3801Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
           </td>
         </tr>
         @endforeach
@@ -9919,9 +9927,10 @@
     color: grey;
   }
 
-  .datatabcontainer {
+  .datatabcontainer-updated {
     background-color: var(--app-bg-dark);
     color: #fff;
+    border-radius: 12px;
     border-collapse: collapse;
     width: 100%;
   }

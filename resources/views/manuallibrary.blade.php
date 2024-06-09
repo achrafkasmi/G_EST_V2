@@ -36,7 +36,10 @@
         });
     </script>
     @endif
+    <a href="{{ route('fetch.library') }}" id="">
+        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
 
+    </a>
     <div class="container form-container">
         <div class="form-title">Ajout Manuel des Dossiers de Stage</div>
         <form action="{{ route('dossier-stage.manualstore') }}" method="post" enctype="multipart/form-data">

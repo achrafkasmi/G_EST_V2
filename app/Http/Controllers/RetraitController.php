@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Retrait;
 use Illuminate\Http\Request;
 use App\Models\Etudiant;
+use App\Models\Diplome;
+use App\Models\Laureat;
 use Illuminate\Support\Facades\Storage;
 
 class RetraitController extends Controller
@@ -15,8 +17,10 @@ class RetraitController extends Controller
         $students = Etudiant::with(['retraits' => function ($query) {
             $query->where('type_retrait', 'provisoire');
         }])->get();
-        
-        return view('retraits', compact('active_tab', 'id_etu', 'students',));
+
+        $isLaureat = Laureat::where('id_etu', $id_etu)->exists();
+
+        return view('retraits', compact('active_tab', 'id_etu', 'students','isLaureat',));
     }
 
     public function storeretrait(Request $request)
@@ -24,7 +28,7 @@ class RetraitController extends Controller
         $request->validate([
             'fileType' => 'required|string',
             'textInput' => 'nullable|string',
-            'dossier' => 'required|file|mimes:pdf,doc,docx|max:30720', // 30 MB max file size
+            'dossier' => 'required|file|mimes:pdf,doc,docx|max:30720',
             'id_etu' => 'required|integer|exists:t_etudiant,id',
         ]);
 
@@ -60,18 +64,57 @@ class RetraitController extends Controller
         if (!$etudiant) {
             return redirect()->back()->with('error', 'Etudiant not found');
         }
-        //$retrait = Retrait::where('id_etu', $id_etu)->where('type_retrait', 'provisoire')->first();
 
         $etudiant->update(['is_active' => 1]);
 
         return redirect()->back()->with('success', 'Etudiant activé avec succès');
     }
 
-    public function storelaureat($id_etu){
-
+    public function storelaureat($id_etu)
+    {
         $active_tab = 'storelaureat';
+        $diplomas = Diplome::all();
 
-        return view('storelaureats', compact('active_tab', 'id_etu'));
+        return view('storelaureats', compact('active_tab', 'id_etu', 'diplomas'));
+    }
 
+    public function storelaureatPost(Request $request)
+    {
+        try {
+            $request->validate([
+                'fileType' => 'required|string',
+                'diplome' => 'required|integer|exists:t_diplome,id',
+                'academicYear' => 'required|string|regex:/^\d{4}-\d{4}$/',
+                'dossierloaureat' => 'required|file|mimes:pdf,doc,docx|max:30720', // 30MB max file size
+                'id_etu' => 'required|integer|exists:t_etudiant,id',
+            ]);
+
+            $etudiant = Etudiant::find($request->id_etu);
+            if (!$etudiant) {
+                return redirect()->back()->with('error', 'Etudiant not found');
+            }
+
+            $apogee = $etudiant->apogee;
+            $fileType = $request->fileType;
+            $academicYear = $request->academicYear;
+            $currentYear = explode('-', $academicYear)[0];
+
+            if ($request->hasFile('dossierloaureat')) {
+                $filename = $apogee . '-' . strtolower($fileType) . '.' . $request->file('dossierloaureat')->getClientOriginalExtension();
+                $directory = 'laureats/' . $currentYear;
+                $dossierPath = $request->file('dossierloaureat')->storeAs($directory, $filename, 'public');
+            }
+
+            Laureat::create([
+                'diplome' => $request->diplome,
+                'id_etu' => $request->id_etu,
+                'path_dossier_lautreat' => $dossierPath,
+                'annee_uni' => $academicYear,
+            ]);
+
+            return redirect()->back()->with('success', 'Laureat enregistré avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue: ' . $e->getMessage());
+        }
     }
 }

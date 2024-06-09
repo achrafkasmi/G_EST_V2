@@ -19,12 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ErrorReportMail;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetraitController;
-
-
-
-
-
-
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +36,7 @@ use App\Http\Controllers\RetraitController;
 //Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
-    
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
@@ -58,13 +53,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function () {
-        return view('gridetudiant');
-    })->name('gridetudiant');
+    Route::get('/gridetudiant', function () {return view('gridetudiant');})->name('gridetudiant');
 
-    Route::get('/addnotice', function () {
-        return view('addnotice');
-    })->name('gridetudiant');
+    Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
 
     Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
@@ -76,9 +67,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
-    Route::get('/gestionstage', function () {
-        return view('gestionstage');
-    })->name('gestionstage');
+    Route::get('/gestionstage', function () {return view('gestionstage');})->name('gestionstage');
 
     Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
 
@@ -92,9 +81,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
 
-    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit'); //
-    Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit'); //
+    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
 
+    Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');
 
     Route::get('/modules', function () {
         $active_tab = 'modules';
@@ -107,27 +96,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/mark-notification-as-seen/{notification}', [App\Http\Controllers\NotificatioController::class, 'markAsSeen'])->name('mark-notification-as-seen');
 
-
-
     Route::get('/gestionelements/{module_id}', [ElementController::class, 'index'])->name('gestionelements');
-    Route::post('/element', [ElementController::class, 'store'])->name('element.store');
-    Route::get('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'fetchData'])->name('elementspedago');
 
+    Route::post('/element', [ElementController::class, 'store'])->name('element.store');
+
+    Route::get('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'fetchData'])->name('elementspedago');
 
     Route::get('/voiceform/{id}', [App\Http\Controllers\NotificatioController::class, 'voiceFormUrl'])->name('VOICE-FORM_URL');
 
     Route::post('/store-etape-diplome', [Diplome::class, 'storeEtapeDiplome'])->name('store-etape-diplome');
-    
-
-
-
-
-
-
-
 
     Route::post('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'store'])->name('store-module-etape');
-    
+
     Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
 
     Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
@@ -153,12 +133,30 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/test-email', function () {
         try {
-            Mail::to('aeroengine02@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
+            Mail::to('k.ashraf.usms@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
             return 'Test email sent!';
         } catch (Exception $e) {
             return 'Failed to send email: ' . $e->getMessage();
         }
     });
+
+    Route::post('/upload-profile-picture', [ProfileController::class, 'uploadProfilePicture'])->name('upload.profile.picture');
+
+    Route::get('/retrait/{id_etu}', [RetraitController::class, 'index'])->name('retrait');
+
+    Route::post('/storeretrait', [RetraitController::class, 'storeretrait'])->name('storeretrait');
+
+    Route::get('/activate/{id_etu}', [RetraitController::class, 'activate'])->name('activate');
+
+    Route::get('/storelaureat/{id_etu}', [RetraitController::class, 'storelaureat'])->name('storelaureat');
+
+    Route::post('/storelaureat', [RetraitController::class, 'storelaureatPost'])->name('storelaureat.post');
+
+    Route::get('/usercard/{id_etu}', [ProfileController::class, 'usercard'])->name('usercard');
+
+    Route::get('/studentmanage', [StudentController::class, 'index'])->name('index.studentmanage');
+
+
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
@@ -166,15 +164,3 @@ Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::clas
 Route::post('/post/connexion', [App\Http\Controllers\AuthenticationController::class, 'postLogin'])->name('POST-CONNEXION');
 
 Route::get('/connexion', [App\Http\Controllers\AuthenticationController::class, 'login'])->name('login');
-
-
-
-Route::post('/upload-profile-picture', [ProfileController::class, 'uploadProfilePicture'])->name('upload.profile.picture');
-
-Route::get('/retrait/{id_etu}', [RetraitController::class, 'index'])->name('retrait');
-
-Route::post('/storeretrait', [RetraitController::class, 'storeretrait'])->name('storeretrait');
-
-Route::get('/activate/{id_etu}', [RetraitController::class, 'activate'])->name('activate');
-
-Route::get('/storelaureat/{id_etu}', [RetraitController::class, 'storelaureat'])->name('storelaureat');

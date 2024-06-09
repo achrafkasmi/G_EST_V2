@@ -54,11 +54,11 @@
     </li>
 
     @if(auth()->user() && auth()->user()->hasRole('admin'))
-    <li class="nav-list-item @if($active_tab == 'team') active @endif">
-      <a class="pop-cont nav-list-link" href="#">
+    <li class="nav-list-item @if($active_tab == 'stumana') active @endif">
+      <a class="nav-list-link" href="{{route('index.studentmanage')}}">
         <img src="/team.PNG" alt="Equipe" width="28" height="28" style="margin-right: 10px;" />
-        Equipe
-        <span class="pop-up">Ce Service est en cours de développement...</span>
+        Etudiant management
+        
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'historisation') active @endif">
