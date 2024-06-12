@@ -33,7 +33,7 @@ class CreateTDossierStageTable extends Migration
             $table->boolean('is_uploaded_technique')->default(0);
             $table->boolean('is_uploaded_pfe')->default(0);
             $table->boolean('is_uploaded_professionelle')->default(0);
-
+            
              // Foreign key
             $table->foreign('professeur_encadrant_id')->references('id')->on('t_personnel');
             $table->foreign('id_etu')->references('id')->on('t_etudiant')->onDelete('cascade');

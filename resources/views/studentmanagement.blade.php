@@ -7,11 +7,27 @@
         <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
     </a>
     <div class="document-list " id="data-container">
-    <a href="#" class="card-link">
+        <a href="#" class="card-link">
             <div class="card">
                 <img src="{{ asset('black-hole.svg') }}" alt="black hole">
                 <div class="card-content">
                     <h3>Black Hole</h3>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="card-link">
+            <div class="card">
+                <img src="{{ asset('freeze.svg') }}" alt="freeze">
+                <div class="card-content">
+                    <h3>Freeze User</h3>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="card-link">
+            <div class="card">
+                <img src="{{ asset('settings.svg') }}" alt="freeze">
+                <div class="card-content">
+                    <h3>manage User</h3>
                 </div>
             </div>
         </a>
@@ -39,7 +55,8 @@
     }
 
     .card img {
-        margin-right: 20px; /* Space between the image and text */
+        margin-right: 20px;
+        /* Space between the image and text */
         width: 66px;
         height: 66px;
     }

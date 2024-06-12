@@ -20,6 +20,7 @@ use App\Mail\ErrorReportMail;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetraitController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TerminalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,7 +157,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/studentmanage', [StudentController::class, 'index'])->name('index.studentmanage');
 
+    Route::get('/terminal', [TerminalController::class, 'index'])->name('terminal.index');
 
+    Route::post('/terminal/execute', [TerminalController::class, 'execute'])->name('terminal.execute');
 });
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
