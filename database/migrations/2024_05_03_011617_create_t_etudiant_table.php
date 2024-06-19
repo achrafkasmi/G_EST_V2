@@ -105,7 +105,6 @@ use Illuminate\Support\Facades\Schema;
 
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
-
             $table->timestamps();
         });
     }

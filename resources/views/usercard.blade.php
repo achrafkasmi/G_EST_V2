@@ -74,7 +74,6 @@
                     @foreach($retrait->slice(1) as $retrait)
                     <p><strong>Type:</strong> {{ $retrait->type_retrait }}</p>
                     <p><strong>Date:</strong> {{ $latest_retrait->created_at->format('Y-m-d H:i:s') }}</p>
-
                     <p><strong>Retrait Document:</strong> <a href="{{ Storage::url($retrait->dossier_retrait) }}" target="_blank">View Document</a></p>
                     @endforeach
                 </div>
@@ -82,7 +81,6 @@
                 @else
                 <p>No Retrait information available.</p>
                 @endif
-
                 <p><strong>- Laureat Details:</strong></p>
                 @if($laureat)
                 <p><strong>Laureat Document:</strong> <a href="{{ Storage::url($laureat->path_dossier_lautreat) }}" target="_blank">View Document</a></p>
@@ -92,10 +90,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 </div>
 <style>
     .profile-wrapper {

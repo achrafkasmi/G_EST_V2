@@ -12,6 +12,8 @@
         padding: 10px;
         border-radius: 15px;
         min-height: 600px;
+        overflow-y: auto;
+        scroll-behavior: smooth;
     }
     #terminalInput {
         flex: 1; 
@@ -25,7 +27,6 @@
         white-space: pre;
         margin-bottom: 10px;
         font-family: 'Source Code Pro', monospace;
-        overflow-y: scroll;
     }
     .header {
         font-weight: bold;
@@ -39,6 +40,7 @@
     }
     .prompt span {
         white-space: nowrap;
+        font-family: 'Source Code Pro', monospace;
     }
 </style>
 
@@ -48,11 +50,11 @@
         <pre class="header">
 ___________________________________________________________________________________
 |                                                                                 |
-|     :::::::  ::::::::  :::::::::::         :::::::::  :::::::::      ::::::::   |
+|     :::::::   :::::::  :::::::::::         :::::::::  :::::::::      ::::::::   |
 |    :*/      :*/           */              */         /*      /**   :*/          |
-|   :*:::::  :*:*:*:*      */    *******   *:::::::   /*::::::**    :*:*:*:*      |
+|   :*:::::  :*:*:*:       */    *******   *:::::::   /*::::::**    :*:*:*:*      |
 |  :*/            /*      */              */         /*        **         /*      |
-| :**::::  *:*:*:*:      */              */         /*:*:*:*:*:    *:*:*:*:       |
+| :**::::  *:*:*:*       */              */         /*:*:*:*:*     *:*:*:*        |
 |                                                                                 |
 -----------------------------------------------------------------------------------
         </pre>
@@ -98,6 +100,10 @@ ________________________________________________________________________________
             }
         }
 
+        function checkInternetConnection() {
+            return navigator.onLine;
+        }
+
         function executeCommand() {
             const inputElement = document.getElementById('terminalInput');
             const command = inputElement.value.trim();
@@ -107,26 +113,35 @@ ________________________________________________________________________________
                 commandHistory.push(command);
                 historyIndex = commandHistory.length;
 
+                if (!checkInternetConnection()) {
+                    appendOutput(`$${username} > ${command}\nError: No internet connection. Please connect to the internet and try again.\n`);
+                    inputElement.value = '';
+                    return;
+                }
+
                 if (command.toLowerCase() === 'help?') {
-                    outputElement.innerText += `$${username} > ${command}\nAvailable commands:\n- help?: Display this help message\n- clear: Clear the terminal\n- list usr: list all the existing users\n- count usr: count all the existing users\n- count laureats: count all the existing laureats\n
-                    \n- count laureats>year :count all the existing laureats of each year\n- count laureats>diploma: count all laureats of each diploma\n- count laureats>diploma>year :displays the count of all the laureats by year and by diploma at the same time\n- count usr>student :returns all students 
-                    \n- count usr>student>activity :returns the number of active students and the number of inactive\n- count usr>student>sexe>activity : returns how many active male and how many active female\n
-                    \n- count usr>student>sexe>activity>byyear : returns how many active male and how many active female yearly\n- count student>has_uploaded :returns the count of uploads groupped by type (initation-technique...)\n- list dip :give an overview about existing diplomas\n- list staff>teacher :lists the informations about teachers\n`;
+                    appendOutput(`$${username} > ${command}\nAvailable commands:\n- help?: Display this help message\n- clear: Clear the terminal\n- list usr: list all the existing users\n- count usr: count all the existing users\n- count laureats: count all the existing laureats\n- count laureats>year :count all the existing laureats of each year\n- count laureats>diploma: count all laureats of each diploma\n- count laureats>diploma>year :displays the count of all the laureats by year and by diploma at the same time\n- count usr>student :returns all students\n- count usr>student>activity :returns the number of active students and the number of inactive\n- count usr>student>sexe>activity : returns how many active male and how many active female\n- count usr>student>sexe>activity>byyear : returns how many active male and how many active female yearly\n- count student>has_uploaded :returns the count of uploads groupped by type (initation-technique...)\n- list dip :give an overview about existing diplomas\n- list staff>teacher :lists the informations about teachers\n`);
                 } else if (command.toLowerCase() === 'clear') {
                     outputElement.innerText = '';
                 } else {
                     axios.post('{{ route('terminal.execute') }}', { command })
                         .then(response => {
-                            outputElement.innerText += `$${username} > ${command}\n${JSON.stringify(response.data.result, null, 2)}\n`;
+                            appendOutput(`$${username} > ${command}\n${JSON.stringify(response.data.result, null, 2)}\n`);
                         })
                         .catch(error => {
-                            outputElement.innerText += `$${username} > ${command}\nError: ${error.response.data.result}\n`;
+                            appendOutput(`$${username} > ${command}\nError: ${error.response.data.result}\n`);
                         });
                 }
                 inputElement.value = '';
             }
 
             inputElement.focus();
+        }
+
+        function appendOutput(text) {
+            const outputElement = document.getElementById('terminalOutput');
+            outputElement.innerText += text;
+            outputElement.scrollTop = outputElement.scrollHeight;
         }
     </script>
 </div>

@@ -47,7 +47,7 @@ class TerminalController extends Controller
         ];
 
         if (!in_array($command, $allowedCommands)) {
-            return 'Unknown or disallowed command';
+            return 'Error: Unknown or disallowed command';
         }
 
         // Process command

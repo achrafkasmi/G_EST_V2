@@ -85,26 +85,26 @@ class AuthenticationController extends Controller
 
     public function postLogin(Request $request)
     {
-  
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
-            return $this->sendLockoutResponse($request);
+    
+            return response()->json(['success' => false, 'message' => 'Too many login attempts.'], 429);
         }
-
+    
         if ($this->attemptLogin($request)) {
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
-
-            return $this->sendLoginResponse($request);
+    
+            return response()->json(['success' => true]);
         }
-
+    
         $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
+    
+        return response()->json(['success' => false, 'message' => 'Invalid credentials.'], 401);
     }
+    
 
     protected function attemptLogin(Request $request)
     {

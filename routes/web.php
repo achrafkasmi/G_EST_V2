@@ -54,7 +54,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/addUser', [App\Http\Controllers\AuthenticationController::class, 'postUser'])->name('POST-USER-FORM');
 
-    Route::get('/gridetudiant', function () {return view('gridetudiant');})->name('gridetudiant');
+    Route::get('/gridetudiant', function () {
+        return view('gridetudiant');
+    })->name('gridetudiant');
 
     Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
 
@@ -78,6 +80,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/managedocuments', [DocumentController::class, 'store'])->name('document.post');
 
+    Route::get('/documentsdash', [DocumentController::class, 'index'])->name('documents.index');
+
+    Route::get('/documentsettings', [DocumentController::class, 'documentsettingsindex'])->name('documentsettings.index');
+
+    Route::get('/documentsettings', [DocumentController::class, 'griddocindex'])->name('documentsettings.index');
+
     Route::get('/documents', [DocumentController::class, 'showDocuments'])->name('documents');
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
@@ -86,10 +94,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');
 
-    Route::get('/modules', function () {
-        $active_tab = 'modules';
-        return view('modules', compact('active_tab'));
-    })->name('modules');
+    Route::get('/modules', function () {$active_tab = 'modules';return view('modules', compact('active_tab'));})->name('modules');
 
     Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
 
@@ -117,10 +122,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
-    Route::get('/manuallibrary', function () {
-        $active_tab = 'manuallibrary';
-        return view('manuallibrary', compact('active_tab'));
-    })->name('manuallibrary');
+    Route::get('/manuallibrary', function () {$active_tab = 'manuallibrary';return view('manuallibrary', compact('active_tab'));})->name('manuallibrary');
 
     Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
 
@@ -129,9 +131,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/elementspedago/{id}/{etape_id}/upload', [ElementPedagogiqueController::class, 'storeByExcel'])->name('storeByExcel');
 
     /* email errors*/
-    Route::get('/trigger-error', function () {
-        throw new Exception('This is a test exception!');
-    });
+    Route::get('/trigger-error', function () {throw new Exception('This is a test exception!');});
+
     Route::get('/test-email', function () {
         try {
             Mail::to('k.ashraf.usms@gmail.com')->send(new ErrorReportMail(new Exception('Test exception')));
@@ -161,6 +162,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/terminal/execute', [TerminalController::class, 'execute'])->name('terminal.execute');
 });
+
 
 Route::post('/post/logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('AUTH-LOGOUT');
 

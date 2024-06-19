@@ -19,7 +19,7 @@ class ExcelImport implements ToCollection
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 1000);
 
-        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin', 'id_etape', 'lieu_de_naissance_fr', 'tel', 'annee_bac','annee_uni'];
+        $expectedHeaders = ['apogee', 'email1', 'cne', 'nom_ar', 'nom_fr', 'prenom_ar', 'prenom_fr', 'cin', 'id_etape', 'lieu_de_naissance_fr', 'tel', 'annee_bac','annee_uni','is_active'];
 
         if ($rows->isEmpty()) {
             return ['status' => 'error', 'message' => 'The file is empty.'];

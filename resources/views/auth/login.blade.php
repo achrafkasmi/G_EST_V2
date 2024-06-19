@@ -121,7 +121,7 @@
             <div class="col-lg-6 offset-lg-6">
                 <!-- Login Form -->
                 <div class="credentials-container py-3 px-4">
-                    <form method="POST" action="{{ route('POST-CONNEXION') }}">
+                    <form method="POST" action="{{ route('POST-CONNEXION') }}" id="loginForm">
                         @csrf
 
                         <div class="form-group">
@@ -164,6 +164,9 @@
                             </div>
                         </div>
 
+                        <div class="alert alert-danger mt-3 d-none" id="errorAlert">
+                            Incorrect credentials, please try again.
+                        </div>
                     </form>
                 </div>
             </div>
@@ -177,6 +180,51 @@
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             this.src = type === 'password' ? '{{ asset("eye.png") }}' : '{{ asset("eyeclosed.png") }}';
+        });
+
+        // handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Clear any previous error message
+            document.getElementById('errorAlert').classList.add('d-none');
+
+            // Get the form data
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('exampleInputPassword1').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // Send the form data using AJAX
+            fetch('{{ route('POST-CONNEXION') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({ email, password, remember })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Invalid credentials.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Redirect to dashboard or appropriate page
+                    window.location.href = '/dash';
+                } else {
+                    throw new Error(data.message || 'Invalid credentials.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Show error message and clear input fields
+                document.getElementById('errorAlert').textContent = error.message;
+                document.getElementById('errorAlert').classList.remove('d-none');
+                document.getElementById('email').value = '';
+                document.getElementById('exampleInputPassword1').value = '';
+            });
         });
     </script>
 </body>

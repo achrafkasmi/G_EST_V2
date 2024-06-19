@@ -94,7 +94,7 @@
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'addedoc') active @endif">
-      <a class="nav-list-link" href="{{ route('DC') }} ">
+      <a class="nav-list-link" href="{{ route('documents.index') }} ">
         <img src="/addEdoc.PNG" alt="E-documents" width="28" height="28" style="margin-right: 10px;" />
         E-documents
       </a>

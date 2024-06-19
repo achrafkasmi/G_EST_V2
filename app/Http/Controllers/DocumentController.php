@@ -6,9 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class DocumentController extends Controller
 {
+    public function index(){
+        $active_tab = 'addedoc';
+        return view('documentmanagement', compact('active_tab'));
+    }
+    public function documentsettingsindex(){
+        $active_tab = 'addedoc';
+        return view('documentsettings', compact('active_tab'));
+    }
+    
     /**
      * Show the "managedocuments" view.
      *
@@ -58,4 +69,13 @@ class DocumentController extends Controller
 
         return redirect()->back()->with('success', 'Document uploaded successfully.');
     }
+
+    public function griddocindex()
+    {
+        $active_tab = 'addedoc';
+        $documents = Document::all(); // Fetch all documents from the t_documents table
+        return view('documentsettings', compact('documents','active_tab'));
+    }
+
+
 }

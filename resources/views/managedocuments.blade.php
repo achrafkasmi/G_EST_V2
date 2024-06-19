@@ -100,10 +100,12 @@
         });
     </script>
     @endif
-
+    <a href="{{ route('documents.index') }}">
+        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
+    </a>
     <div class="container form-container">
         <h2 class="form-title">Ajouter des documents à diffuser</h2>
-
+        
         <form action="{{ route('document.post') }}" method="post" enctype="multipart/form-data">
             @csrf
 

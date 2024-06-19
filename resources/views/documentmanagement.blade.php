@@ -4,41 +4,23 @@
 <div class="app-main">
     @include('tiles.actions')
     <div class="document-list " id="data-container">
-        <a href="#" class="card-link">
+        <a href="{{ route('DC')}}" class="card-link">
             <div class="card">
-                <img src="{{ asset('black-hole.svg') }}" alt="black hole">
+                <img src="{{ asset('doc-share.svg') }}" alt="targetting">
                 <div class="card-content">
-                    <h3>Black Hole</h3>
+                    <h3>E-doc sharing</h3>
                 </div>
             </div>
         </a>
-        <a href="#" class="card-link">
+        <a href="{{ route('documentsettings.index')}}" class="card-link">
             <div class="card">
-                <img src="{{ asset('freeze.svg') }}" alt="freeze">
+                <img src="{{ asset('settings.svg') }}" alt="settings">
                 <div class="card-content">
-                    <h3>Freeze User</h3>
+                    <h3>doc settings</h3>
                 </div>
             </div>
         </a>
-        <a href="#" class="card-link">
-            <div class="card">
-                <img src="{{ asset('settings.svg') }}" alt="freeze">
-                <div class="card-content">
-                    <h3>Student management</h3>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="card-link">
-            <div class="card">
-            <img src="{{ asset('qr.svg') }}" alt="qr" width="40px" height="40px" style="color: #1C274C;">
-                <div class="card-content">
-                    <h3>Attendance</h3>
-                </div>
-            </div>
-        </a>
-        
     </div>
-
 </div>
 
 
