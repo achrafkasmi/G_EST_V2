@@ -13,6 +13,7 @@ use App\Http\Controllers\ElementController;
 use App\Http\Controllers\ElementPedagogiqueController;
 use App\Http\Controllers\PersonnelElementPedagoguiqueController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -161,6 +162,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/terminal', [TerminalController::class, 'index'])->name('terminal.index');
 
     Route::post('/terminal/execute', [TerminalController::class, 'execute'])->name('terminal.execute');
+
+    Route::get('/logs', [LogController::class, 'index'])->name('logs');
+
 });
 
 

@@ -68,10 +68,9 @@
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'checkstage') active @endif">
-      <a class="pop-cont nav-list-link" href="#">
+      <a class="nav-list-link" href="{{route('logs')}}">
         <img src="/historisation.PNG" alt="Historisation" width="28" height="28" style="margin-right: 10px;" />
         Historisation
-        <span class="pop-up">Ce Service est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'gestionstage') active @endif">
