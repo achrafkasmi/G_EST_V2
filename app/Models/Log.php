@@ -15,11 +15,13 @@ class Log extends Model
         'model',
         'details',
     ];
+
     // Define the relationship to the User model
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     // Helper function to format arrays as strings
     private function formatArray($array)
     {
@@ -44,7 +46,7 @@ class Log extends Model
         if ($this->operation === 'create') {
             $formattedDetails = "created a new record with details: " . $this->formatArray($details);
         } elseif ($this->operation === 'update') {
-            $formattedDetails = "updated the record with details: " . $this->formatArray($details);
+            $formattedDetails = "updated the record with changes: " . $this->formatArray($details);
         } elseif ($this->operation === 'delete') {
             $formattedDetails = "deleted the record with id: " . $details['id'];
         }
