@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -21,24 +20,47 @@ class LogCrudOperations
         // Process the request and get the response
         $response = $next($request);
 
-        // Check if the user is authenticated and the request method is either POST, PUT, or DELETE
-        if (Auth::check() && ($request->isMethod('post') || $request->isMethod('put') || $request->isMethod('delete'))) {
-            $operation = $request->isMethod('post') ? 'create' : ($request->isMethod('put') ? 'update' : 'delete');
+        // Check if the user is authenticated
+        if (Auth::check()) {
+            $operation = $this->getOperation($request);
             $modelName = $this->getModelName($request);
 
             // Determine the details of the changes
             $details = $this->getChangeDetails($request, $operation);
 
-            // Create a new log entry
-            Log::create([
-                'user_id' => Auth::id(),
-                'operation' => $operation,
-                'model' => $modelName,
-                'details' => json_encode($details),
-            ]);
+            if ($operation) {
+                // Create a new log entry
+                Log::create([
+                    'user_id' => Auth::id(),
+                    'operation' => $operation,
+                    'model' => $modelName,
+                    'details' => json_encode($details),
+                ]);
+            }
         }
 
         return $response;
+    }
+
+    /**
+     * Get the operation type.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return string|null
+     */
+    protected function getOperation(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            return 'create';
+        } elseif ($request->isMethod('put')) {
+            return 'update';
+        } elseif ($request->isMethod('delete')) {
+            return 'delete';
+        } elseif ($request->isMethod('get')) {
+            return 'read';
+        }
+
+        return null;
     }
 
     /**
@@ -70,12 +92,11 @@ class LogCrudOperations
     {
         if ($operation === 'delete') {
             return ['id' => $request->route('id')]; // Assuming the ID is in the route parameters
-        }
-
-        $model = $this->getModelInstance($request);
-
-        if ($operation === 'update') {
+        } elseif ($operation === 'update') {
+            $model = $this->getModelInstance($request);
             return $this->getUpdatedFields($model, $request->all());
+        } elseif ($operation === 'read') {
+            return ['query' => $request->query()]; // Log query parameters for read operations
         }
 
         return $request->all();
@@ -109,7 +130,11 @@ class LogCrudOperations
      */
     protected function getUpdatedFields($model, $newValues)
     {
-        $original = $model->getOriginal();
-        return array_diff_assoc($newValues, $original);
+        if ($model) {
+            $original = $model->getOriginal();
+            return array_diff_assoc($newValues, $original);
+        }
+
+        return $newValues;
     }
 }

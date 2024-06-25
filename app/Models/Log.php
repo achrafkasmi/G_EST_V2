@@ -49,6 +49,8 @@ class Log extends Model
             $formattedDetails = "updated the record with changes: " . $this->formatArray($details);
         } elseif ($this->operation === 'delete') {
             $formattedDetails = "deleted the record with id: " . $details['id'];
+        } elseif ($this->operation === 'read') {
+            $formattedDetails = "read records with query: " . $this->formatArray($details['query']);
         }
 
         return $formattedDetails;

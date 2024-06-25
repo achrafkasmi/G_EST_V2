@@ -165,6 +165,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/logs', [LogController::class, 'index'])->name('logs');
 
+
 });
 
 
