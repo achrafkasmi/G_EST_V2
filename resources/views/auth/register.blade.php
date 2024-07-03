@@ -1,40 +1,38 @@
 @extends('master')
 
 @section('app-mid')
+<title>Ajout d'Utilisateurs</title>
 
 @if(session('success'))
     <script>
         Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: '{{ session('
-            success ') }}',
+            text: '{{ session('success') }}',
         });
     </script>
-    @endif
+@endif
 
-    @if(session('error'))
+@if(session('error'))
     <script>
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: '{{ session('
-            error ') }}',
+            text: '{{ session('error') }}',
         });
     </script>
-    @endif
+@endif
+
 <div class="app-main">
     @include('tiles.actions')
     <div class="containerf form-container bg-light-gray">
-        <form action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
+        <form id="user-form" action="{{ route('POST-USER-FORM') }}" method="post" enctype="multipart/form-data">
             @csrf
             <h2 class="form-title text-white">Ajout d'Utilisateurs</h2>
             <div class="row mb-3">
                 <label for="name" class="col-md-4 col-form-label text-md-end text-white">{{ __('Name') }}</label>
-
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
                     @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -45,10 +43,8 @@
 
             <div class="row mb-3">
                 <label for="email" class="col-md-4 col-form-label text-md-end text-white">{{ __('Email Address') }}</label>
-
                 <div class="col-md-6">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -59,10 +55,8 @@
 
             <div class="row mb-3">
                 <label for="password" class="col-md-4 col-form-label text-md-end text-white">{{ __('Password') }}</label>
-
                 <div class="col-md-6">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
                     @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -73,7 +67,6 @@
 
             <div class="row mb-3">
                 <label for="password-confirm" class="col-md-4 col-form-label text-md-end text-white">{{ __('Confirm Password') }}</label>
-
                 <div class="col-md-6">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                 </div>
@@ -93,36 +86,28 @@
 
             <div class="row mb-3">
                 <label for="image" class="col-md-4 col-form-label text-md-end text-white">Upload image</label>
-
                 <div class="col-md-6">
                     <input type="file" class="form-control" name="image" accept="image/*" required>
                 </div>
-
             </div>
 
             <div class="row mb-0">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" id="user-submit-btn" class="btn btn-primary">{{ __('Register') }}</button>
-
                 </div>
             </div>
         </form>
-
-
     </div>
     <div class="containerf form-container">
-        <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data"">
+        <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class=" excelinput mb-5">
-            <h2 class="form-title text-white">Addition Masse</h2>
-            <input class="form-control" type="file" id="excel_file" name="excel_file">
-            <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Go</button>
+            <div class="excelinput mb-5">
+                <h2 class="form-title text-white">Addition Masse</h2>
+                <input class="form-control" type="file" id="excel_file" name="excel_file">
+                <button type="submit" id="excel-submit-btn" class="btn btn-primary mt-2">Go</button>
+            </div>
+        </form>
     </div>
-
-    </form>
-</div>
-
-
 </div>
 
 <style>
@@ -136,9 +121,7 @@
 
     .excelinput {
         width: 90%;
-        /* Adjusted width to fit inside container */
         margin: 0 auto;
-        /* Center the element horizontally */
         color: white;
     }
 
@@ -176,14 +159,6 @@
         }
     }
 
-    /*.body{               hada old background momkin n7tajo
-        background-image: url('background2.png'); 
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-    }*/
-
     .form-floatings {
         position: fixed;
         bottom: 0;
@@ -197,6 +172,32 @@
     }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.getElementById('user-form').addEventListener('submit', function(event) {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('password-confirm').value;
+
+        if (password.length < 8) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Password must be at least 8 characters long!',
+            });
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Passwords do not match!',
+            });
+        }
+    });
+</script>
 
 @endsection
 

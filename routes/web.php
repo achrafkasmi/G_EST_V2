@@ -165,6 +165,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/logs', [LogController::class, 'index'])->name('logs');
 
+    Route::get('user/{id_etu}/card', [ProfileController::class, 'usercard'])->name('usercard');
+
+    Route::get('/test/page',function(){
+        dd(phpinfo());
+    });
+    
+
+    
 
 });
 

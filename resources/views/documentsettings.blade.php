@@ -1,6 +1,6 @@
 @extends('master')
 @section("app-mid")
-
+<title>paramettres document</title>
 <div class="app-main">
     @include('tiles.actions')
     <a href="{{ route('documents.index') }}">

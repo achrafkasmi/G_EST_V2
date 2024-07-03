@@ -1,5 +1,6 @@
 @extends('master')
 @section("app-mid")
+<title>E-Documents</title>
 
 <div class="app-main">
     @include('tiles.actions')
@@ -44,7 +45,6 @@
 
     .card img {
         margin-right: 20px;
-        /* Space between the image and text */
         width: 66px;
         height: 66px;
     }

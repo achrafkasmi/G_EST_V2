@@ -27,15 +27,15 @@ class UploadManager extends Controller
             'fileType'     => 'required',
             'stageFile'    => $request->input('fileType') !== 'PFE' ? 'required|mimes:pdf|max:7168' : 'nullable|mimes:pdf|max:7168',
             'rapportFile'  => 'required|mimes:pdf|max:7168',
-            'textInput'    => 'required|string|max:255',
+            'textInput'    => 'required|string|max:1000',
             'teacherSelect' => 'required',
         ]);
 
         $apogee = $user->apogee;
 
-        $dossier_pdf_name = 'Dossier-' . $apogee . '.pdf';
-        $rapport_pdf_name = 'Rapport-' . $apogee . '.pdf';
-        $pagegarde_image_name = 'PageGarde-' . $apogee . '.jpg';
+        $dossier_pdf_name = $request->input('fileType').'-Dossier-' . $apogee . '.pdf';
+        $rapport_pdf_name = $request->input('fileType').'-Rapport-' . $apogee . '.pdf';
+        $pagegarde_image_name = $request->input('fileType').'-PageGarde-' . $apogee . '.jpg';
 
         $path = "public/uploads/";
         $selectedTeacherId = $request->input('teacherSelect');

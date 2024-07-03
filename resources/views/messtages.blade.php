@@ -194,7 +194,7 @@
       </div>
 
       <div class="mb-3" id="stageFileInput">
-        <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
+        <label for="stageFile" class="form-label">Dossier de stage en PDF (Apres signatures):</label>
         @if(old('fileType') !== 'PFE')
         <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100" />
         @endif
@@ -206,7 +206,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="textInput" class="form-label">Titre Du Rapport:</label>
+        <label for="textInput" class="form-label">Titre Du Rapport (Sujet):</label>
         <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
       </div>
 
@@ -244,7 +244,7 @@
       </div>
 
       <div class="mb-3" id="stageFileInput">
-        <label for="stageFile" class="form-label">Dossier de stage en PDF:</label>
+        <label for="stageFile" class="form-label">Dossier de stage en PDF (Apres signatures):</label>
         @if(old('fileType') !== 'PFE')
         <input type="file" id="stageFile" name="stageFile" class="dropify" data-max-file-size="7M" data-height="100" />
         @endif
@@ -256,7 +256,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="textInput" class="form-label">Titre Du Rapport:</label>
+        <label for="textInput" class="form-label">Titre Du Rapport(Sujet):</label>
         <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Entrer le titre du rapport:">
       </div>
 

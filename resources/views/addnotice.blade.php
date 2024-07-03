@@ -1,6 +1,7 @@
 @extends('master')
 
 @section("app-mid")
+<title>Ajout D'avis</title>
 <!-- Include Dropify CSS from CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
 

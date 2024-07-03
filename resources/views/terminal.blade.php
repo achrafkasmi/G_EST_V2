@@ -4,16 +4,35 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Source Code Pro', monospace;
+        background-color: #001f3f; /* Adjust background color as needed */
+        color: #fff;
+    }
+    .app-main {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
     #terminal {
         background-color: #000;
         color: #0f0;
-        font-family: monospace;
         padding: 10px;
         border-radius: 15px;
-        min-height: 600px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         overflow-y: auto;
-        scroll-behavior: smooth;
+        width: 100%;
+        box-sizing: border-box;
     }
     #terminalInput {
         flex: 1; 
@@ -22,6 +41,8 @@
         border: none;
         outline: none;
         font-family: 'Source Code Pro', monospace; 
+        width: 100%;
+        box-sizing: border-box;
     }
     #terminalOutput {
         white-space: pre;
@@ -120,7 +141,7 @@ ________________________________________________________________________________
                 }
 
                 if (command.toLowerCase() === 'help?') {
-                    appendOutput(`$${username} > ${command}\nAvailable commands:\n- help?: Display this help message\n- clear: Clear the terminal\n- list usr: list all the existing users\n- count usr: count all the existing users\n- count laureats: count all the existing laureats\n- count laureats>year :count all the existing laureats of each year\n- count laureats>diploma: count all laureats of each diploma\n- count laureats>diploma>year :displays the count of all the laureats by year and by diploma at the same time\n- count usr>student :returns all students\n- count usr>student>activity :returns the number of active students and the number of inactive\n- count usr>student>sexe>activity : returns how many active male and how many active female\n- count usr>student>sexe>activity>byyear : returns how many active male and how many active female yearly\n- count student>has_uploaded :returns the count of uploads groupped by type (initation-technique...)\n- list dip :give an overview about existing diplomas\n- list staff>teacher :lists the informations about teachers\n`);
+                    appendOutput(`$${username} > ${command}\nAvailable commands:\n- help?: Display this help message\n- clear: Clear the terminal\n- list usr: list all the existing users\n- count usr: count all the existing users\n- count laureats: count all the existing laureats\n- count laureats>year :count all the existing laureats of each year\n- count laureats>diploma: count all laureats of each diploma\n- count laureats>diploma>year :displays the count of all the laureats by year and by diploma at the same time\n- count usr>student :returns all students\n- count usr>student>activity :returns the number of active students and the number of inactive\n- count usr>student>sexe>activity : returns how many active male and how many active female\n- count usr>student>sexe>activity>byyear : returns how many active male and how many active female yearly\n- count student>has_uploaded :returns the count of uploads grouped by type (initiation-technique...)\n- list dip :give an overview about existing diplomas\n- list staff>teacher :lists the informations about teachers\n`);
                 } else if (command.toLowerCase() === 'clear') {
                     outputElement.innerText = '';
                 } else {

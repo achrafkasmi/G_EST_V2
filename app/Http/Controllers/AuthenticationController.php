@@ -33,45 +33,49 @@ class AuthenticationController extends Controller
     }
 
     protected function postUser(Request $data)
-    {            // Validate
+{
+    $data->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+        'role' => 'required|string|in:admin,teacher,student',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    try {
         $user = new User;
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
         $user->save();
 
-        if($data->file('image')){
-
+        if ($data->file('image')) {
             $path = "public/avatars/";
-
             $user->image = Storage::putFile($path, $data->file('image'));
-
             $user->save();
-
-        };
+        }
 
         $role = $data['role'];
-
         $user->assignRole($role);
 
-        if($role==="teacher"){
-
-            $personnel= Personnel::where('user_id',$user->id)->first() ?? new  Personnel;
-
+        if ($role === "teacher") {
+            $personnel = Personnel::where('user_id', $user->id)->first() ?? new Personnel;
             $personnel->nom_personnel = $user->name;
-
             $personnel->user_id = $user->id;
-
             $personnel->save();
-
         }
-        //$user->assignRole('admin');
-
 
         $data->session()->flash('success', 'User added successfully.');
-
-        return redirect()->route('ADD-USER-FORM');
+    } catch (\Illuminate\Database\QueryException $e) {
+        if ($e->getCode() == 23000) { // Integrity constraint violation
+            $data->session()->flash('error', 'Account already exists with this email.');
+        } else {
+            $data->session()->flash('error', 'An error occurred while adding the user.');
+        }
     }
+
+    return redirect()->route('ADD-USER-FORM');
+}
 
     public function login()
     {

@@ -1,6 +1,6 @@
 @extends('master')
 @section("app-mid")
-
+<title>Management Etudiant</title>
 <div class="app-main">
     @include('tiles.actions')
     <div class="document-list " id="data-container">

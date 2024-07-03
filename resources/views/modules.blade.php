@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('app-mid')
+<title>Diplomes</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <div class="app-main">
@@ -128,6 +129,7 @@
 <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"> </script>
 <script>
     let table = new DataTable('#myTable');
+    
 </script>
 
 

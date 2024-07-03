@@ -1,6 +1,6 @@
 @extends('master')
 @section("app-mid")
-
+<title>Acceuil</title>
 <div class="app-main">
   @include('tiles.actions')
   @if(auth()->user() && auth()->user()->hasRole('student'))
@@ -9878,7 +9878,16 @@
   });
 </script>
 <script>
-  let table = new DataTable('#myTable');
+  $(document).ready(function() {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      // Only enable horizontal scrolling for phones (screen width <= 767px)
+      $('#myTable').DataTable({
+        scrollX: true
+      });
+    } else {
+      $('#myTable').DataTable();
+    }
+  });
 </script>
 <script>
   $(document).ready(function() {

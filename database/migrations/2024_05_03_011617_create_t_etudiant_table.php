@@ -102,6 +102,9 @@ use Illuminate\Support\Facades\Schema;
             $table->string('id_etape', 100)->nullable();
             $table->string('annee_uni',255)->nullable();
             $table->boolean('is_active')->nullable();
+            $table->string('Annee', 100)->nullable();
+            $table->string('FILIERE', 200)->nullable();
+
 
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);

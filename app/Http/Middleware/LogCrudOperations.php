@@ -1,18 +1,21 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Log;
+use App\Models\Etudiant;
+use App\Models\User;
 
 class LogCrudOperations
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
@@ -28,7 +31,7 @@ class LogCrudOperations
             // Determine the details of the changes
             $details = $this->getChangeDetails($request, $operation);
 
-            if ($operation) {
+            if ($operation && !$this->shouldSkipLogging($request, $operation)) {
                 // Create a new log entry
                 Log::create([
                     'user_id' => Auth::id(),
@@ -40,6 +43,37 @@ class LogCrudOperations
         }
 
         return $response;
+    }
+
+    /**
+     * Determine if logging should be skipped for the request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $operation
+     * @return bool
+     */
+    protected function shouldSkipLogging(Request $request, $operation)
+    {
+        // List of controller actions to skip logging
+        $skipLoggingActions = [
+            'App\Http\Controllers\DashboardController@index',
+            'App\Http\Controllers\DocumentController@griddocindex',
+            'App\Http\Controllers\DocumentController@index',
+            'App\Http\Controllers\AuthenticationController@addUserForm',
+            'App\Http\Controllers\TerminalController@index',
+            'App\Http\Controllers\libraryController@index',
+            'App\Http\Controllers\DocumentController@managedocuments',
+            'App\Http\Controllers\libraryController@fetchlibrary',
+            'App\Http\Controllers\StudentController@index',
+            'App\Http\Controllers\Diplome@index',
+            'App\Http\Controllers\LogController@index',
+        ];
+
+        $route = $request->route();
+        $controllerAction = $route->getAction('controller');
+
+        // Skip logging if the current action is in the list
+        return in_array($controllerAction, $skipLoggingActions);
     }
 
     /**
@@ -96,10 +130,39 @@ class LogCrudOperations
             $model = $this->getModelInstance($request);
             return $this->getUpdatedFields($model, $request->all());
         } elseif ($operation === 'read') {
-            return ['query' => $request->query()]; // Log query parameters for read operations
+            return $this->getReadDetails($request);
         }
 
         return $request->all();
+    }
+
+    /**
+     * Get the details of a read operation.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    protected function getReadDetails(Request $request)
+    {
+        $route = $request->route();
+        $controllerAction = $route->getAction('controller');
+        $parameters = $route->parameters();
+
+        // Add custom logic to capture specific details based on controller and action
+        if ($controllerAction == 'App\Http\Controllers\ProfileController@usercard') {
+            $etudiant = Etudiant::find($parameters['id_etu']);
+            $user = User::find($etudiant->user_id);
+            return [
+                'action' => 'Reading user card',
+                'etudiant_id' => $etudiant->id,
+                'etudiant_name' => $etudiant->name,
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                // Add more details as needed
+            ];
+        }
+
+        return ['query' => $request->query()]; // Default case: log query parameters
     }
 
     /**
@@ -130,11 +193,7 @@ class LogCrudOperations
      */
     protected function getUpdatedFields($model, $newValues)
     {
-        if ($model) {
-            $original = $model->getOriginal();
-            return array_diff_assoc($newValues, $original);
-        }
-
-        return $newValues;
+        $original = $model->getOriginal();
+        return array_diff_assoc($newValues, $original);
     }
 }

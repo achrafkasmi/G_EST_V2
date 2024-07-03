@@ -4,7 +4,7 @@
 
 @extends('master')
 @section("app-mid")
-
+<title>Acceuil</title>
 
 
 <div class="app-main">

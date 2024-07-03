@@ -1,6 +1,6 @@
 @extends('master')
 @section("app-mid")
-
+<title>Log</title>
 <div class="app-main">
     @include('tiles.actions')
     <h1>Logs</h1>

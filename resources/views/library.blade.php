@@ -1,7 +1,6 @@
 @extends('master')
 @section("app-mid")
-
-
+<title>Bibliothèque</title>
 <div class="app-main">
     @include('tiles.actions')
     <div class="search-sort-container">

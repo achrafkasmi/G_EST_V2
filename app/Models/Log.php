@@ -50,7 +50,11 @@ class Log extends Model
         } elseif ($this->operation === 'delete') {
             $formattedDetails = "deleted the record with id: " . $details['id'];
         } elseif ($this->operation === 'read') {
-            $formattedDetails = "read records with query: " . $this->formatArray($details['query']);
+            if (isset($details['action'])) {
+                $formattedDetails = "{$details['action']} for user: {$details['user_name']} ({$details['user_id']}) and student: {$details['etudiant_name']} ({$details['etudiant_id']})";
+            } else {
+                $formattedDetails = "read records with query: " . $this->formatArray($details['query']);
+            }
         }
 
         return $formattedDetails;

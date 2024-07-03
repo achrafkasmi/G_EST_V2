@@ -3,6 +3,7 @@
 @extends('master')
 
 @section("app-mid")
+<title>Gestion Des Stages</title>
 
 <div class="app-main">
    @include('tiles.actions')
@@ -95,12 +96,23 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@12"></script>
 
 <script>
-   let table = new DataTable('#myTable');
+ 
+  $(document).ready(function() {
+    if (window.matchMedia("(max-width: 767px)").matches) {
 
-   // Function to approve a stage
+      $('#myTable').DataTable({
+        scrollX: true
+      });
+    } else {
+      $('#myTable').DataTable();
+    }
+  });
+
+
    function approveStage(rowId) {
-      // Implement your approve logic here
+
       alert("Étape approuvée pour cette rangée" + rowId);
+
    }
 </script>
 
