@@ -16,6 +16,8 @@
         <div class="profile-info">
             <div class="content">
                 <h3>About</h3>
+                <p><strong>- Filière:</strong> {{ $etudiant->Annee}} {{$etudiant->FILIERE}}</p>
+
                 <p><strong>- Email:</strong> {{ $user->email }}</p>
                 @if($etudiant)
                 <p><strong>- CIN:</strong> {{ $etudiant->cin }}</p>

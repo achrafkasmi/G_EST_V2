@@ -4,7 +4,7 @@
 <div class="app-main">
     @include('tiles.actions')
     <h1>Logs</h1>
-    <div class="datatabcontainer mt-4">
+    <div class="datatabcontainerr mt-4">
         <table class="tab" id="logsTable">
             <thead>
                 <tr>
@@ -69,7 +69,7 @@
     color: grey;
   }
 
-  .datatabcontainer {
+  .datatabcontainerr {
     background-color: var(--app-bg-dark);
     color: #fff;
     border-collapse: collapse;

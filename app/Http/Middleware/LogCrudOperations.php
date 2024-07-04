@@ -67,6 +67,7 @@ class LogCrudOperations
             'App\Http\Controllers\StudentController@index',
             'App\Http\Controllers\Diplome@index',
             'App\Http\Controllers\LogController@index',
+            'App\Http\Controllers\DashboardController@myIntern',
         ];
 
         $route = $request->route();
