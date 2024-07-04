@@ -79,7 +79,7 @@ class TerminalController extends Controller
             case 'count usr>student>sexe>activity':
                 $activeBoys = DB::table('t_etudiant')->where('sexe', 'male')->where('is_active', 1)->count();
                 $activeGirls = DB::table('t_etudiant')->where('sexe', 'female')->where('is_active', 1)->count();
-                return ['activeBoys' => $activeBoys, 'activeGirls' => $activeGirls];
+                return ['activeMale' => $activeBoys, 'activeFemale' => $activeGirls];
             case 'count usr>student>sexe>activity>byyear':
                 return DB::table('t_etudiant')
                     ->select('annee_uni', 'sexe', DB::raw('count(*) as total'))
