@@ -34,7 +34,7 @@
   --draft-icon: #e9780e;
 }
 
-body {
+/*body {
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -43,7 +43,7 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #050e2d;
 }
-
+*/
 .app-container {
   width: 100%;
   height: 100%;
@@ -81,6 +81,28 @@ body {
       rgba(4, 15, 50, 1) 100%
   );
 }
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+      flex-direction: row;
+  }
+}
+
+/* Additional responsive styles for your layout */
+
+
 
 /* Additional media queries for responsiveness */
 @media (max-width: 768px) {
@@ -921,6 +943,7 @@ button {
 
 /*gestionstage.blade*/
 body {
+  
   height: 100vh;
   width: 100%;
   overflow: hidden;

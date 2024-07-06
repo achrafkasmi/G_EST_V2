@@ -15,6 +15,7 @@
 
 <style>
   body {
+    
     background-color: #26324a;
     /* Slightly lighter than #1f273d */
     color: #fff;
@@ -171,7 +172,7 @@
 
   <div class="container form-container collapse" id="uploadForm">
     <h2 class="form-title">Dossier de Stage</h2>
-    <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
+    <form id="uploadFormElement" action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
       @csrf
 
       <div class="mb-3">
@@ -221,15 +222,15 @@
       </div>
 
       <div class="d-grid gap-2 mt-3">
-        <button class="btn submit-btn" type="submit">Envoyer</button>
-      </div>
+      <button id="submitButton" class="btn submit-btn" type="submit">Envoyer</button>
+    </div>
     </form>
   </div>
 
   @else
   <div class="container form-container">
     <h2 class="form-title">Dossier de Stage</h2>
-    <form action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
+    <form id="uploadFormElement" action="{{ route('upload.post') }}" method="post" enctype="multipart/form-data">
       @csrf
 
       <div class="mb-3">
@@ -271,8 +272,9 @@
       </div>
 
       <div class="d-grid gap-2 mt-3">
-        <button class="btn submit-btn" type="submit">Envoyer</button>
-      </div>
+      <button id="submitButton" class="btn submit-btn" type="submit">Envoyer</button>
+    </div>
+  </form>
     </form>
   </div>
   @endif
@@ -323,7 +325,19 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    $('.dropify').dropify();
 
+    const uploadForm = document.getElementById('uploadFormElement');
+    const submitButton = document.getElementById('submitButton');
+
+    uploadForm.addEventListener('submit', function() {
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Uploading...';
+    });
+  });
+</script>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
