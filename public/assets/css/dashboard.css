@@ -32,18 +32,50 @@
   --close-icon: #fdbc64;
   --draft-bg: #fed8b3;
   --draft-icon: #e9780e;
+
+  /* Light mode variables */
+  --app-bg-dark-light: #ffffff;
+  --app-bg-before-light: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  --app-bg-before-2-light: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  --app-bg-light-light: #f7f7f7;
+  --app-logo-light: #007bff;
+  --nav-link-light: #333333;
+  --nav-link-active-light: #000000;
+  --list-item-hover-light: #f0f0f0;
+  --main-color-light: #000000;
+  --secondary-color-light: #555555;
+  --color-light-light: rgba(52, 129, 210, 0.1);
+  --warning-bg-light: #ffe5e5;
+  --warning-icon-light: #ff8181;
+  --applicant-bg-light: #e3fff1;
+  --applicant-icon-light: #61e1a1;
+  --close-bg-light: #fff8e5;
+  --close-icon-light: #fdbc64;
+  --draft-bg-light: #fed8b3;
+  --draft-icon-light: #e9780e;
+}
+.light-mode {
+  --app-bg-dark: var(--app-bg-dark-light);
+  --app-bg-before: var(--app-bg-before-light);
+  --app-bg-before-2: var(--app-bg-before-2-light);
+  --app-bg-light: var(--app-bg-light-light);
+  --app-logo: var(--app-logo-light);
+  --nav-link: var(--nav-link-light);
+  --nav-link-active: var(--nav-link-active-light);
+  --list-item-hover: var(--list-item-hover-light);
+  --main-color: var(--main-color-light);
+  --secondary-color: var(--secondary-color-light);
+  --color-light: var(--color-light-light);
+  --warning-bg: var(--warning-bg-light);
+  --warning-icon: var(--warning-icon-light);
+  --applicant-bg: var(--applicant-bg-light);
+  --applicant-icon: var(--applicant-icon-light);
+  --close-bg: var(--close-bg-light);
+  --close-icon: var(--close-icon-light);
+  --draft-bg: var(--draft-bg-light);
+  --draft-icon: var(--draft-icon-light);
 }
 
-/*body {
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  font-family: "Poppins", sans-serif;
-  background-color: #050e2d;
-}
-*/
 .app-container {
   width: 100%;
   height: 100%;

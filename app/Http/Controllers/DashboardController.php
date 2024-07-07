@@ -49,13 +49,28 @@ class DashboardController extends Controller
             return view('Dashboards.dashteacher')->with(['users' => $users, 'active_tab' => 'dash']);
         }
 
-        // Fetch all students sorted by annee_uni
+        //all students are 100% donc here calcule pourcentage sur chaque filière
         $students = Etudiant::orderBy('annee_uni')->get();
+        $totalStudents = Etudiant::count();
+        $filieres = Etudiant::select('filiere', \DB::raw('count(*) as count'))
+            ->groupBy('filiere')
+            ->get();
 
-        return view('Dashboards.dashboard')->with(['students' => $students, 'active_tab' => 'dash', 'isLaureat' => 'dash']);
+        foreach ($filieres as $filiere) {
+            $filiere->percentage = ($filiere->count / $totalStudents) * 100;
+        }
+
+        $colors = ['#4caf50', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#3f51b5', '#009688', '#cddc39', '#ff5722', '#607d8b'];
+
+
+        return view('Dashboards.dashboard')->with([
+            'students' => $students,
+            'filieres' => $filieres,
+            'active_tab' => 'dash',
+            'colors' => $colors,
+            'isLaureat' => 'dash'
+        ]);
     }
-
-
 
 
 
@@ -83,7 +98,7 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        // Call the listPersonnel method to fetch teachers
+        
         $teachers = $this->listPersonnel();
 
         return view('messtages', ['active_tab' => 'messtages', 'teachers' => $teachers]);

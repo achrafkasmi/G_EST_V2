@@ -94,39 +94,25 @@
       </div>
     </div>
     <div class="chart-container-wrapper small">
-      <div class="chart-container">
+    <div class="chart-container">
         <div class="chart-container-header">
-          <h2>Acquisitions</h2>
-          <span href="#">Cette année</span>
+            <h2>Acquisitions</h2>
+            <span href="#">Cette année</span>
         </div>
         <div class="acquisitions-bar">
-          <span class="bar-progress rejected" style="width:8%;"></span>
-          <span class="bar-progress on-hold" style="width:10%;"></span>
-          <span class="bar-progress shortlisted" style="width:18%;"></span>
-          <span class="bar-progress applications" style="width:64%;"></span>
+            @foreach ($filieres as $index => $filiere)
+                <span class="bar-progress" style="width:{{ $filiere->percentage }}%; background-color:{{ $colors[$index % count($colors)] }}"></span>
+            @endforeach
         </div>
+        @foreach ($filieres as $index => $filiere)
         <div class="progress-bar-info">
-          <span class="progress-color applications"></span>
-          <span class="progress-type">Applications</span>
-          <span class="progress-amount">64%</span>
+            <span class="progress-color" style="background-color:{{ $colors[$index % count($colors)] }}"></span>
+            <span class="progress-type">{{ $filiere->filiere }}</span>
+            <span class="progress-amount">{{ number_format($filiere->percentage, 2) }}%</span>
         </div>
-        <div class="progress-bar-info">
-          <span class="progress-color shortlisted"></span>
-          <span class="progress-type">Shortlisted</span>
-          <span class="progress-amount">18%</span>
-        </div>
-        <div class="progress-bar-info">
-          <span class="progress-color on-hold"></span>
-          <span class="progress-type">On-hold</span>
-          <span class="progress-amount">10%</span>
-        </div>
-        <div class="progress-bar-info">
-          <span class="progress-color rejected"></span>
-          <span class="progress-type">Rejected</span>
-          <span class="progress-amount">8%</span>
-        </div>
-      </div>
+        @endforeach
     </div>
+</div>
   </div>
 
   <div class="datatabcontainer-updated  mt-6">
@@ -9949,5 +9935,29 @@
     padding: 8px;
     text-align: left;
   }
+</style>
+<style>
+    .progress-bar-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    
+    .progress-color {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .progress-type, .progress-amount {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    .progress-type {
+        flex: 1; 
+    }
 </style>
 @endsection
