@@ -94,7 +94,6 @@
           </svg>
         </span>
       </div>
-
       @if(auth()->user()->hasRole('student') && auth()->user()->etudiant)
       @foreach(auth()->user()->etudiant->notifications as $notification)
       <div class="activity-line" onclick="showNotificationPopup('{{ $notification->id }}', '{{ $notification->text_message }}', '{{ $notification->voice_message_url }}')">
@@ -338,13 +337,6 @@
 
   // Initialize the timeout on page load
   logoutTimeout = setTimeout(setLogoutYellow, 60000); // Set the timeout to 1 minute
-</script>
-<script>
-  $(document).ready(function() {
-  $('#switch__checkbox').change(function() {
-    $('body').toggleClass('light-mode');
-  });
-});
 </script>
 <style>
   .logout-icon {
