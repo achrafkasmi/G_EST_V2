@@ -31,11 +31,10 @@
     </li>
     @endif
     @if(auth()->user() && auth()->user()->hasRole('student'))
-    <li class="nav-list-item">
-      <a class="pop-cont nav-list-link" href="#">
+    <li class="nav-list-item @if($active_tab == 'attendance') active @endif">
+      <a class="nav-list-link" href="{{ route('attendance.dash.blade') }}">
         <img src="/qr-code-icon.svg" alt="Attendance" width="28" height="28" style="margin-right: 10px;" />
         Attendance
-        <span class="pop-up">le Service d'attendance est en cours de développement...</span>
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'messtages') active @endif">

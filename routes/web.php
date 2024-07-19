@@ -171,6 +171,8 @@ Route::middleware(['auth'])->group(function () {
         dd(phpinfo());
     });
     
+    Route::get('/scanner', [AttendanceController::class, 'showscannerBlade'])->name('scanner.blade');
+    Route::get('/attendancedash', [AttendanceController::class, 'showattendancedashboard'])->name('attendance.dash.blade');
 
     
 

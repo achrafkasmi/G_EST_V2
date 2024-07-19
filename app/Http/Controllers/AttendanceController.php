@@ -23,7 +23,15 @@ class AttendanceController extends Controller
 
         return view('attendance', compact('active_tab', 'locals', 'personnels', 'elementsPedago'));
     }
+    public function showscannerBlade(){
+        $active_tab = 'attendance';
+        return view('scannerQR', compact('active_tab'));
 
+    }
+    public function showattendancedashboard(){
+        $active_tab = 'attendance';
+        return view('attendancedashboard', compact('active_tab'));
+    }
 
     public function generateQrCode(Request $request)
     {
