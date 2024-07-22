@@ -54,7 +54,7 @@ class DocumentController extends Controller
         $request->validate([
             'fileType' => 'required',
             'stageFile' => 'required|file|mimes:pdf|max:30720',
-            'textInput' => 'required|string|max:100',
+            'textInput' => 'required|string|max:10000', // Allow more characters to accommodate HTML
         ]);
 
         $filePath = $request->file('stageFile')->storeAs('public/e-documents', $request->file('stageFile')->getClientOriginalName());
@@ -63,7 +63,6 @@ class DocumentController extends Controller
         $document->intitule_document = $request->input('textInput');
         $document->type_document = $request->input('fileType');
         $document->document = $filePath;
-
 
         $document->save();
 

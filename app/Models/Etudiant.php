@@ -11,34 +11,35 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Etudiant extends Model
 {
-    protected $table='t_etudiant';
+    protected $table = 't_etudiant';
 
     protected $fillable = [
-       'is_active'
+        'is_active'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function notifications(): HasMany
-{
-    return $this->hasMany(Notification::class, 'id_etu');
-}
-   public function stage() : HasOne
-   {
-     return $this->hasOne(Stage::class,'id_etu');
-   }
+    {
+        return $this->hasMany(Notification::class, 'id_etu');
+    }
+    public function stage(): HasOne
+    {
+        return $this->hasOne(Stage::class, 'id_etu');
+    }
 
-   public function diplome(): BelongsTo
-   {
-       return $this->belongsTo(Diplome::class, 'id_etape');
-   }
-   public function etapes(){
-    return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
-   }
-   public function stages()
+    public function diplome(): BelongsTo
+    {
+        return $this->belongsTo(Diplome::class, 'id_etape');
+    }
+    public function etapes()
+    {
+        return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
+    }
+    public function stages()
     {
         return $this->hasMany(Stage::class, 'id_etu');
     }
@@ -46,6 +47,4 @@ class Etudiant extends Model
     {
         return $this->hasMany(Retrait::class, 'id_etu');
     }
-    
 }
-

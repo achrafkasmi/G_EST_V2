@@ -10,7 +10,7 @@
     <span>EST-FBS</span>
   </div>
   <ul class="nav-list">
-    <li class="nav-list-item  @if($active_tab === 'dash') active @endif">
+    <li class="nav-list-item  ">
       <a class="nav-list-link" href="{{ route('dashboard') }}">
         <img src="/dashboard.PNG" alt="Acceuil" width="28" height="28" style="margin-right: 10px;" />
         Acceuil
@@ -43,6 +43,12 @@
         Dossier de Stage
       </a>
     </li>
+    <!--<li class="nav-list-item">
+      <a class="nav-list-link" href="#">
+        <img src="/bourse.svg" alt="Dossier de Stage" width="28" height="28" style="margin-right: 10px;" />
+        Reclamations De Bourse.
+      </a>
+    </li>-->
     @endif
     <li class="nav-list-item">
       <a class="pop-cont nav-list-link @if($active_tab == 'planning') active @endif" href="#">

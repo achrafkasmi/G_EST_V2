@@ -62,13 +62,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-
     public function etudiant()
     {
-
-        return $this->hasOne(Etudiant::class, "user_id");
+        return $this->hasOne(Etudiant::class, 'user_id', 'id');
     }
-
     public function personnel()
     {
 

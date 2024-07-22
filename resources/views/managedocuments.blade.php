@@ -13,11 +13,9 @@
 <!-- Include Dropify JS from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
-
 <style>
     body {
         background-color: #26324a;
-        /* Slightly lighter than #1f273d */
         color: #fff;
         font-family: 'Arial', sans-serif;
     }
@@ -26,7 +24,6 @@
         max-width: 600px;
         margin: 50px auto;
         background-color: #2f3c57;
-        /* Slightly lighter than #1f273d */
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -46,18 +43,14 @@
     .form-select,
     .form-control {
         background-color: #394a6e;
-        /* Slightly lighter than #2a354e */
         border: 1px solid #4d6396;
-        /* Slightly lighter than #364862 */
         color: #b8c2d3;
     }
 
     .form-select:focus,
     .form-control:focus {
         background-color: #394a6e;
-        /* Slightly lighter than #2a354e */
         border-color: #4d6396;
-        /* Slightly lighter than #364862 */
         color: #b8c2d3;
     }
 
@@ -84,11 +77,8 @@
         background-color: #0056b3;
     }
 </style>
-</head>
-
 
 <div class="app-main">
-
     @include('tiles.actions')
 
     @if(session('success'))
@@ -106,8 +96,8 @@
     </a>
     <div class="container form-container">
         <h2 class="form-title">Ajouter des documents à diffuser</h2>
-        
-        <form action="{{ route('document.post') }}" method="post" enctype="multipart/form-data">
+
+        <form action="{{ route('document.post') }}" method="post" enctype="multipart/form-data" id="documentForm">
             @csrf
 
             <div class="mb-3">
@@ -126,30 +116,65 @@
 
             <div class="mb-3">
                 <label for="textInput" class="form-label">Titre et/ou désignation :</label>
-                <input type="text" id="textInput" name="textInput" class="form-control" placeholder="Enter the document title">
+                <div contenteditable="true" id="textInput" class="form-control" style="min-height: 50px; border: 1px solid #ced4da; padding: 10px;"></div>
+                <input type="hidden" id="hiddenTextInput" name="textInput">
             </div>
 
             <div class="d-grid gap-2 mt-3">
                 <button class="btn submit-btn" type="submit">Envoyer</button>
             </div>
+            <div class="note"> *note if you want to send a red colored text you can type red:SomeText endColor               
+            </div>
         </form>
-
-
     </div>
-
-
-
+    
 </div>
+
 <script>
     $(document).ready(function() {
         // Initialize Dropify on stageFile input
         $('#stageFile').dropify();
+    });
 
-        // Initialize Dropify on rapportFile input
-        $('#rapportFile').dropify();
+    $(document).ready(function() {
+        $('#textInput').on('input', function() {
+            let content = $(this).html();
+            content = content.replace(/red:([^<]+?)endColor/g, '<span style="color: red;">$1</span><span>&nbsp;</span>');
+            $(this).html(content);
+            placeCaretAtEnd(this);
 
+            // Check if endColor is present, remove it and reset contenteditable div
+            if (content.includes('endColor')) {
+                content = content.replace('endColor', '');
+                $(this).html(content + '<span>&nbsp;</span>');
+                placeCaretAtEnd(this);
+            }
+        });
+
+        $('#documentForm').on('submit', function() {
+            const textContent = $('#textInput').html(); // Get HTML content
+            $('#hiddenTextInput').val(textContent);
+        });
+
+        function placeCaretAtEnd(el) {
+            el.focus();
+            if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (typeof document.body.createTextRange != "undefined") {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        }
     });
 </script>
+
 @endsection
 
 
@@ -406,6 +431,10 @@
                 }
             }
         }
+    }
+    .note{
+        font-size: .6em;
+        margin-top: 10px;
     }
 </style>
 

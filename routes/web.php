@@ -121,6 +121,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
 
+    Route::get('/scan-qr-code', [AttendanceController::class, 'handleQrCodeScan'])->name('scan.qr.code');
+
+    Route::get('/attendance-success', function () {
+        $active_tab = 'dash';
+        return view('attendancesuccess', compact('active_tab'));
+    })->name('attendance.success');
+    
+    Route::get('/attendance-failure', function () {
+        $active_tab = 'dash';
+        return view('attendancefailure', compact('active_tab'));
+    })->name('attendance.failure');
+
     Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
     Route::get('/manuallibrary', function () {$active_tab = 'manuallibrary';return view('manuallibrary', compact('active_tab'));})->name('manuallibrary');
