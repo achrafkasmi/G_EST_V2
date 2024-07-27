@@ -6,9 +6,9 @@
     <div class="document-list " id="data-container">
         <a href="#" class="card-link">
             <div class="card">
-                <img src="{{ asset('black-hole.svg') }}" alt="black hole">
+                <img src="{{ asset('listeetudiants.svg') }}" alt="black hole">
                 <div class="card-content">
-                    <h3>Black Hole</h3>
+                    <h3>Listes des etudiants</h3>
                 </div>
             </div>
         </a>
