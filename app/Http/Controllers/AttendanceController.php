@@ -69,18 +69,11 @@ class AttendanceController extends Controller
     }
 
     public function handleQrCodeScan(Request $request)
-    {
+    { 
         $active_tab = 'attendance';
     
         // Extract attendance data from the URL query parameters
         $attendanceData = $request->only(['id_local', 'id_personnel', 'id_element_pedago', 'annee_uni', 'heure_debut_seance', 'heure_fin_seance']);
-    
-        // Check if the user is logged in
-        if (!auth()->check()) {
-            // Store the attendance data in the session and redirect to login
-            session(['attendance_data' => $attendanceData]);
-            return redirect()->route('login');
-        }
     
         // Get the logged-in student's ID through the relationship
         $student = auth()->user()->etudiant;
