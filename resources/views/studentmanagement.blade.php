@@ -4,7 +4,7 @@
 <div class="app-main">
     @include('tiles.actions')
     <div class="document-list " id="data-container">
-        <a href="#" class="card-link">
+        <a href="{{route('student.selection')}}" class="card-link">
             <div class="card">
                 <img src="{{ asset('listeetudiants.svg') }}" alt="black hole">
                 <div class="card-content">

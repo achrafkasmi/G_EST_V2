@@ -59,7 +59,9 @@ Route::middleware(['auth'])->group(function () {
         return view('gridetudiant');
     })->name('gridetudiant');
 
-    Route::get('/addnotice', function () {return view('addnotice');})->name('gridetudiant');
+    Route::get('/addnotice', function () {
+        return view('addnotice');
+    })->name('gridetudiant');
 
     Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
@@ -71,7 +73,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/comment', [App\Http\Controllers\NotificatioController::class, 'addComment'])->name('ADD-RAPPORT-COMMENT');
 
-    Route::get('/gestionstage', function () {return view('gestionstage');})->name('gestionstage');
+    Route::get('/gestionstage', function () {
+        return view('gestionstage');
+    })->name('gestionstage');
 
     Route::get('/stages', [App\Http\Controllers\libraryController::class, 'index'])->name('all.stages');
 
@@ -95,7 +99,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');
 
-    Route::get('/modules', function () {$active_tab = 'modules';return view('modules', compact('active_tab'));})->name('modules');
+    Route::get('/modules', function () {
+        $active_tab = 'modules';
+        return view('modules', compact('active_tab'));
+    })->name('modules');
 
     Route::post('/diplomes', [Diplome::class, 'store'])->name('diplomes.store');
 
@@ -127,7 +134,7 @@ Route::middleware(['auth'])->group(function () {
         $active_tab = 'dash';
         return view('attendancesuccess', compact('active_tab'));
     })->name('attendance.success');
-    
+
     Route::get('/attendance-failure', function () {
         $active_tab = 'dash';
         return view('attendancefailure', compact('active_tab'));
@@ -135,7 +142,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
-    Route::get('/manuallibrary', function () {$active_tab = 'manuallibrary';return view('manuallibrary', compact('active_tab'));})->name('manuallibrary');
+    Route::get('/manuallibrary', function () {
+        $active_tab = 'manuallibrary';
+        return view('manuallibrary', compact('active_tab'));
+    })->name('manuallibrary');
 
     Route::post('/dossier-stage/manualstore', [UploadManager::class, 'manualstore'])->name('dossier-stage.manualstore');
 
@@ -144,7 +154,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/elementspedago/{id}/{etape_id}/upload', [ElementPedagogiqueController::class, 'storeByExcel'])->name('storeByExcel');
 
     /* email errors*/
-    Route::get('/trigger-error', function () {throw new Exception('This is a test exception!');});
+    Route::get('/trigger-error', function () {
+        throw new Exception('This is a test exception!');
+    });
 
     Route::get('/test-email', function () {
         try {
@@ -179,15 +191,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('user/{id_etu}/card', [ProfileController::class, 'usercard'])->name('usercard');
 
-    Route::get('/test/page',function(){
+    Route::get('/test/page', function () {
         dd(phpinfo());
     });
-    
+
     Route::get('/scanner', [AttendanceController::class, 'showscannerBlade'])->name('scanner.blade');
     Route::get('/attendancedash', [AttendanceController::class, 'showattendancedashboard'])->name('attendance.dash.blade');
 
-    
 
+
+
+    Route::get('/student-selection', [StudentController::class, 'showSelectionForm'])->name('student.selection');
+    Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('student.generatePDF');
 });
 
 
