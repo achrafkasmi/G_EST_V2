@@ -11,15 +11,24 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'addedoc';
         return view('documentmanagement', compact('active_tab'));
     }
-    public function documentsettingsindex(){
+
+    public function documentsettingsindex()
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'addedoc';
         return view('documentsettings', compact('active_tab'));
     }
-    
+
     /**
      * Show the "managedocuments" view.
      *
@@ -27,6 +36,9 @@ class DocumentController extends Controller
      */
     public function managedocuments()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         return view('managedocuments')->with(['active_tab' => 'addedoc']);
     }
 
@@ -36,12 +48,12 @@ class DocumentController extends Controller
      * @return \Illuminate\Contracts\View\View
      */
     public function showDocuments()
-    {   
+    {
         $documents = Document::get();
-        if(auth()->user()->role == 1){ //
-        return view('edocument', ['documents' => $documents,'active_tab' => 'addedoc']);
-        }else
-        return view('edocument', ['documents' => $documents,'active_tab' => 'documents']);
+        if (auth()->user()->role == 1) { //
+            return view('edocument', ['documents' => $documents, 'active_tab' => 'addedoc']);
+        } else
+            return view('edocument', ['documents' => $documents, 'active_tab' => 'documents']);
     }
     /**
      * Store a newly created document in storage.
@@ -71,10 +83,11 @@ class DocumentController extends Controller
 
     public function griddocindex()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'addedoc';
         $documents = Document::all(); // Fetch all documents from the t_documents table
-        return view('documentsettings', compact('documents','active_tab'));
+        return view('documentsettings', compact('documents', 'active_tab'));
     }
-
-
 }

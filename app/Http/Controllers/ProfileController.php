@@ -53,6 +53,9 @@ class ProfileController extends Controller
 
     public function usercard($id_etu)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'card';
     
         $etudiant = Etudiant::find($id_etu);

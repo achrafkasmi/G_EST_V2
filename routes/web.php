@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/messtages', [App\Http\Controllers\DashboardController::class, 'myIntern'])->name('messtages');
 
-    Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');
+    /*Route::get('/dashteacher', [App\Http\Controllers\DashboardController::class, 'dashteacher'])->name('dashteacher');*/
 
     Route::get('/addUser', [App\Http\Controllers\AuthenticationController::class, 'addUserForm'])->name('ADD-USER-FORM');
 
@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/documentsdash', [DocumentController::class, 'index'])->name('documents.index');
 
-    Route::get('/documentsettings', [DocumentController::class, 'documentsettingsindex'])->name('documentsettings.index');
+    /*Route::get('/documentsettings', [DocumentController::class, 'documentsettingsindex'])->name('documentsettings.index');*/
 
     Route::get('/documentsettings', [DocumentController::class, 'griddocindex'])->name('documentsettings.index');
 
@@ -143,6 +143,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
     Route::get('/manuallibrary', function () {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'manuallibrary';
         return view('manuallibrary', compact('active_tab'));
     })->name('manuallibrary');
@@ -195,7 +198,7 @@ Route::middleware(['auth'])->group(function () {
         dd(phpinfo());
     });
 
-    Route::get('/scanner', [AttendanceController::class, 'showscannerBlade'])->name('scanner.blade');
+    Route::get('/manualID', [AttendanceController::class, 'showscannerBlade'])->name('scanner.blade');
     Route::get('/attendancedash', [AttendanceController::class, 'showattendancedashboard'])->name('attendance.dash.blade');
 
 

@@ -23,66 +23,66 @@ class UploadManager extends Controller
         $user = auth()->user();
 
         try {
-        $request->validate([
-            'fileType'     => 'required',
-            'stageFile'    => $request->input('fileType') !== 'PFE' ? 'required|mimes:pdf|max:7168' : 'nullable|mimes:pdf|max:7168',
-            'rapportFile'  => 'required|mimes:pdf|max:7168',
-            'textInput'    => 'required|string|max:1000',
-            'teacherSelect' => 'required',
-        ]);
+            $request->validate([
+                'fileType'     => 'required',
+                'stageFile'    => $request->input('fileType') !== 'PFE' ? 'required|mimes:pdf|max:7168' : 'nullable|mimes:pdf|max:7168',
+                'rapportFile'  => 'required|mimes:pdf|max:7168',
+                'textInput'    => 'required|string|max:1000',
+                'teacherSelect' => 'required',
+            ]);
 
-        $apogee = $user->apogee;
+            $apogee = $user->apogee;
 
-        $dossier_pdf_name = $request->input('fileType').'-Dossier-' . $apogee . '.pdf';
-        $rapport_pdf_name = $request->input('fileType').'-Rapport-' . $apogee . '.pdf';
-        $pagegarde_image_name = $request->input('fileType').'-PageGarde-' . $apogee . '.jpg';
+            $dossier_pdf_name = $request->input('fileType') . '-Dossier-' . $apogee . '.pdf';
+            $rapport_pdf_name = $request->input('fileType') . '-Rapport-' . $apogee . '.pdf';
+            $pagegarde_image_name = $request->input('fileType') . '-PageGarde-' . $apogee . '.jpg';
 
-        $path = "public/uploads/";
-        $selectedTeacherId = $request->input('teacherSelect');
-        $stageFilePath = $request->file('stageFile') ? $request->file('stageFile')->storeAs('uploads', $dossier_pdf_name, 'public') : null;
-        $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapport_pdf_name, 'public');
+            $path = "public/uploads/";
+            $selectedTeacherId = $request->input('teacherSelect');
+            $stageFilePath = $request->file('stageFile') ? $request->file('stageFile')->storeAs('uploads', $dossier_pdf_name, 'public') : null;
+            $rapportFilePath = $request->file('rapportFile')->storeAs('uploads', $rapport_pdf_name, 'public');
 
-        // Converting the first page of the rapport PDF to a JPG image using Spatie\PdfToImage
-        $pdf = new Pdf(storage_path("app/public/uploads/{$rapport_pdf_name}"));
-        $pdf->setPage(1);
-        $pdf->setResolution(300);
-        $pdf->setOutputFormat('jpg');
-        $imagePath = $pdf->saveImage(storage_path("app/public/uploads/{$pagegarde_image_name}"));
+            // Converting the first page of the rapport PDF to a JPG image using Spatie\PdfToImage
+            $pdf = new Pdf(storage_path("app/public/uploads/{$rapport_pdf_name}"));
+            $pdf->setPage(1);
+            $pdf->setResolution(300);
+            $pdf->setOutputFormat('jpg');
+            $imagePath = $pdf->saveImage(storage_path("app/public/uploads/{$pagegarde_image_name}"));
 
-        // Create a new Stage record for each file upload
-        $stage = new Stage();
-        $stage->id_etu = $user->etudiant->id;
-        $stage->type_dossier = $request->input('fileType');
-        $stage->rapport = $path . $rapport_pdf_name;
-        $stage->dossier_stage = $request->input('fileType') === 'PFE' ? 'none' : ($stageFilePath ? $path . $dossier_pdf_name : null);
-        $stage->image_page_garde = $path . $pagegarde_image_name;
-        $stage->titre_rapport = $request->input('textInput');
-        $stage->professeur_encadrant_id = $selectedTeacherId;
+            // Create a new Stage record for each file upload
+            $stage = new Stage();
+            $stage->id_etu = $user->etudiant->id;
+            $stage->type_dossier = $request->input('fileType');
+            $stage->rapport = $path . $rapport_pdf_name;
+            $stage->dossier_stage = $request->input('fileType') === 'PFE' ? 'none' : ($stageFilePath ? $path . $dossier_pdf_name : null);
+            $stage->image_page_garde = $path . $pagegarde_image_name;
+            $stage->titre_rapport = $request->input('textInput');
+            $stage->professeur_encadrant_id = $selectedTeacherId;
 
-        // Set the relevant column to true based on file type
-        switch ($request->input('fileType')) {
-            case 'Stage d\'initiation':
-                $stage->is_uploaded_initiation = true;
-                break;
-            case 'Stage professionnel':
-                $stage->is_uploaded_professionelle = true;
-                break;
-            case 'Stage technique':
-                $stage->is_uploaded_technique = true;
-                break;
-            case 'PFE':
-                $stage->is_uploaded_pfe = true;
-                break;
+            // Set the relevant column to true based on file type
+            switch ($request->input('fileType')) {
+                case 'Stage d\'initiation':
+                    $stage->is_uploaded_initiation = true;
+                    break;
+                case 'Stage professionnel':
+                    $stage->is_uploaded_professionelle = true;
+                    break;
+                case 'Stage technique':
+                    $stage->is_uploaded_technique = true;
+                    break;
+                case 'PFE':
+                    $stage->is_uploaded_pfe = true;
+                    break;
+            }
+
+            $stage->save();
+
+            $request->session()->flash('success', 'Files were uploaded successfully!');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
         }
-
-        $stage->save();
-
-        $request->session()->flash('success', 'Files were uploaded successfully!');
-
-        return redirect()->back();
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
-    }
     }
 
 
@@ -134,6 +134,11 @@ class UploadManager extends Controller
 
     public function manualstore(Request $request)
     {
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         try {
             // Validate the request data
             $request->validate([
@@ -142,17 +147,17 @@ class UploadManager extends Controller
                 'titre_rapport' => 'required|string',
                 'uploaded_type' => 'required|in:is_uploaded_initiation,is_uploaded_technique,is_uploaded_pfe,is_uploaded_professionelle',
             ]);
-    
+
             // Upload rapport PDF
             $rapportPath = $request->file('rapport')->store('public/rapports');
-    
+
             // Extract first page of rapport PDF and save as JPG image
             $pdf = new \Spatie\PdfToImage\Pdf($request->file('rapport')->getPathname());
             $pdf->setPage(1);
             $pdf->setResolution(300);
             $imagePath = str_replace('public/', '', $rapportPath) . '_page1.jpg';
             $pdf->saveImage(storage_path("app/public/{$imagePath}"));
-    
+
             // Create DossierStage instance and save data
             $dossierStage = new Stage();
             $dossierStage->annee_universitaire = $request->annee_universitaire;
@@ -162,12 +167,10 @@ class UploadManager extends Controller
             $dossierStage->image_page_garde = $imagePath; // Store relative path to the image
             $dossierStage->is_recommanded = 1; // Set is_recommanded to 1
             $dossierStage->save();
-    
+
             return redirect()->back()->with('success', 'Dossier de stage stocké à la bibliothèque.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
         }
     }
-    
-
 }

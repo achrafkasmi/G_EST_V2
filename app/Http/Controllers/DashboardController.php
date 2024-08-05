@@ -86,11 +86,14 @@ class DashboardController extends Controller
 
 
 
-    public function dashteacher()
+    /*public function dashteacher()
     {
+        if (!auth()->user()->hasRole('teacher')) {
+            abort(403);
+        }
         $users = User::where('is_uploaded', true)->get();
         return view('Dashboards.dashteacher')->with(['users' => $users]);
-    }
+    } version of this dashteacher has beeen updated on the index function*/
 
     public function myIntern(): View
     {
@@ -98,7 +101,6 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        
         $teachers = $this->listPersonnel();
 
         return view('messtages', ['active_tab' => 'messtages', 'teachers' => $teachers]);

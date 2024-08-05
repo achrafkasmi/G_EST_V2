@@ -14,6 +14,9 @@ class TerminalController extends Controller
 
     public function index()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'reports';
 
         return view('terminal', compact('active_tab'));
@@ -21,6 +24,9 @@ class TerminalController extends Controller
 
     public function execute(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $command = $request->input('command');
         $result = $this->handleCommand($command);
 

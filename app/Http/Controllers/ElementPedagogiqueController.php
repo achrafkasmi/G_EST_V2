@@ -14,7 +14,10 @@ class ElementPedagogiqueController extends Controller
 {
     public function fetchData($id, $etape_id)
     {
-        // Fetch all rows from the t_modules_etape table
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
 
         $elements = ElementPedagogique::where('id_etape', $etape_id)->get();
         $active_tab = 'gestionelements';
@@ -28,8 +31,11 @@ class ElementPedagogiqueController extends Controller
 
     public function store(Request $request, $id, $etape_id)
     {
-        // Validate the request data
-        $request->validate([
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+                $request->validate([
             'code_etape' => 'nullable|string|max:50',
             'id_etape' => 'required|integer',
             'type_etape_element' => 'nullable|string|max:30',
@@ -55,6 +61,10 @@ class ElementPedagogiqueController extends Controller
 
     public function storeByExcel(Request $request, $id, $etape_id)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);

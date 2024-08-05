@@ -14,43 +14,52 @@ use Illuminate\Support\Facades\Storage;
 class libraryController extends Controller
 {
     public function recommand($stageId)
-{
-    $stage = Stage::find($stageId);
-
-    if ($stage) {
-        $student = $stage->etudiant;
-        if (!$student) {
-            return redirect()->back()->with('error', 'Student not found');
+    {
+        if (!auth()->user()->hasRole('teacher')) {
+            abort(403);
         }
 
-        // Toggle the state of is_recommanded
-        $stage->is_recommanded = !$stage->is_recommanded;
-        $stage->save();
+        $stage = Stage::find($stageId);
 
-        // Handle file operations
-        $rapport_pdf_name = 'Rapport-' . $student->apogee . '.pdf';
-        $sourceFilePath = storage_path('app/public/uploads/' . $rapport_pdf_name);
-        $destinationFolder = storage_path('app/public/library/stage/');
+        if ($stage) {
+            $student = $stage->etudiant;
+            if (!$student) {
+                return redirect()->back()->with('error', 'Student not found');
+            }
 
-        if ($stage->is_recommanded && file_exists($sourceFilePath)) {
-            // Move the file to the library folder if recommended
-            Storage::copy('public/uploads/' . $rapport_pdf_name, 'public/library/stage/' . $rapport_pdf_name);
-        } elseif (!$stage->is_recommanded && Storage::exists('public/library/stage/' . $rapport_pdf_name)) {
-            // Remove the file from the library folder if not recommended
-            Storage::delete('public/library/stage/' . $rapport_pdf_name);
+            // Toggle the state of is_recommanded
+            $stage->is_recommanded = !$stage->is_recommanded;
+            $stage->save();
+
+            // Handle file operations
+            $rapport_pdf_name = 'Rapport-' . $student->apogee . '.pdf';
+            $sourceFilePath = storage_path('app/public/uploads/' . $rapport_pdf_name);
+            $destinationFolder = storage_path('app/public/library/stage/');
+
+            if ($stage->is_recommanded && file_exists($sourceFilePath)) {
+                // Move the file to the library folder if recommended
+                Storage::copy('public/uploads/' . $rapport_pdf_name, 'public/library/stage/' . $rapport_pdf_name);
+            } elseif (!$stage->is_recommanded && Storage::exists('public/library/stage/' . $rapport_pdf_name)) {
+                // Remove the file from the library folder if not recommended
+                Storage::delete('public/library/stage/' . $rapport_pdf_name);
+            }
+
+            return redirect('/dash');
+        } else {
+            // Handle case where stage is not found
+            return redirect()->back()->with('error', 'Stage not found');
         }
-
-        return redirect('/dash');
-    } else {
-        // Handle case where stage is not found
-        return redirect()->back()->with('error', 'Stage not found');
     }
-}
 
 
 
     public function validationstage($stageId)
     {
+        if (!auth()->user()->hasRole('teacher')) {
+            abort(403);
+        }
+
+       
         $stage = Stage::find($stageId);
 
         if ($stage) {
@@ -80,6 +89,9 @@ class libraryController extends Controller
 
     public function unvalidatestage($id)
     {
+        if (!auth()->user()->hasRole('teacher')) {
+            abort(403);
+        }
         $student = User::where('id', $id)->first()->etudiant;
         if ($student) {
             $student->stage->validation_prof = false;
@@ -91,6 +103,9 @@ class libraryController extends Controller
     //hadi drtha pour datatable dyal admin bach ichouf all stages uploaded and accepeted
     public function index()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $dossierStages = Stage::all();
 
         return view('gestionstage', compact('dossierStages'))->with(['active_tab' => 'gestionstage']);
@@ -115,7 +130,7 @@ class libraryController extends Controller
         // Validate the request if needed
         // Find the dossier
         $dossier = Stage::find($dossierId);
-
+        
         // If dossier is found, toggle the approval status
         if ($dossier) {
             // Check the current state of validation_admin

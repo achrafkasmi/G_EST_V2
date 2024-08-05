@@ -119,6 +119,52 @@ retour f Module Management khsso ytsla7❌
 
 
 
+AttendanceController protected
+Authenticationcontroller protected
+Controller protected
+DashboardController protected
+ElementController protected
+ElememtPedagogiqueController protected
+libraryController protected
+LogController protected
+NotificatioController protected
+PersonnelElementPedagoguiqueController prtected
+ProfileController protected 
+RetraitController protected
+StudentController protected
+TerminalController protected
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

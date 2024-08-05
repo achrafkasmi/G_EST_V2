@@ -13,6 +13,9 @@ class RetraitController extends Controller
 {
     public function index($id_etu)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'index';
         $students = Etudiant::with(['retraits' => function ($query) {
             $query->where('type_retrait', 'provisoire');
@@ -25,6 +28,9 @@ class RetraitController extends Controller
 
     public function storeretrait(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $request->validate([
             'fileType' => 'required|string',
             'textInput' => 'nullable|string',
@@ -60,6 +66,9 @@ class RetraitController extends Controller
 
     public function activate($id_etu)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $etudiant = Etudiant::find($id_etu);
         if (!$etudiant) {
             return redirect()->back()->with('error', 'Etudiant not found');
@@ -72,6 +81,9 @@ class RetraitController extends Controller
 
     public function storelaureat($id_etu)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'storelaureat';
         $diplomas = Diplome::all();
 
@@ -80,6 +92,9 @@ class RetraitController extends Controller
 
     public function storelaureatPost(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         try {
             $request->validate([
                 'fileType' => 'required|string',

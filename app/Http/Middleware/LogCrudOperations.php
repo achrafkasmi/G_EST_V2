@@ -69,6 +69,8 @@ class LogCrudOperations
             'App\Http\Controllers\LogController@index',
             'App\Http\Controllers\DashboardController@myIntern',
             'App\Http\Controllers\DocumentController@showDocuments',
+            'App\Http\Controllers\StudentController@showSelectionForm',
+            'App\Http\Controllers\AttendanceController@showAttendanceForm',
         ];
 
         $route = $request->route();
@@ -127,7 +129,7 @@ class LogCrudOperations
     protected function getChangeDetails(Request $request, $operation)
     {
         if ($operation === 'delete') {
-            return ['id' => $request->route('id')]; // Assuming the ID is in the route parameters
+            return ['id' => $request->route('id')];
         } elseif ($operation === 'update') {
             $model = $this->getModelInstance($request);
             return $this->getUpdatedFields($model, $request->all());

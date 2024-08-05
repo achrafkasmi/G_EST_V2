@@ -16,6 +16,11 @@ class AttendanceController extends Controller
 {
     public function showAttendanceForm()
     {
+        if(!auth()->user()->hasRole('teacher')) {
+          
+            abort(403);
+        }
+
         $active_tab = 'attendance';
 
         $locals = Local::pluck('nom_locaux', 'id');
@@ -27,18 +32,30 @@ class AttendanceController extends Controller
 
     public function showscannerBlade()
     {
+        if(!auth()->user()->hasRole('student')) {
+          
+            abort(403);
+        }
         $active_tab = 'attendance';
         return view('scannerQR', compact('active_tab'));
     }
 
     public function showattendancedashboard()
     {
+        if(!auth()->user()->hasRole('student')) {
+          
+            abort(403);
+        }
         $active_tab = 'attendance';
         return view('attendancedashboard', compact('active_tab'));
     }
 
     public function generateQrCode(Request $request)
     {
+        if(!auth()->user()->hasRole('teacher')) {
+          
+            abort(403);
+        }
         $active_tab = 'attendance';
 
         // Validate the request data

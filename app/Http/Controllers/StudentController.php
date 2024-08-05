@@ -17,11 +17,17 @@ class StudentController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'stumana';
         return view('studentmanagement', compact('active_tab'));
     }
     public function showSelectionForm()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'stumana';
         $annees = Etudiant::select('Annee')->distinct()->get();
         $filieres = Etudiant::select('FILIERE')->distinct()->get();
@@ -30,6 +36,9 @@ class StudentController extends Controller
 
     public function generatePDF(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'stumana';
         $validated = $request->validate([
             'annee' => 'required',

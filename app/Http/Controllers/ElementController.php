@@ -15,6 +15,9 @@ class ElementController extends Controller
     
     public function index(int $id_diplome)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $diplomes = Diplome::all();
         $active_tab = 'gestionelements';
         $etapes = EtapeDiplome::where('id_diplome', $id_diplome)->get();
