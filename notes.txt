@@ -135,6 +135,45 @@ StudentController protected
 TerminalController protected
 
 
+public function markAttendance($qrData, $studentId)
+    {
+        $studentExists = Etudiant::find($studentId);
+
+        if (!$studentExists) {
+            return ['success' => false, 'message' => 'Student does not exist'];
+        }
+
+        // Retrieve current scanned students from session
+        $scannedStudents = Session::get('scanned_students', []);
+        dd($scannedStudents); // Debugging information
+
+        // Store scanned students' data temporarily
+        $scannedData = [
+            'id_etu' => $studentId,
+            'id_local' => $qrData['id_local'],
+            'id_personnel' => $qrData['id_personnel'],
+            'id_element_pedago' => $qrData['id_element_pedago'],
+            'annee_uni' => $qrData['annee_uni'],
+            'période_seance' => $qrData['periode_seance'],
+        ];
+
+        // Check if the data is already present
+        foreach ($scannedStudents as $scannedStudent) {
+            if (
+                $scannedStudent['id_etu'] == $studentId &&
+                $scannedStudent['période_seance'] == $qrData['periode_seance']
+            ) {
+                return ['success' => true, 'message' => 'Attendance already marked for this session'];
+            }
+        }
+
+        Session::push('scanned_students', $scannedData);
+
+        // Verify if data is now in session
+        dd(Session::get('scanned_students'));
+
+        return ['success' => true, 'message' => 'Attendance marked successfully'];
+    }
 
 
 

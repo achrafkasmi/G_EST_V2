@@ -3,51 +3,78 @@
 
 <div class="app-main">
     @include('tiles.actions')
+    <div class="container">
+        <h1>Generate QR Code for Attendance</h1>
 
-    <div class="container form-container bg-light-gray">
-        <h1 class="text-center mb-4" style="font-weight: bold; color: white;">Saisir les informations de la séance</h1>
         <form action="{{ route('generate.qr.code') }}" method="POST">
             @csrf
-            <div class="mb-3">
-                <label for="id_local" class="form-label">Local:</label>
-                <select class="form-select form-control" id="id_local" name="id_local" required>
-                    <option selected disabled>Selectionner un local</option>
-                    @foreach($locals as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
+
+            <div class="form-group">
+                <label for="id_local">Local</label>
+                <select id="id_local" name="id_local" class="form-control" required>
+                    @foreach($locals as $id => $local)
+                    <option value="{{ $id }}">{{ $local }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="id_personnel" class="form-label">Personnel:</label>
-                <select class="form-select form-control" id="id_personnel" name="id_personnel" required>
-                    <option selected disabled>Selectionner un personnel</option>
-                    @foreach($personnels as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
+
+            <div class="form-group">
+                <label for="id_personnel">Personnel</label>
+                <select id="id_personnel" name="id_personnel" class="form-control" required>
+                    @foreach($personnels as $id => $personnel)
+                    <option value="{{ $id }}">{{ $personnel }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="id_element_pedago" class="form-label">Element Pedagogique:</label>
-                <select class="form-select form-control" id="id_element_pedago" name="id_element_pedago" required>
-                    <option selected disabled>Selectionner un élément pédagogique</option>
-                    @foreach($elementsPedago as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
+
+            <div class="form-group">
+                <label for="id_element_pedago">Element Pedagogique</label>
+                <select id="id_element_pedago" name="id_element_pedago" class="form-control" required>
+                    @foreach($elementsPedago as $id => $element)
+                    <option value="{{ $id }}">{{ $element }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="annee_uni" class="form-label">année Academique:</label>
-                <input type="text" name="annee_uni" id="annee_uni" class="form-control" required>
+
+            <div class="form-group">
+                <label for="annee">Année</label>
+                <select id="annee" name="annee" class="form-control" required>
+                    @foreach($annees as $annee)
+                    <option value="{{ $annee }}">{{ $annee }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="mb-3">
-                <label for="heure_debut_seance" class="form-label">heure debut séance:</label>
-                <input type="time" name="heure_debut_seance" id="heure_debut_seance" class="form-control" required>
+
+            <div class="form-group">
+                <label for="filiere">Filière</label>
+                <select id="filiere" name="filiere" class="form-control" required>
+                    @foreach($filieres as $filiere)
+                    <option value="{{ $filiere }}">{{ $filiere }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="mb-3">
-                <label for="heure_fin_seance" class="form-label">heure fin séance:</label>
-                <input type="time" name="heure_fin_seance" id="heure_fin_seance" class="form-control" required>
+
+            <div class="form-group">
+                <label for="annee_uni">Année Universitaire</label>
+                <select id="annee_uni" name="annee_uni" class="form-control" required>
+                    @foreach($anneeUnis as $anneeUni)
+                    <option value="{{ $anneeUni }}">{{ $anneeUni }}</option>
+                    @endforeach
+                </select>
             </div>
-            <button type="submit" class="btn btn-primary">Generer QR Code</button>
+
+            <div class="form-group">
+                <label for="periode_seance">Période Séance</label>
+                <select id="periode_seance" name="periode_seance" class="form-control" required>
+                    <option value="8-10">8-10</option>
+                    <option value="10-12">10-12</option>
+                    <option value="12-14">12-14</option>
+                    <option value="14-16">14-16</option>
+                    <option value="16-18">16-18</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate QR Code</button>
         </form>
     </div>
 </div>
