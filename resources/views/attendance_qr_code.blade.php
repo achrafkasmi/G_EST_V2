@@ -3,43 +3,139 @@
 
 <div class="app-main">
     @include('tiles.actions')
-    
+
     <div class="qr-code-container">
         <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
     </div>
-
-    <div id="scanned-count-container" style="display: none;">
-        <h2><span id="scanned-count">0</span></h2>
-    </div>
-    
-    <div id="scanned-list-container" style="display: none;">
-        <h2>Students who scanned:</h2>
-        <ul id="scanned-list"></ul>
-    </div>
-
     <div class="button-container">
-        <img id="toggle-count" src="qrhandscanner.svg" alt="Unlock Icon" class="icon">
-        <img id="toggle-list" src="list-down.svg" alt="List Icon" class="icon">
         <form action="{{ route('identify.absent.students') }}" method="POST" class="form-inline">
             @csrf
-            <button type="submit" class="btn btn-identify">Identify and Store Absent Students</button>
+            <button type="submit" class="btn btn-identify ">Identify and Store Absent Students</button>
         </form>
+    </div>
+    <div class="datatabcontainerr mt-4">
+        <table class="tab" id="presenceTable">
+            <thead>
+                <tr>
+                    <th>Nom Complet</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+                @foreach ($students as $student)
+                <tr data-id="{{ $student->id }}">
+                    <td>{{ $student->nom_fr }} {{ $student->prenom_fr }}</td>
+                    <td class="status-cell">Loading...</td> <!-- Status cell to be updated -->
+                    <td>
+                    @if (!in_array($student->id, $scannedStudentIds))
+                        
+                        <button class="markitmanual" style="background: none; border: none;">
+                            <img src="{{ asset('markitmanual.svg') }}" alt="Mark Attendance" width="24" height="24">
+                        </button>
+                        @endif
+                    </td>
+
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#presenceTable').DataTable({
+            //scrollX: true,
+            // DataTable options
+        });
+
+        // Function to fetch and update attendance status
+        function fetchAttendanceStatus() {
+            $.ajax({
+                url: '{{ route("attendance.getScannedList") }}',
+                method: 'GET',
+                success: function(response) {
+                    // Update status cells
+                    response.students.forEach(function(student) {
+                        var statusClass = student.is_scanned ? 'present' : 'absent';
+                        var statusText = student.is_scanned ? 'P' : 'A';
+                        $('tr[data-id="' + student.id + '"] .status-cell').html('<span class="' + statusClass + '">' + statusText + '</span>');
+                        if (student.is_scanned) {
+                        // Remove the button for scanned students
+                        $('tr[data-id="' + student.id + '"] .markitmanual').remove();
+                    }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
+        }
+
+        // Initial fetch
+        fetchAttendanceStatus();
+
+        // Periodically fetch every 5 seconds
+        setInterval(fetchAttendanceStatus, 10000);
+    });
+
+
+
+    $(document).on('click', '.markitmanual', function() {
+    var studentId = $(this).closest('tr').data('id');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to mark this student as present?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, mark as present!',
+        cancelButtonText: 'No, cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '{{ route("attendance.markAsPresent", ":id") }}'.replace(':id', studentId),
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('Success', 'Student marked as present.', 'success');
+                        fetchAttendanceStatus(); // Refresh the status
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
+        }
+    });
+});
+
+</script>
+
 <style>
+   
     .qr-code-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 400px;  /* Adjusted width */
-        height: 400px; /* Adjusted height */
-        margin: 80 auto; 
-    }
-
-    #scanned-count-container, #scanned-list-container {
-        text-align: center;
-        margin-top: 20px;
+        width: 400px;
+        height: 400px;
+        margin: 80 auto;
     }
 
     .button-container {
@@ -47,18 +143,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 100px;
-    }
-
-    .icon {
-        cursor: pointer;
-        width: 50px;
-        height: 50px;
-        margin-right: 20px;
-        transition: transform 0.2s;
-    }
-
-    .icon:hover {
-        transform: scale(1.1);
+        margin-bottom: 50px;
     }
 
     .form-inline {
@@ -80,57 +165,57 @@
     .btn-identify:hover {
         background-color: #218838;
     }
+
+    .present {
+        color: green;
+    }
+
+    .absent {
+        color: red;
+    }
+
+    tbody {
+        color: grey;
+    }
+
+    .dt-layout-row {
+        color: #808080;
+    }
+
+    .dt-layout-cell.dt-end {
+        color: grey;
+    }
+
+    .dt-column-order {
+        color: rgba(0, 207, 222, 1);
+    }
+
+    .dt-column-title {
+        color: #686D76;
+        white-space: nowrap;
+    }
+
+    .dt-paging {
+        color: grey;
+    }
+
+    .datatabcontainerr {
+        background-color: var(--app-bg-dark);
+        color: #fff;
+        border-collapse: collapse;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .tab th,
+    .tab td {
+        padding: 8px;
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .tab th {
+        white-space: nowrap;
+    }
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function fetchScannedCount() {
-        $.ajax({
-            url: '{{ route('scanned.count') }}',
-            method: 'GET',
-            success: function(data) {
-                $('#scanned-count').text(data.count);
-            },
-            error: function() {
-                console.error('Failed to fetch scanned count');
-            }
-        });
-    }
-
-    function fetchScannedList() {
-        $.ajax({
-            url: '{{ route('scanned.list') }}',
-            method: 'GET',
-            success: function(data) {
-                $('#scanned-list').empty();
-                data.students.forEach(function(student) {
-                    $('#scanned-list').append('<li>' + student.first_name + ' ' + student.last_name + '</li>');
-                });
-            },
-            error: function() {
-                console.error('Failed to fetch scanned list');
-            }
-        });
-    }
-
-    $(document).ready(function() {
-        // Fetch the scanned count every 5 seconds
-        setInterval(fetchScannedCount, 5000);
-
-        // Initial fetch
-        fetchScannedCount();
-
-        // Toggle the visibility of the scanned count
-        $('#toggle-count').on('click', function() {
-            $('#scanned-count-container').toggle();
-        });
-
-        // Toggle the visibility of the scanned list
-        $('#toggle-list').on('click', function() {
-            $('#scanned-list-container').toggle();
-            fetchScannedList();
-        });
-    });
-</script>
-
 @endsection

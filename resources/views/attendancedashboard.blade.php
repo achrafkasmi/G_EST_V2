@@ -9,7 +9,7 @@
                 <div class="card">
                     <img src="{{ asset('task.svg') }}" alt="black hole">
                     <div class="card-content">
-                        <h3>marquer présence</h3>
+                        <h3>Justifier l'Absence</h3>
                     </div>
                 </div>
             </a>
@@ -19,13 +19,12 @@
                 <div class="card">
                     <img src="{{ asset('stats.svg') }}" alt="black hole">
                     <div class="card-content">
-                        <h3>mes statistiques</h3>
+                        <h3>Statistiques d'assiduité</h3>
                     </div>
                 </div>
             </a>
         </div>
     </div>
-
 </div>
 
 

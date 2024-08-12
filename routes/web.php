@@ -22,6 +22,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetraitController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TerminalController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,30 +37,39 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['web'])->group(function () {
 
         Route::get('/attendance', [AttendanceController::class, 'showAttendanceForm'])->name('attendance.form');
-    
+
         Route::post('/generate-qr-code', [AttendanceController::class, 'generateQrCode'])->name('generate.qr.code');
-    
+
         Route::get('/scan-qr-code', [AttendanceController::class, 'handleQrCodeScan'])->name('scan.qr.code');
-    
+
         Route::get('/attendance-success', function () {
             $active_tab = 'dash';
             return view('attendancesuccess', compact('active_tab'));
         })->name('attendance.success');
-    
+
         Route::get('/attendance-failure', function () {
             $active_tab = 'dash';
             return view('attendancefailure', compact('active_tab'));
         })->name('attendance.failure');
-    
+
         Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
         Route::get('/scanned-count', [AttendanceController::class, 'getScannedCount'])->name('scanned.count');
 
         Route::get('/scanned-list', [AttendanceController::class, 'getScannedList'])->name('scanned.list');
 
+        Route::get('/attendance/manual-entry', [AttendanceController::class, 'showManualEntryForm'])->name('attendance.manual.entry.form');
+
+        Route::post('/attendance/manual-entry', [AttendanceController::class, 'handleManualEntry'])->name('attendance.manual.entry');
+       
+        Route::get('/attendance/scanned-list', [AttendanceController::class, 'getScannedList'])->name('attendance.getScannedList');
+
+        Route::post('/attendance/mark-as-present/{id}', [AttendanceController::class, 'markAsPresent'])->name('attendance.markAsPresent');
 
     });
-    
+
+
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('HOME-DAWH');
@@ -145,7 +155,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
 
-    
+
 
     Route::get('/manuallibrary', function () {
         if (!auth()->user()->hasRole('admin')) {
@@ -215,7 +225,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/identify-absent-students', [AttendanceController::class, 'identifyAndStoreAbsentStudents'])->name('identify.absent.students');
 
     Route::post('/attendance/manual-entry', [AttendanceController::class, 'handleManualEntry'])->name('attendance.manual.entry');
-
 });
 
 

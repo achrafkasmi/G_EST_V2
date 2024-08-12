@@ -41,7 +41,7 @@ class AttendanceController extends Controller
             abort(403);
         }
         $active_tab = 'attendance';
-        return view('scannerQR', compact('active_tab'));
+        return view('manual_entry', compact('active_tab'));
     }
 
     public function showattendancedashboard()
@@ -71,8 +71,13 @@ class AttendanceController extends Controller
             'periode_seance' => 'required|string',
         ]);
 
-        // Generate a unique code
-        $uniqueCode = Str::random(10);
+        $scannedStudentIds = TempScannedStudent::where('id_local', $validatedData['id_local'])
+        ->where('id_personnel', $validatedData['id_personnel'])
+        ->where('id_element_pedago', $validatedData['id_element_pedago'])
+        ->where('annee_uni', $validatedData['annee_uni'])
+        ->where('période_seance', $validatedData['periode_seance'])
+        ->pluck('id_etu')
+        ->toArray();
 
         $url = route('scan.qr.code', [
             'id_local' => $validatedData['id_local'],
@@ -82,17 +87,23 @@ class AttendanceController extends Controller
             'filiere' => $validatedData['filiere'],
             'annee_uni' => $validatedData['annee_uni'],
             'periode_seance' => $validatedData['periode_seance'],
-            'code' => $uniqueCode,
         ]);
 
         $qrCode = QrCode::format('png')->size(500)->generate($url);
 
-        // Store data in session for later use
         Session::put('attendance_data', $validatedData);
-        Session::put('unique_code', $uniqueCode);
 
-        return view('attendance_qr_code', compact('qrCode', 'uniqueCode', 'active_tab'));
+        // Fetch students based on the validated data
+        $students = Etudiant::where('Annee', $validatedData['annee'])
+            ->where('FILIERE', $validatedData['filiere'])
+            ->where('annee_uni', $validatedData['annee_uni'])
+            ->get();
+
+        // Pass the students and QR code to the view
+        return view('attendance_qr_code', compact('qrCode', 'active_tab', 'students','scannedStudentIds'));
     }
+
+
 
     public function handleQrCodeScan(Request $request)
     {
@@ -136,19 +147,21 @@ class AttendanceController extends Controller
 
         if ($alreadyScanned) {
             return ['success' => true, 'message' => 'Attendance already marked for this session'];
+        } else {
+            TempScannedStudent::create([
+                'id_etu' => $studentId,
+                'id_local' => $qrData['id_local'],
+                'id_personnel' => $qrData['id_personnel'],
+                'id_element_pedago' => $qrData['id_element_pedago'],
+                'annee_uni' => $qrData['annee_uni'],
+                'période_seance' => $qrData['periode_seance'],
+            ]);
+
+            return ['success' => true, 'message' => 'Attendance marked successfully'];
         }
 
         // Store scanned students' data temporarily
-        TempScannedStudent::create([
-            'id_etu' => $studentId,
-            'id_local' => $qrData['id_local'],
-            'id_personnel' => $qrData['id_personnel'],
-            'id_element_pedago' => $qrData['id_element_pedago'],
-            'annee_uni' => $qrData['annee_uni'],
-            'période_seance' => $qrData['periode_seance'],
-        ]);
 
-        return ['success' => true, 'message' => 'Attendance marked successfully'];
     }
 
     public function identifyAndStoreAbsentStudents(Request $request)
@@ -207,10 +220,69 @@ class AttendanceController extends Controller
             ->where('période_seance', $validatedData['periode_seance'])
             ->delete();
 
-        return redirect()->route('attendance.success')->with('message', 'Absent students identified and stored.');
+        return redirect()->route('dashboard')->with(['message'=>'Absent students identified and stored.','success'=>'true']);
+    }
+    public function getScannedList(Request $request)
+    {
+        // Fetch all students for the current attendance session
+        $validatedData = Session::get('attendance_data');
+
+        if (!$validatedData) {
+            return response()->json(['students' => []]);
+        }
+
+        $students = Etudiant::where('Annee', $validatedData['annee'])
+            ->where('FILIERE', $validatedData['filiere'])
+            ->where('annee_uni', $validatedData['annee_uni'])
+            ->get();
+
+        $scannedStudentIds = TempScannedStudent::where('id_local', $validatedData['id_local'])
+            ->where('id_personnel', $validatedData['id_personnel'])
+            ->where('id_element_pedago', $validatedData['id_element_pedago'])
+            ->where('annee_uni', $validatedData['annee_uni'])
+            ->where('période_seance', $validatedData['periode_seance'])
+            ->pluck('id_etu')
+            ->toArray();
+
+        foreach ($students as $student) {
+            $student->is_scanned = in_array($student->id, $scannedStudentIds);
+        }
+
+        return response()->json(['students' => $students]);
     }
 
-    public function getScannedCount(Request $request)
+    public function markAsPresent($id)
+    {
+        $studentId = $id;
+
+        // Check if the student is already marked as present
+        $attendanceRecord = Attendance::where('id_etu', $studentId)
+            ->where('id_local', Session::get('attendance_data')['id_local'])
+            ->where('id_personnel', Session::get('attendance_data')['id_personnel'])
+            ->where('id_element_pedago', Session::get('attendance_data')['id_element_pedago'])
+            ->where('annee_uni', Session::get('attendance_data')['annee_uni'])
+            ->where('période_seance', Session::get('attendance_data')['periode_seance'])
+            ->exists();
+
+        if ($attendanceRecord) {
+            return response()->json(['success' => false, 'message' => 'Attendance already marked.']);
+        } else {
+            TempScannedStudent::create([
+                'id_etu' => $studentId,
+                'id_local' => Session::get('attendance_data')['id_local'],
+                'id_personnel' => Session::get('attendance_data')['id_personnel'],
+                'id_element_pedago' => Session::get('attendance_data')['id_element_pedago'],
+                'annee_uni' => Session::get('attendance_data')['annee_uni'],
+                'période_seance' => Session::get('attendance_data')['periode_seance'],
+            ]);
+
+            return response()->json(['success' => true]);
+        }
+    }
+}  
+
+
+    /*public function getScannedCount(Request $request)
     {
         $validatedData = Session::get('attendance_data');
 
@@ -227,18 +299,55 @@ class AttendanceController extends Controller
             ->count();
 
         return response()->json(['count' => $scannedCount]);
-    }
+    }*/
 
-    public function getScannedList()
+
+
+    /*public function handleManualEntry(Request $request)
     {
-        $scannedStudents = TempScannedStudent::join('t_etudiant', 'temp_scanned_students.id_etu', '=', 't_etudiant.id')
-            ->select('t_etudiant.nom_fr as last_name', 't_etudiant.prenom_fr as first_name')
-            ->get();
+        $active_tab = 'attendance';
 
-        return response()->json(['students' => $scannedStudents]);
+        $validatedData = $request->validate([
+            'unique_code' => 'required|string',
+        ]);
+
+        $uniqueCode = $validatedData['unique_code'];
+
+        // Retrieve attendance data from the session
+        $attendanceData = Session::get('attendance_data');
+
+        if (!$attendanceData) {
+            return redirect()->route('attendance.failure')->with('message', 'No attendance data found.');
+        }
+
+        // Check if the provided code matches the session code
+        if ($uniqueCode !== Session::get('unique_code')) {
+            return redirect()->route('attendance.failure')->with('message', 'Invalid attendance code.');
+        }
+
+        $student = auth()->user()->etudiant;
+
+        if (!$student) {
+            return redirect()->route('attendance.failure')->with('message', 'Student does not exist');
+        }
+
+        $studentId = $student->id;
+
+        $result = $this->markAttendance($attendanceData, $studentId);
+
+        if ($result['success']) {
+            return redirect()->route('attendance.success');
+        } else {
+            return redirect()->route('attendance.failure')->with('message', $result['message']);
+        }
     }
-
-    public function handleManualEntry(Request $request)
+   
+   // Add a method to display the manual entry form
+    public function showManualEntryForm()
     {
-    }
-}
+        if (!auth()->user()->hasRole('student')) {
+            abort(403);
+        }
+        $active_tab = 'attendance';
+        return view('manual_entry', compact('active_tab'));
+    }*/

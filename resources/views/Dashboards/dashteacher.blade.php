@@ -485,8 +485,37 @@
             }
         });
     }
-</script>
 
+    
+</script>
+@if (session()->has('success'))
+<script>
+        Swal.fire({
+            title: 'Success!',
+            text: 'Attendance marked successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/'; // Redirect to a desired page
+            }
+        });
+    </script>
+@endif
+@if (session()->has('failed'))
+<script>
+        Swal.fire({
+            title: 'failed!',
+            text: "Attendance didn't mark correctly.",
+            icon: 'error',
+            confirmButtonText: 'got it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/'; // Redirect to a desired page
+            }
+        });
+    </script>
+    @endif
 @endsection
 
 <style>

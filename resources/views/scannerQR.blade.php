@@ -2,25 +2,14 @@
 @section("app-mid")
 <div class="app-main">
     @include('tiles.actions')
-    <div class="attendance-container">
-        <h2>Scan the QR Code or Enter the Code to Mark Your Attendance</h2>
-        <div class="qr-and-code-container">
-            <div class="qr-code">
-                {!! $qrCode !!}
-            </div>
-            <div class="unique-code">
-                <h3>Or Enter the Code Manually</h3>
-                <form action="{{ route('attendance.manual.entry') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="code">Code:</label>
-                        <input type="text" name="code" id="code" class="form-control" value="{{ $uniqueCode }}" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-submit">Mark Presence</button>
-                </form>
-            </div>
-        </div>
+    <form action="{{ route('handleManualEntry') }}" method="POST">
+    @csrf
+    <div class="form-group">
+        <label for="manual_code">Enter the 8-Digit Code:</label>
+        <input type="text" name="manual_code" id="manual_code" class="form-control" required>
     </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 </div>
 
 <style>

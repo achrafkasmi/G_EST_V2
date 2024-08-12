@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('temp_scanned_students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_etu');
-            $table->unsignedBigInteger('id_local');
-            $table->unsignedBigInteger('id_personnel');
-            $table->unsignedBigInteger('id_element_pedago');
-            $table->string('annee_uni');
-            $table->string('période_seance');
+            $table->unsignedBigInteger('id_etu')->nullable();
+            $table->unsignedBigInteger('id_local')->nullable();
+            $table->unsignedBigInteger('id_personnel')->nullable();
+            $table->unsignedBigInteger('id_element_pedago')->nullable();
+            $table->string('annee_uni')->nullable();
+            $table->string('période_seance')->nullable();
+            $table->string('unique_code')->nullable();
             $table->timestamps();
 
             $table->unique(['id_etu', 'id_local', 'id_personnel', 'id_element_pedago', 'annee_uni', 'période_seance'], 'unique_scan');
