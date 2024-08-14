@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('annee_uni')->nullable();
             $table->string('période_seance')->nullable();
             $table->string('unique_code')->nullable();
+            $table->string('type_seance')->nullable(); // type de séance
+
             $table->timestamps();
 
             $table->unique(['id_etu', 'id_local', 'id_personnel', 'id_element_pedago', 'annee_uni', 'période_seance'], 'unique_scan');

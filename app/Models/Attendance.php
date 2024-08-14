@@ -21,6 +21,7 @@ class Attendance extends Model
         'heure_debut_séance',
         'heure_fin_séance',
         'is_present',
+        'is_absent',
         'is_justified',
         'mac_address'
     ];

@@ -6,6 +6,7 @@
 
     <div class="qr-code-container">
         <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
+        <div id="scannedCount" class="scanned-count">Scanned Count: 0</div>
     </div>
     <div class="button-container">
         <form action="{{ route('identify.absent.students') }}" method="POST" class="form-inline">
@@ -26,24 +27,20 @@
                 @foreach ($students as $student)
                 <tr data-id="{{ $student->id }}">
                     <td>{{ $student->nom_fr }} {{ $student->prenom_fr }}</td>
-                    <td class="status-cell">Loading...</td> <!-- Status cell to be updated -->
+                    <td class="status-cell">Loading...</td>
                     <td>
                     @if (!in_array($student->id, $scannedStudentIds))
-                        
                         <button class="markitmanual" style="background: none; border: none;">
                             <img src="{{ asset('markitmanual.svg') }}" alt="Mark Attendance" width="24" height="24">
                         </button>
-                        @endif
+                    @endif
                     </td>
-
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
-
-
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
@@ -53,9 +50,22 @@
     $(document).ready(function() {
         // Initialize DataTable
         $('#presenceTable').DataTable({
-            //scrollX: true,
             // DataTable options
         });
+
+        // Function to fetch and update scanned count
+        function fetchScannedCount() {
+            $.ajax({
+                url: '{{ route("attendance.getScannedCount") }}',
+                method: 'GET',
+                success: function(response) {
+                    $('#scannedCount').text('Scanned Count: ' + response.count);
+                },
+                error: function(xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
+        }
 
         // Function to fetch and update attendance status
         function fetchAttendanceStatus() {
@@ -69,9 +79,9 @@
                         var statusText = student.is_scanned ? 'P' : 'A';
                         $('tr[data-id="' + student.id + '"] .status-cell').html('<span class="' + statusClass + '">' + statusText + '</span>');
                         if (student.is_scanned) {
-                        // Remove the button for scanned students
-                        $('tr[data-id="' + student.id + '"] .markitmanual').remove();
-                    }
+                            // Remove the button for scanned students
+                            $('tr[data-id="' + student.id + '"] .markitmanual').remove();
+                        }
                     });
                 },
                 error: function(xhr, status, error) {
@@ -81,61 +91,68 @@
         }
 
         // Initial fetch
+        fetchScannedCount();
         fetchAttendanceStatus();
 
         // Periodically fetch every 5 seconds
-        setInterval(fetchAttendanceStatus, 10000);
+        setInterval(fetchScannedCount, 5000);
+        setInterval(fetchAttendanceStatus, 5000);
     });
-
-
 
     $(document).on('click', '.markitmanual', function() {
-    var studentId = $(this).closest('tr').data('id');
+        var studentId = $(this).closest('tr').data('id');
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to mark this student as present?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, mark as present!',
-        cancelButtonText: 'No, cancel'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '{{ route("attendance.markAsPresent", ":id") }}'.replace(':id', studentId),
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire('Success', 'Student marked as present.', 'success');
-                        fetchAttendanceStatus(); // Refresh the status
-                    } else {
-                        Swal.fire('Error', response.message, 'error');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to mark this student as present?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, mark as present!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{{ route("attendance.markAsPresent", ":id") }}'.replace(':id', studentId),
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Success', 'Student marked as present.', 'success');
+                            fetchAttendanceStatus(); // Refresh the status
+                            fetchScannedCount(); // Refresh the scanned count
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("An error occurred: " + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("An error occurred: " + error);
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
-
 </script>
 
 <style>
-   
     .qr-code-container {
         display: flex;
+        flex-direction: column; /* Adjust to align QR code and scanned count */
         justify-content: center;
         align-items: center;
         width: 400px;
         height: 400px;
         margin: 80 auto;
+    }
+
+    .scanned-count {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
     }
 
     .button-container {

@@ -66,11 +66,20 @@
             <div class="form-group">
                 <label for="periode_seance">Période Séance</label>
                 <select id="periode_seance" name="periode_seance" class="form-control" required>
-                    <option value="8-10">8-10</option>
-                    <option value="10-12">10-12</option>
-                    <option value="12-14">12-14</option>
-                    <option value="14-16">14-16</option>
-                    <option value="16-18">16-18</option>
+                    <option value="8-10">08:00h-10:00h</option>
+                    <option value="10-12">10:00h-12:00h</option>
+                    <option value="12-14">12:00h-14:00h</option>
+                    <option value="14-16">14:00h-16:00h</option>
+                    <option value="16-18">16:00h-18:00h</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="type_seance">Type of Session</label>
+                <select name="type_seance" id="type_seance" class="form-control">
+                    @foreach ($typeSeances as $typeSeance)
+                    <option value="{{ $typeSeance }}">{{ $typeSeance }}</option>
+                    @endforeach
                 </select>
             </div>
 

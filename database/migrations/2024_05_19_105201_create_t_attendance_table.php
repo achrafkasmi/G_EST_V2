@@ -31,7 +31,9 @@ return new class extends Migration
             $table->foreign('id_local')->references('id')->on('t_locaux')->onDelete('cascade');
             $table->foreign('id_personnel')->references('id')->on('t_personnel')->onDelete('cascade');
             $table->foreign('id_element_pedago')->references('id')->on('t_modules_etape')->onDelete('cascade');
+
         });
+
     }
 
     /**

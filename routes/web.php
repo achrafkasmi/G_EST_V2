@@ -54,18 +54,20 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('mark.attendance');
 
-        Route::get('/scanned-count', [AttendanceController::class, 'getScannedCount'])->name('scanned.count');
+        Route::get('/attendance/scanned-count', [AttendanceController::class, 'getScannedCount'])->name('attendance.getScannedCount');
+
 
         Route::get('/scanned-list', [AttendanceController::class, 'getScannedList'])->name('scanned.list');
 
         Route::get('/attendance/manual-entry', [AttendanceController::class, 'showManualEntryForm'])->name('attendance.manual.entry.form');
 
         Route::post('/attendance/manual-entry', [AttendanceController::class, 'handleManualEntry'])->name('attendance.manual.entry');
-       
+
         Route::get('/attendance/scanned-list', [AttendanceController::class, 'getScannedList'])->name('attendance.getScannedList');
 
         Route::post('/attendance/mark-as-present/{id}', [AttendanceController::class, 'markAsPresent'])->name('attendance.markAsPresent');
-
+        
+        Route::get('/student-attendance-stats', [AttendanceController::class, 'studentAttendanceStats'])->name('student.attendance.stats');
     });
 
 
