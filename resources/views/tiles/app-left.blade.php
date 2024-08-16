@@ -9,7 +9,7 @@
     <img src="/logoESTwhite.png" alt="Your Logo" width="60" height="60">
     <span>EST-FBS</span>
   </div>
-  <ul class="nav-list">
+  <ul class="nav-list @if($active_tab == 'Acceuil') active @endif">
     <li class="nav-list-item  ">
       <a class="nav-list-link" href="{{ route('dashboard') }}">
         <img src="/dashboard.PNG" alt="Acceuil" width="28" height="28" style="margin-right: 10px;" />

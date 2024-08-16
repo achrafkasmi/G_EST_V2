@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Detailed Attendance by Module</h5>
-                    <table class="table">
+                    <table class="table"> 
                         <thead>
                             <tr>
                                 <th>Module</th>

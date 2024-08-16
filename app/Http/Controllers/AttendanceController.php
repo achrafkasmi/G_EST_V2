@@ -14,6 +14,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class AttendanceController extends Controller
 {
@@ -64,6 +66,19 @@ class AttendanceController extends Controller
             'type_seance' => 'required|string',
         ]);
 
+        // Store session details in t_sessions table
+        DB::table('t_sessions')->insert([
+            'id_local' => $validatedData['id_local'],
+            'id_personnel' => $validatedData['id_personnel'],
+            'id_element_pedago' => $validatedData['id_element_pedago'],
+            'annee' => $validatedData['annee'],
+            'filiere' => $validatedData['filiere'],
+            'annee_uni' => $validatedData['annee_uni'],
+            'periode_seance' => $validatedData['periode_seance'],
+            'type_seance' => $validatedData['type_seance'],
+            'session_date' => now(), // Set the current date and time
+        ]);
+
         $scannedStudentIds = TempScannedStudent::where('id_local', $validatedData['id_local'])
             ->where('id_personnel', $validatedData['id_personnel'])
             ->where('id_element_pedago', $validatedData['id_element_pedago'])
@@ -88,7 +103,6 @@ class AttendanceController extends Controller
 
         return view('attendance_qr_code', compact('qrCode', 'active_tab', 'students', 'scannedStudentIds'));
     }
-
     public function handleQrCodeScan(Request $request)
     {
         $active_tab = 'attendance';
@@ -252,6 +266,8 @@ class AttendanceController extends Controller
             return response()->json(['success' => true]);
         }
     }
+
+
     public function studentAttendanceStats()
     {
         if (!auth()->user()->hasRole('student')) {
@@ -262,125 +278,94 @@ class AttendanceController extends Controller
         $student = auth()->user()->etudiant;
         $studentId = $student->id;
 
-        // Get total sessions
-        $totalSessions = \DB::table('t_attendance')->where('id_etu', $studentId)->count();
+        $studentYear = $student->Annee;
+        $studentFiliere = $student->FILIERE;
 
-        // Get missed sessions
-        $missedSessions = \DB::table('t_attendance')
-            ->where('id_etu', $studentId)
+        $totalSessions = \DB::table('t_sessions')
+            ->where('annee', $studentYear)
+            ->where('filiere', $studentFiliere)
+            ->where('annee_uni', $student->annee_uni)
             ->count();
 
-        // Calculate attendance percentage
+        $missedSessions = \DB::table('t_attendance')
+            ->where('id_etu', $studentId)
+            ->where('Annee', $studentYear)
+            ->where('FILIERE', $studentFiliere)
+            ->where('annee_uni', $student->annee_uni)
+            ->where('is_absent', 1)
+            ->count();
+
         $attendancePercentage = $totalSessions > 0 ?
             round((($totalSessions - $missedSessions) / $totalSessions) * 100, 2) : 0;
 
-        // Get attendance by module
         $attendanceByModule = \DB::table('t_attendance')
             ->join('t_modules_etape', 't_modules_etape.id', '=', 't_attendance.id_element_pedago')
             ->where('t_attendance.id_etu', $studentId)
+            ->where('t_attendance.Annee', $studentYear)
+            ->where('t_attendance.FILIERE', $studentFiliere)
+            ->where('t_attendance.annee_uni', $student->annee_uni)
             ->select(
                 't_modules_etape.intitule_element',
                 \DB::raw('COUNT(*) as total_sessions'),
-                \DB::raw('COUNT(*) as missed_sessions')
+                \DB::raw('SUM(is_absent) as missed_sessions')
             )
             ->groupBy('t_modules_etape.intitule_element')
             ->get();
 
-        // Get attendance trend (last 10 sessions)
         $attendanceTrend = \DB::table('t_attendance')
             ->where('id_etu', $studentId)
+            ->where('Annee', $studentYear)
+            ->where('FILIERE', $studentFiliere)
+            ->where('annee_uni', $student->annee_uni)
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get()
             ->map(function ($attendance) {
                 return [
                     'date' => Carbon::parse($attendance->created_at)->format('Y-m-d'),
-                    'status' => 'Absent'
+                    'status' => $attendance->is_absent ? 'Absent' : 'Present'
                 ];
             });
 
         return view('EtudiantStats', compact('totalSessions', 'missedSessions', 'attendancePercentage', 'attendanceByModule', 'attendanceTrend', 'active_tab'));
     }
-}
 
-
-
-
-    /*public function showinputBlade()
+    
+    public function studentAttendanceRate()
     {
         if (!auth()->user()->hasRole('student')) {
             abort(403);
         }
-        $active_tab = 'attendance';
-        return view('manual_entry', compact('active_tab'));
-    }*/
-
-    /*public function getScannedCount(Request $request)
-    {
-        $validatedData = Session::get('attendance_data');
-
-        if (!$validatedData) {
-            return response()->json(['count' => 0]);
-        }
-
-        // Retrieve the count of unique scanned students from the temporary table
-        $scannedCount = TempScannedStudent::where('id_local', $validatedData['id_local'])
-            ->where('id_personnel', $validatedData['id_personnel'])
-            ->where('id_element_pedago', $validatedData['id_element_pedago'])
-            ->where('annee_uni', $validatedData['annee_uni'])
-            ->where('période_seance', $validatedData['période_seance'])
-            ->count();
-
-        return response()->json(['count' => $scannedCount]);
-    }*/
-
-
-
-    /*public function handleManualEntry(Request $request)
-    {
-        $active_tab = 'attendance';
-
-        $validatedData = $request->validate([
-            'unique_code' => 'required|string',
-        ]);
-
-        $uniqueCode = $validatedData['unique_code'];
-
-        // Retrieve attendance data from the session
-        $attendanceData = Session::get('attendance_data');
-
-        if (!$attendanceData) {
-            return redirect()->route('attendance.failure')->with('message', 'No attendance data found.');
-        }
-
-        // Check if the provided code matches the session code
-        if ($uniqueCode !== Session::get('unique_code')) {
-            return redirect()->route('attendance.failure')->with('message', 'Invalid attendance code.');
-        }
-
+    
         $student = auth()->user()->etudiant;
-
-        if (!$student) {
-            return redirect()->route('attendance.failure')->with('message', 'Student does not exist');
-        }
-
         $studentId = $student->id;
-
-        $result = $this->markAttendance($attendanceData, $studentId);
-
-        if ($result['success']) {
-            return redirect()->route('attendance.success');
-        } else {
-            return redirect()->route('attendance.failure')->with('message', $result['message']);
-        }
+    
+        $studentYear = $student->Annee;
+        $studentFiliere = $student->FILIERE;
+    
+        $totalSessions = \DB::table('t_sessions')
+            ->where('annee', $studentYear)
+            ->where('filiere', $studentFiliere)
+            ->where('annee_uni', $student->annee_uni)
+            ->count();
+    
+        $missedSessions = \DB::table('t_attendance')
+            ->where('id_etu', $studentId)
+            ->where('Annee', $studentYear)
+            ->where('FILIERE', $studentFiliere)
+            ->where('annee_uni', $student->annee_uni)
+            ->where('is_absent', 1)
+            ->count();
+    
+        $attendancePercentage = $totalSessions > 0 ?
+            round((($totalSessions - $missedSessions) / $totalSessions) * 100, 2) : 0;
+    
+        return [
+            'totalSessions' => $totalSessions,
+            'missedSessions' => $missedSessions,
+            'attendancePercentage' => $attendancePercentage,
+        ];
     }
-   
-   // Add a method to display the manual entry form
-    public function showManualEntryForm()
-    {
-        if (!auth()->user()->hasRole('student')) {
-            abort(403);
-        }
-        $active_tab = 'attendance';
-        return view('manual_entry', compact('active_tab'));
-    }*/
+    
+    
+}

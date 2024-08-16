@@ -16,14 +16,14 @@ class Attendance extends Model
         'id_local',
         'id_personnel',
         'id_element_pedago',
+        'Annee',
+        'FILIERE',
+        'type_seance',
+        'période_seance',
         'annee_uni',
-        'date',
-        'heure_debut_séance',
-        'heure_fin_séance',
-        'is_present',
         'is_absent',
-        'is_justified',
-        'mac_address'
+        'created_at',
+        'updated_at'
     ];
 
     // Define relationships if any

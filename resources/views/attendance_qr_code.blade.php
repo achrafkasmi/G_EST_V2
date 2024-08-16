@@ -94,9 +94,9 @@
         fetchScannedCount();
         fetchAttendanceStatus();
 
-        // Periodically fetch every 5 seconds
-        setInterval(fetchScannedCount, 5000);
-        setInterval(fetchAttendanceStatus, 5000);
+        // Periodically fetch every - seconds
+        setInterval(fetchScannedCount, 3000);
+        setInterval(fetchAttendanceStatus, 3300);
     });
 
     $(document).on('click', '.markitmanual', function() {

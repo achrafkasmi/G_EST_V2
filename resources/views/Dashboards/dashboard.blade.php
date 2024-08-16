@@ -9,17 +9,17 @@
       <div class="chart-container">
         <div class="chart-info-wrapper">
           <h2>taux d'assiduité</h2>
-          <span>--h</span>
+          <span>{{ $totalSessions }} sessions</span>
         </div>
         <div class="chart-svg">
           <svg viewBox="0 0 36 36" class="circular-chart pink">
             <path class="circle-bg" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <path class="circle" stroke-dasharray="100, 100" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-            <text x="18" y="20.35" class="percentage">--%</text>
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            <path class="circle" stroke-dasharray="{{ $attendancePercentage }}, 100" d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            <text x="18" y="20.35" class="percentage">{{ $attendancePercentage }}%</text>
           </svg>
         </div>
       </div>
@@ -94,25 +94,25 @@
       </div>
     </div>
     <div class="chart-container-wrapper small">
-    <div class="chart-container">
+      <div class="chart-container">
         <div class="chart-container-header">
-            <h2>Acquisitions</h2>
-            <span href="#">Cette année</span>
+          <h2>Acquisitions</h2>
+          <span href="#">Cette année</span>
         </div>
         <div class="acquisitions-bar">
-            @foreach ($filieres as $index => $filiere)
-                <span class="bar-progress" style="width:{{ $filiere->percentage }}%; background-color:{{ $colors[$index % count($colors)] }}"></span>
-            @endforeach
+          @foreach ($filieres as $index => $filiere)
+          <span class="bar-progress" style="width:{{ $filiere->percentage }}%; background-color:{{ $colors[$index % count($colors)] }}"></span>
+          @endforeach
         </div>
         @foreach ($filieres as $index => $filiere)
         <div class="progress-bar-info">
-            <span class="progress-color" style="background-color:{{ $colors[$index % count($colors)] }}"></span>
-            <span class="progress-type">{{ $filiere->filiere }}</span>
-            <span class="progress-amount">{{ number_format($filiere->percentage, 2) }}%</span>
+          <span class="progress-color" style="background-color:{{ $colors[$index % count($colors)] }}"></span>
+          <span class="progress-type">{{ $filiere->filiere }}</span>
+          <span class="progress-amount">{{ number_format($filiere->percentage, 2) }}%</span>
         </div>
         @endforeach
+      </div>
     </div>
-</div>
   </div>
 
   <div class="datatabcontainer-updated  mt-6">
@@ -9937,27 +9937,28 @@
   }
 </style>
 <style>
-    .progress-bar-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-    }
-    
-    .progress-color {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
+  .progress-bar-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
 
-    .progress-type, .progress-amount {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    
-    .progress-type {
-        flex: 1; 
-    }
+  .progress-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .progress-type,
+  .progress-amount {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .progress-type {
+    flex: 1;
+  }
 </style>
 @endsection

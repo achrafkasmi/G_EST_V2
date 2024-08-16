@@ -23,8 +23,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_element_pedago');
             $table->string('type_seance')->nullable();
             $table->string('annee_uni',30)->nullable();
-            $table->date('date')->nullable();
-            $table->time('période_seance')->nullable();
+            $table->string('date')->nullable();
+            $table->string('période_seance')->nullable();
             $table->boolean('is_absent')->nullable();
             $table->timestamps();
             $table->foreign('id_etu')->references('id')->on('t_etudiant')->onDelete('cascade');
