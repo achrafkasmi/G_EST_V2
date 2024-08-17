@@ -2,19 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Local;
-use App\Models\Personnel;
-use App\Models\Attendance;
-use App\Models\Etudiant;
-use App\Models\ElementPedagogique;
-use App\Models\TempScannedStudent;
-use App\Models\TypeSeance;
+use App\Models\{Local, Personnel, Attendance, Etudiant, ElementPedagogique, TempScannedStudent, TypeSeance};
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\{Auth, Session, DB};
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 
 class AttendanceController extends Controller

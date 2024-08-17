@@ -3,7 +3,9 @@
 
 <div class="app-main">
     @include('tiles.actions')
-
+    <a href="{{ route('attendance.form') }}">
+        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
+    </a>
     <div class="qr-code-container">
         <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
         <div id="scannedCount" class="scanned-count">Scanned Count: 0</div>
@@ -166,6 +168,7 @@
     .form-inline {
         display: inline;
     }
+   
 
     .btn-identify {
         padding: 15px 30px;

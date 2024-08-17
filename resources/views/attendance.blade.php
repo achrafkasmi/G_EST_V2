@@ -1,10 +1,18 @@
 @extends('master')
 @section("app-mid")
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- Include jQuery from CDN (required for Dropify) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Dropify JS from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
 <div class="app-main">
     @include('tiles.actions')
-    <div class="container">
-        <h1>Generate QR Code for Attendance</h1>
+    <div class="container form-container">
+        <div class="form-title">générer QR de présence</div>
 
         <form action="{{ route('generate.qr.code') }}" method="POST">
             @csrf
@@ -89,90 +97,61 @@
 </div>
 
 <style>
-    .form-control {
-        color: grey;
+    body {
+        background-color: #26324a;
+        color: #fff;
+        font-family: 'Arial', sans-serif;
     }
 
-    .datatabcontainer {
-        border-radius: 12px;
-        background-color: #6497b1;
-        color: #000000;
-    }
-
-    .container {
+    .form-container {
         max-width: 600px;
-        margin: 0 auto;
-        /* This will horizontally center the container */
+        margin: 50px auto;
+        background-color: #2f3c57;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    .container {
-        background-color: #5e6a81;
-        border-radius: 10px;
-        margin: 5% auto;
-        /* Adjusted margin to center vertically and horizontally */
-        padding: 5px;
-        position: relative;
+    .form-title {
+        font-size: 24px;
+        color: #007bff;
+        margin-bottom: 20px;
+        text-align: center;
     }
 
     .form-label {
-        color: wheat;
+        color: #b8c2d3;
     }
 
-
-
-
-    @media only screen and (max-width: 768px) {
-        .excelinput {
-            width: 80%;
-            margin-left: 10%;
-        }
+    .form-select,
+    .form-control {
+        background-color: #394a6e;
+        border: 1px solid #4d6396;
+        color: #b8c2d3;
     }
 
-    @media only screen and (max-width: 480px) {
-        .excelinput {
-            width: 90%;
-            margin-left: 5%;
-        }
+    .form-select:focus,
+    .form-control:focus {
+        background-color: #394a6e;
+        border-color: #4d6396;
+        color: #b8c2d3;
     }
 
-    @media only screen and (max-width: 992px) {
-        .form {
-            background-color: rgba(255, 255, 255, 0.2);
-            margin: 10px;
-            width: 98%;
-            position: absolute;
-            left: 0;
-        }
+    .dropify-wrapper {
+        border-radius: 8px;
+        overflow: hidden;
     }
 
-    @media only screen and (min-width: 992px) {
-        .form {
-            background-color: rgba(255, 255, 255, 0.2);
-            margin: 0;
-            width: 50%;
-            position: absolute;
-            left: 25%;
-        }
-    }
-
-    .form-floatings {
-        position: fixed;
-        bottom: 0;
-        width: 50%;
-        transform: translateX(-50%);
-    }
-
-    .border {
-        position: relative;
-        border-radius: 20px;
+    .dropify-wrapper .dropify-message p {
+        font-size: 14px;
+        color: #b8c2d3;
     }
 
     .submit-btn {
         background-color: #007bff;
         color: #fff;
         border: none;
-        width: 150px;
-        border-radius: 10px;
+        border-radius: 8px;
         padding: 10px 20px;
         cursor: pointer;
     }
