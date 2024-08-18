@@ -3,195 +3,118 @@
 
 <div class="app-main">
     @include('tiles.actions')
+    <a href="{{ route('attendance.dash.blade') }}">
+        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
+    </a>
+    <div class="attendance-wrapper">
+        <div class="attendance-card">
+            <h5 class="attendance-title">Total Sessions</h5>
+            <p class="attendance-number total">{{ $totalSessions }}</p>
+        </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Attendance Overview</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Total Sessions</h6>
-                            <p class="display-4">{{ $totalSessions }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Missed Sessions</h6>
-                            <p class="display-4">{{ $missedSessions }}</p>
-                        </div>
-                    </div>
-                    <h6>Attendance Rate</h6>
-                    <p class="display-4">{{ $attendancePercentage }}%</p>
-                </div>
-            </div>
+        <div class="attendance-card missed">
+            <h5 class="attendance-title">Missed Sessions</h5>
+            <p class="attendance-number">{{ $missedSessions }}</p>
+            <button class="justify-button">Justifier une séance</button>
+        </div>
+
+        <div class="attendance-card rate">
+            <h5 class="attendance-title">Attendance Rate</h5>
+            <p class="attendance-number rate-value" data-rate="{{ $attendancePercentage }}">{{ $attendancePercentage }}%</p>
         </div>
     </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Attendance by Module</h5>
-                    <canvas id="moduleAttendanceChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Attendance Trend (Last 10 Sessions)</h5>
-                    <canvas id="attendanceTrendChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Detailed Attendance by Module</h5>
-                    <table class="table"> 
-                        <thead>
-                            <tr>
-                                <th>Module</th>
-                                <th>Total Sessions</th>
-                                <th>Missed Sessions</th>
-                                <th>Attendance Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($attendanceByModule as $module)
-                            <tr>
-                                <td>{{ $module->intitule_element }}</td>
-                                <td>{{ $module->total_sessions }}</td>
-                                <td>{{ $module->missed_sessions }}</td>
-                                <td>{{ round(($module->total_sessions - $module->missed_sessions) / $module->total_sessions * 100, 2) }}%</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
+<style>
+    .attendance-wrapper {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 3em;
+        padding: 1em;
+        flex-wrap: wrap;
+    }
+
+    .attendance-card {
+        width: 30%;
+        padding: 2em;
+        box-shadow: 0px 15px 50px -13px rgba(0, 0, 0, 0.34);
+        border-radius: 1em;
+        background: grey;
+        text-align: center;
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+        margin-bottom: 1.5em;
+    }
+
+    .attendance-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .attendance-title {
+        font-size: 1.2em;
+        color: #333;
+        margin-bottom: 1em;
+        font-weight: bold;
+    }
+
+    .attendance-number {
+        font-size: 3em;
+        font-weight: bold;
+    }
+
+    .attendance-number.total {
+        color: #007bff; /* Blue for total sessions */
+    }
+
+    .attendance-card.missed .attendance-number {
+        color: red;
+    }
+
+    .justify-button {
+        position: absolute;
+        bottom: 1mm;
+        right: 1mm;
+        padding: 0.5em 1em;
+        font-size: 0.9em;
+        color: #FFF;
+        background-color: crimson;
+        border: none;
+        border-radius: 1em;
+        cursor: pointer;
+    }
+
+    .attendance-card.rate .attendance-number.rate-value {
+        color: var(--rate-color, green); /* Default to green */
+    }
+
+    /* Dynamic colors based on attendance rate */
+    .attendance-card.rate .attendance-number.rate-value {
+        --rate-color: orange;
+    }
+
+  
+    /* Animation for rate change */
+    .attendance-number.rate-value {
+        transition: color 0.5s ease-in-out;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .attendance-card {
+            width: 45%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .attendance-card {
+            width: 100%;
+        }
+
+        .justify-button {
+            font-size: 0.8em;
+            padding: 0.4em 0.8em;
+        }
+    }
+</style>
+
 @endsection
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Attendance Trend Chart
-    var ctxTrend = document.getElementById('attendanceTrendChart').getContext('2d');
-    var attendanceTrend = @json($attendanceTrend);
-    
-    var labelsTrend = attendanceTrend.map(item => item.date);
-    var dataTrend = attendanceTrend.map(item => item.status === 'Absent' ? 0 : 1); // Mark as 1 for Present, 0 for Absent
-    
-    var trendChart = new Chart(ctxTrend, {
-        type: 'line',
-        data: {
-            labels: labelsTrend,
-            datasets: [{
-                label: 'Attendance Trend',
-                data: dataTrend,
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                tension: 0.1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Status'
-                    },
-                    ticks: {
-                        stepSize: 1,
-                        callback: function(value) {
-                            return value === 1 ? 'Present' : 'Absent';
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Attendance by Module Chart
-    var ctxModule = document.getElementById('moduleAttendanceChart').getContext('2d');
-    var attendanceByModule = @json($attendanceByModule);
-    
-    var labelsModule = attendanceByModule.map(item => item.intitule_element);
-    var totalSessionsData = attendanceByModule.map(item => item.total_sessions);
-    var missedSessionsData = attendanceByModule.map(item => item.missed_sessions);
-    
-    var moduleChart = new Chart(ctxModule, {
-        type: 'bar',
-        data: {
-            labels: labelsModule,
-            datasets: [
-                {
-                    label: 'Total Sessions',
-                    data: totalSessionsData,
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Missed Sessions',
-                    data: missedSessionsData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            var label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += context.parsed.y;
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Modules'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Number of Sessions'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-@endpush
