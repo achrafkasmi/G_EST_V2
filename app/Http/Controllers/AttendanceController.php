@@ -39,62 +39,155 @@ class AttendanceController extends Controller
         return view('attendancedashboard', compact('active_tab'));
     }
 
-    public function generateQrCode(Request $request)
+    /*public function generateQrCode(Request $request)
     {
         if (!auth()->user()->hasRole('teacher')) {
             abort(403);
         }
-
         $active_tab = 'attendance';
 
         $validatedData = $request->validate([
             'id_local' => 'required|exists:t_locaux,id',
-            'id_personnel' => 'required|exists:t_personnel,id',
             'id_element_pedago' => 'required|exists:t_modules_etape,id',
-            'annee' => 'required|string',
-            'filiere' => 'required|string',
+            'annee' => 'required|array',
+            'annee.*' => 'string',
+            'filiere' => 'required|array',
+            'filiere.*' => 'string',
             'annee_uni' => 'required|string',
             'periode_seance' => 'required|string',
             'type_seance' => 'required|string',
         ]);
 
-        // Store session details in t_sessions table
-        DB::table('t_sessions')->insert([
-            'id_local' => $validatedData['id_local'],
-            'id_personnel' => $validatedData['id_personnel'],
-            'id_element_pedago' => $validatedData['id_element_pedago'],
-            'annee' => $validatedData['annee'],
-            'filiere' => $validatedData['filiere'],
-            'annee_uni' => $validatedData['annee_uni'],
-            'periode_seance' => $validatedData['periode_seance'],
-            'type_seance' => $validatedData['type_seance'],
-            'session_date' => now(), // Set the current date and time
-        ]);
+        // Get the currently authenticated teacher's personnel ID
+        $id_personnel = Auth::user()->personnel->id;
 
-        $scannedStudentIds = TempScannedStudent::where('id_local', $validatedData['id_local'])
-            ->where('id_personnel', $validatedData['id_personnel'])
-            ->where('id_element_pedago', $validatedData['id_element_pedago'])
+        // Check if a session already exists with the same data
+        $existingSession = DB::table('t_sessions')
+            ->where('id_personnel', $id_personnel)
             ->where('annee_uni', $validatedData['annee_uni'])
-            ->where('période_seance', $validatedData['periode_seance'])
             ->where('type_seance', $validatedData['type_seance'])
-            ->pluck('id_etu')
-            ->toArray();
+            ->where('filiere', json_encode($validatedData['filiere']))
+            ->where('annee', json_encode($validatedData['annee']))
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
 
-        $url = route('scan.qr.code', array_merge($validatedData, [
-            'type_seance' => $validatedData['type_seance'],
-        ]));
+        if ($existingSession) {
+            return redirect()->back()->with('error', 'A session with the same data already exists for today.');
+        }
+
+        // Check if the classroom is already taken by another teacher at the same time
+        $existingSessionInClassroom = DB::table('t_sessions')
+            ->where('id_local', $validatedData['id_local'])
+            ->where('periode_seance', $validatedData['periode_seance'])
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
+
+        if ($existingSessionInClassroom) {
+            return redirect()->back()->with('error', 'The classroom is already taken by another teacher during this period.');
+        }
+
+        // Check if the QR code has already been generated for this teacher during this period
+        $qrCodeExists = DB::table('t_sessions')
+            ->where('id_personnel', $id_personnel)
+            ->where('periode_seance', $validatedData['periode_seance'])
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
+
+        if ($qrCodeExists) {
+            return redirect()->back()->with('error', 'QR Code has already been generated for this period.');
+        }
+
+        // Save session details in the session data (but do not register it in the t_sessions table yet)
+        Session::put('attendance_data', array_merge($validatedData, ['id_personnel' => $id_personnel]));
+
+        // Generate the QR code URL with the session data
+        $url = route('scan.qr.code', array_merge($validatedData, ['id_personnel' => $id_personnel]));
 
         $qrCode = QrCode::format('png')->size(500)->generate($url);
 
-        Session::put('attendance_data', $validatedData);
-
-        $students = Etudiant::where('Annee', $validatedData['annee'])
-            ->where('FILIERE', $validatedData['filiere'])
+        $students = Etudiant::whereIn('Annee', $validatedData['annee'])
+            ->whereIn('FILIERE', $validatedData['filiere'])
             ->where('annee_uni', $validatedData['annee_uni'])
             ->get();
 
-        return view('attendance_qr_code', compact('qrCode', 'active_tab', 'students', 'scannedStudentIds'));
+        $scannedStudentIds = TempScannedStudent::where('created_at', '>=', Carbon::today())
+            ->pluck('id_etu')->toArray();
+
+        return view('attendance_qr_code', compact('qrCode', 'students', 'scannedStudentIds', 'active_tab'));
+    }*/
+    public function generateQrCode(Request $request)
+    {
+        if (!auth()->user()->hasRole('teacher')) {
+            abort(403);
+        }
+        $active_tab = 'attendance';
+
+        $validatedData = $request->validate([
+            'id_local' => 'required|exists:t_locaux,id',
+            'id_element_pedago' => 'required|exists:t_modules_etape,id',
+            'annee' => 'required|array',
+            'annee.*' => 'string',
+            'filiere' => 'required|array',
+            'filiere.*' => 'string',
+            'annee_uni' => 'required|string',
+            'periode_seance' => 'required|string',
+            'type_seance' => 'required|string',
+        ]);
+
+        $id_personnel = Auth::user()->personnel->id;
+
+        $existingSession = DB::table('t_sessions')
+            ->where('id_personnel', $id_personnel)
+            ->where('annee_uni', $validatedData['annee_uni'])
+            ->where('type_seance', $validatedData['type_seance'])
+            ->where('filiere', json_encode($validatedData['filiere']))
+            ->where('annee', json_encode($validatedData['annee']))
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
+
+        if ($existingSession) {
+            return redirect()->back()->with('qr_error', 'A session with the same data already exists for today.');
+        }
+
+        $existingSessionInClassroom = DB::table('t_sessions')
+            ->where('id_local', $validatedData['id_local'])
+            ->where('periode_seance', $validatedData['periode_seance'])
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
+
+        if ($existingSessionInClassroom) {
+            return redirect()->back()->with('qr_error', 'La classe est déjà réservée par un autre enseignant pour cette période. De plus, un QR Code a déjà été généré ou une session avec les mêmes données existe déjà pour aujourd´hui.');
+        }
+
+        $qrCodeExists = DB::table('t_sessions')
+            ->where('id_personnel', $id_personnel)
+            ->where('periode_seance', $validatedData['periode_seance'])
+            ->whereDate('session_date', Carbon::today())
+            ->exists();
+
+        if ($qrCodeExists) {
+            return redirect()->back()->with('qr_error', 'QR Code has already been generated for this period.');
+        }
+
+        Session::put('attendance_data', array_merge($validatedData, ['id_personnel' => $id_personnel]));
+
+        $url = route('scan.qr.code', array_merge($validatedData, ['id_personnel' => $id_personnel]));
+
+        $qrCode = QrCode::format('png')->size(500)->generate($url);
+
+        $students = Etudiant::whereIn('Annee', $validatedData['annee'])
+            ->whereIn('FILIERE', $validatedData['filiere'])
+            ->where('annee_uni', $validatedData['annee_uni'])
+            ->get();
+
+        $scannedStudentIds = TempScannedStudent::where('created_at', '>=', Carbon::today())
+            ->pluck('id_etu')->toArray();
+
+        return view('attendance_qr_code', compact('qrCode', 'students', 'scannedStudentIds', 'active_tab'));
     }
+
+
+
     public function handleQrCodeScan(Request $request)
     {
         $active_tab = 'attendance';
@@ -154,18 +247,31 @@ class AttendanceController extends Controller
 
     public function identifyAndStoreAbsentStudents(Request $request)
     {
-        $active_tab = 'attendance';
-
-        // Retrieve attendance data from session
         $validatedData = Session::get('attendance_data');
 
         if (!$validatedData) {
             return redirect()->route('attendance.failure')->with('message', 'No attendance data found.');
         }
 
+        // Store session details in t_sessions table and get the session ID
+        $idSession = DB::table('t_sessions')->insertGetId([
+            'id_local' => $validatedData['id_local'],
+            'id_personnel' => $validatedData['id_personnel'],
+            'id_element_pedago' => $validatedData['id_element_pedago'],
+            'annee' => implode(',', $validatedData['annee']),
+            'filiere' => implode(',', $validatedData['filiere']),
+            'annee_uni' => $validatedData['annee_uni'],
+            'periode_seance' => $validatedData['periode_seance'],
+            'type_seance' => $validatedData['type_seance'],
+            'session_date' => now(),
+        ]);
+
+        // Save the session ID in the session data
+        Session::put('attendance_data.id_session', $idSession);
+
         // Retrieve all students based on the given criteria
-        $students = Etudiant::where('Annee', $validatedData['annee'])
-            ->where('FILIERE', $validatedData['filiere'])
+        $students = Etudiant::whereIn('Annee', $validatedData['annee'])
+            ->whereIn('FILIERE', $validatedData['filiere'])
             ->where('annee_uni', $validatedData['annee_uni'])
             ->get();
 
@@ -179,25 +285,27 @@ class AttendanceController extends Controller
             ->toArray();
 
         // Iterate over all students and mark those who didn't scan
-        foreach ($students as $student) {
-            $studentId = $student->id;
-            if (!in_array($studentId, $scannedStudentIds)) {
-                Attendance::create(
-                    [
-                        'id_etu' => $studentId,
-                        'id_local' => $validatedData['id_local'],
-                        'id_personnel' => $validatedData['id_personnel'],
-                        'id_element_pedago' => $validatedData['id_element_pedago'],
-                        'annee_uni' => $validatedData['annee_uni'],
-                        'période_seance' => $validatedData['periode_seance'],
-                        'is_absent' => true,
-                        'Annee' => $validatedData['annee'],
-                        'FILIERE' => $validatedData['filiere'],
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now(),
-                    ]
-                );
-            }
+        $absentStudents = $students->filter(function ($student) use ($scannedStudentIds) {
+            return !in_array($student->id, $scannedStudentIds);
+        });
+
+        // Store absent students in the t_attendance table
+        foreach ($absentStudents as $student) {
+            Attendance::create([
+                'id_etu' => $student->id,
+                'id_session' => $idSession,
+                'id_element_pedago' => $validatedData['id_element_pedago'],
+                'is_absent' => 1,
+                'Annee' => implode(',', (array) $validatedData['annee']), // Convert Annee to string
+                'FILIERE' => implode(',', (array) $validatedData['filiere']), // Convert Filiere to string
+                'annee_uni' => $validatedData['annee_uni'],
+                'id_local' => $validatedData['id_local'],
+                'id_personnel' => $validatedData['id_personnel'],
+                'période_seance' => $validatedData['periode_seance'],
+                'type_seance' => $validatedData['type_seance'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
         }
 
         // Clear scanned students from the temporary table
@@ -208,8 +316,9 @@ class AttendanceController extends Controller
             ->where('période_seance', $validatedData['periode_seance'])
             ->delete();
 
-        return redirect()->route('dashboard')->with(['message' => 'Absent students identified and stored.', 'success' => 'true']);
+        return redirect()->route('dashboard')->with(['message' => 'Absent students identified and stored.', 'success' => true]);
     }
+
 
     public function getScannedCount()
     {
@@ -322,25 +431,25 @@ class AttendanceController extends Controller
         return view('EtudiantStats', compact('totalSessions', 'missedSessions', 'attendancePercentage', 'attendanceByModule', 'attendanceTrend', 'active_tab'));
     }
 
-    
+
     public function studentAttendanceRate()
     {
         if (!auth()->user()->hasRole('student')) {
             abort(403);
         }
-    
+
         $student = auth()->user()->etudiant;
         $studentId = $student->id;
-    
+
         $studentYear = $student->Annee;
         $studentFiliere = $student->FILIERE;
-    
+
         $totalSessions = \DB::table('t_sessions')
             ->where('annee', $studentYear)
             ->where('filiere', $studentFiliere)
             ->where('annee_uni', $student->annee_uni)
             ->count();
-    
+
         $missedSessions = \DB::table('t_attendance')
             ->where('id_etu', $studentId)
             ->where('Annee', $studentYear)
@@ -348,16 +457,31 @@ class AttendanceController extends Controller
             ->where('annee_uni', $student->annee_uni)
             ->where('is_absent', 1)
             ->count();
-    
+
         $attendancePercentage = $totalSessions > 0 ?
             round((($totalSessions - $missedSessions) / $totalSessions) * 100, 2) : 0;
-    
+
         return [
             'totalSessions' => $totalSessions,
             'missedSessions' => $missedSessions,
             'attendancePercentage' => $attendancePercentage,
         ];
     }
-    
-    
+
+    public function clearTempScannedStudents()
+    {
+        try {
+            TempScannedStudent::truncate();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+    public function clearExpiredTempScannedStudents()
+    {
+        $expirationTime = Carbon::now()->subMinutes(1); // 1 minutes timeout
+        TempScannedStudent::where('created_at', '<', $expirationTime)->delete();
+    }
 }

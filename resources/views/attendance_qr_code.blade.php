@@ -3,9 +3,9 @@
 
 <div class="app-main">
     @include('tiles.actions')
-    <a href="{{ route('attendance.form') }}">
+    <button id="leavePageBtn" style="background: none; border: none; padding: 0;">
         <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
-    </a>
+    </button>
     <div class="qr-code-container">
         <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
         <div id="scannedCount" class="scanned-count">Scanned Count: 0</div>
@@ -29,17 +29,24 @@
                 @foreach ($students as $student)
                 <tr data-id="{{ $student->id }}">
                     <td>{{ $student->nom_fr }} {{ $student->prenom_fr }}</td>
-                    <td class="status-cell">Loading...</td>
+                    <td class="status-cell">
+                        @if (in_array($student->id, $scannedStudentIds))
+                        Present
+                        @else
+                        Absent
+                        @endif
+                    </td>
                     <td>
-                    @if (!in_array($student->id, $scannedStudentIds))
+                        @if (!in_array($student->id, $scannedStudentIds))
                         <button class="markitmanual" style="background: none; border: none;">
                             <img src="{{ asset('markitmanual.svg') }}" alt="Mark Attendance" width="24" height="24">
                         </button>
-                    @endif
+                        @endif
                     </td>
                 </tr>
                 @endforeach
             </tbody>
+
         </table>
     </div>
 </div>
@@ -137,12 +144,48 @@
             }
         });
     });
-</script>
+    $(document).ready(function() {
+        $('#leavePageBtn').on('click', function(e) {
+            e.preventDefault();
 
+            Swal.fire({
+                title: 'êtes-vous sur?',
+                text: "Voulez-vous vraiment quitter la page ? La liste des étudiants présents sera effacée.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, pars !',
+                cancelButtonText: 'Non, reste'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("attendance.clearTempScannedStudents") }}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                window.location.href = '{{ route("attendance.form") }}'; 
+                            } else {
+                                Swal.fire('Error', 'Failed to clear scanned students.', 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("An error occurred: " + error);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 <style>
     .qr-code-container {
         display: flex;
-        flex-direction: column; /* Adjust to align QR code and scanned count */
+        flex-direction: column;
+        /* Adjust to align QR code and scanned count */
         justify-content: center;
         align-items: center;
         width: 400px;
@@ -168,7 +211,7 @@
     .form-inline {
         display: inline;
     }
-   
+
 
     .btn-identify {
         padding: 15px 30px;

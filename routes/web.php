@@ -216,10 +216,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/manualID', [AttendanceController::class, 'showinputBlade'])->name('scanner.blade');
+
     Route::get('/attendancedash', [AttendanceController::class, 'showattendancedashboard'])->name('attendance.dash.blade');
-
-
-
 
     Route::get('/student-selection', [StudentController::class, 'showSelectionForm'])->name('student.selection');
     Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('student.generatePDF');
@@ -227,6 +225,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/identify-absent-students', [AttendanceController::class, 'identifyAndStoreAbsentStudents'])->name('identify.absent.students');
 
     Route::post('/attendance/manual-entry', [AttendanceController::class, 'handleManualEntry'])->name('attendance.manual.entry');
+
+    Route::post('/attendance/clear-temp-scanned-students', [AttendanceController::class, 'clearTempScannedStudents'])->name('attendance.clearTempScannedStudents');
+
+    Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
+
 });
 
 
