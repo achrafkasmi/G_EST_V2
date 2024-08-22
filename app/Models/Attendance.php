@@ -49,4 +49,5 @@ class Attendance extends Model
         return $this->belongsTo(ElementPedagogique::class, 'id_element_pedago');
     }
 
+
 }

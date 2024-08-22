@@ -412,44 +412,44 @@ class AttendanceController extends Controller
 
     public function indexOfJustification()
     {
-       
+
         $userId = auth()->user()->id;
         $active_tab = 'attendance';
-       
+
         $student = Etudiant::where('user_id', $userId)->first();
 
         if (!$student) {
-           
+
             return redirect()->route('attendance.failure')->with('message', 'Student not found.');
         }
 
         $studentId = $student->id;
 
         $attendanceRecords = Attendance::where('id_etu', $studentId)
-            ->where('is_absent', 1) 
-            ->where('is_justified', 0) 
-            ->with('elementPedago') 
+            ->where('is_absent', 1)
+            ->where('is_justified', 0)
+            ->with('elementPedago')
 
             ->get();
 
-       
+
         return view('attendanceabsentjustif', compact('attendanceRecords', 'active_tab'));
     }
 
 
     public function storeJustification(Request $request)
     {
-        
+
         $request->validate([
             'titre_rapport' => 'required|string|max:255',
             'rapport' => 'required|file|mimes:pdf|max:2048',
             'id_attendance' => 'required|exists:t_attendance,id',
         ]);
 
-       
+
         $attendance = Attendance::with('student')->find($request->id_attendance);
 
-        
+
         if (!$attendance || !$attendance->student) {
             return redirect()->route('attendance.justify')->with('error', 'Invalid attendance record or student not found.');
         }
@@ -472,4 +472,54 @@ class AttendanceController extends Controller
         // Redirect back with success message
         return redirect()->route('attendance.justify')->with('success', 'Justification uploaded successfully.');
     }
+
+    public function AdminAttendanceStatsIndex()
+    {
+        $active_tab = 'stumana';
+        $totalStudents = Etudiant::count();
+        $totalSessions = Attendance::distinct('date')->count();
+        $totalAbsences = Attendance::where('is_absent', 1)->count();
+        $totalJustifiedAbsences = Attendance::where('is_absent', 1)->where('is_justified', 1)->count();
+        $totalUnjustifiedAbsences = Attendance::where('is_absent', 1)->where('is_justified', 0)->count();
+        $attendanceRate = ($totalSessions > 0) ? round((($totalSessions * $totalStudents - $totalAbsences) / ($totalSessions * $totalStudents)) * 100, 2) : 0;
+    
+        $attendanceByFiliere = Attendance::select(
+            'FILIERE',
+            DB::raw('COUNT(*) as total_sessions'),
+            DB::raw('SUM(CASE WHEN is_absent = 1 THEN 1 ELSE 0 END) as total_absences')
+        )
+            ->groupBy('FILIERE')
+            ->get();
+    
+        $monthlyAbsences = Attendance::select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as total_absences'),
+            DB::raw('SUM(CASE WHEN is_justified = 1 THEN 1 ELSE 0 END) as total_justified_absences')
+        )
+            ->where('is_absent', 1)
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+    
+        $recentAttendances = Attendance::with('student', 'elementPedago')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+    
+        return view('adminattendancestats', compact(
+            'totalStudents',
+            'totalSessions',
+            'totalAbsences',
+            'totalJustifiedAbsences',
+            'totalUnjustifiedAbsences',
+            'attendanceRate',
+            'attendanceByFiliere',
+            'monthlyAbsences',
+            'recentAttendances',
+            'active_tab'
+        ));
+    }
+    
 }

@@ -234,6 +234,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/attendance/store-justification', [AttendanceController::class, 'storeJustification'])->name('attendance.storeJustification');
 
+    Route::get('/attendance/admin-overview', [AttendanceController::class, 'AdminAttendanceStatsIndex'])->name('Admin.Attendance.Stats.Index');
+
 });
 
 

@@ -28,7 +28,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" class="card-link">
+        <a href="{{route('Admin.Attendance.Stats.Index')}}" class="card-link">
             <div class="card">
             <img src="{{ asset('qr.svg') }}" alt="qr" width="40px" height="40px" style="color: #1C274C;">
                 <div class="card-content">
