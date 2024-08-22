@@ -169,7 +169,7 @@
                             if (response.success) {
                                 window.location.href = '{{ route("attendance.form") }}'; 
                             } else {
-                                Swal.fire('Error', 'Failed to clear scanned students.', 'error');
+                                Swal.fire('Error', 'erreur de suppression des etudiants', 'error');
                             }
                         },
                         error: function(xhr, status, error) {

@@ -230,6 +230,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
 
+    Route::get('/attendance/justify', [AttendanceController::class, 'indexOfJustification'])->name('attendance.justify');
+    
+    Route::post('/attendance/store-justification', [AttendanceController::class, 'storeJustification'])->name('attendance.storeJustification');
+
 });
 
 

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('date')->nullable();
             $table->string('période_seance')->nullable();
             $table->boolean('is_absent')->nullable();
+            $table->boolean('is_justified')->default(0);
+            $table->string('url_justification')->nullable();
             $table->timestamps();
             $table->foreign('id_etu')->references('id')->on('t_etudiant')->onDelete('cascade');
             $table->foreign('id_local')->references('id')->on('t_locaux')->onDelete('cascade');

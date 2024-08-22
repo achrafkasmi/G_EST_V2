@@ -5,7 +5,7 @@
     @include('tiles.actions')
     <div class="document-list " id="data-container">
         <div class="document-list " id="data-container">
-            <a href="#" class="card-link">
+            <a href="{{ route('attendance.justify') }}" class="card-link">
                 <div class="card">
                     <img src="{{ asset('task.svg') }}" alt="black hole">
                     <div class="card-content">

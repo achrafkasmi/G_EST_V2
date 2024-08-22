@@ -39,82 +39,6 @@ class AttendanceController extends Controller
         return view('attendancedashboard', compact('active_tab'));
     }
 
-    /*public function generateQrCode(Request $request)
-    {
-        if (!auth()->user()->hasRole('teacher')) {
-            abort(403);
-        }
-        $active_tab = 'attendance';
-
-        $validatedData = $request->validate([
-            'id_local' => 'required|exists:t_locaux,id',
-            'id_element_pedago' => 'required|exists:t_modules_etape,id',
-            'annee' => 'required|array',
-            'annee.*' => 'string',
-            'filiere' => 'required|array',
-            'filiere.*' => 'string',
-            'annee_uni' => 'required|string',
-            'periode_seance' => 'required|string',
-            'type_seance' => 'required|string',
-        ]);
-
-        // Get the currently authenticated teacher's personnel ID
-        $id_personnel = Auth::user()->personnel->id;
-
-        // Check if a session already exists with the same data
-        $existingSession = DB::table('t_sessions')
-            ->where('id_personnel', $id_personnel)
-            ->where('annee_uni', $validatedData['annee_uni'])
-            ->where('type_seance', $validatedData['type_seance'])
-            ->where('filiere', json_encode($validatedData['filiere']))
-            ->where('annee', json_encode($validatedData['annee']))
-            ->whereDate('session_date', Carbon::today())
-            ->exists();
-
-        if ($existingSession) {
-            return redirect()->back()->with('error', 'A session with the same data already exists for today.');
-        }
-
-        // Check if the classroom is already taken by another teacher at the same time
-        $existingSessionInClassroom = DB::table('t_sessions')
-            ->where('id_local', $validatedData['id_local'])
-            ->where('periode_seance', $validatedData['periode_seance'])
-            ->whereDate('session_date', Carbon::today())
-            ->exists();
-
-        if ($existingSessionInClassroom) {
-            return redirect()->back()->with('error', 'The classroom is already taken by another teacher during this period.');
-        }
-
-        // Check if the QR code has already been generated for this teacher during this period
-        $qrCodeExists = DB::table('t_sessions')
-            ->where('id_personnel', $id_personnel)
-            ->where('periode_seance', $validatedData['periode_seance'])
-            ->whereDate('session_date', Carbon::today())
-            ->exists();
-
-        if ($qrCodeExists) {
-            return redirect()->back()->with('error', 'QR Code has already been generated for this period.');
-        }
-
-        // Save session details in the session data (but do not register it in the t_sessions table yet)
-        Session::put('attendance_data', array_merge($validatedData, ['id_personnel' => $id_personnel]));
-
-        // Generate the QR code URL with the session data
-        $url = route('scan.qr.code', array_merge($validatedData, ['id_personnel' => $id_personnel]));
-
-        $qrCode = QrCode::format('png')->size(500)->generate($url);
-
-        $students = Etudiant::whereIn('Annee', $validatedData['annee'])
-            ->whereIn('FILIERE', $validatedData['filiere'])
-            ->where('annee_uni', $validatedData['annee_uni'])
-            ->get();
-
-        $scannedStudentIds = TempScannedStudent::where('created_at', '>=', Carbon::today())
-            ->pluck('id_etu')->toArray();
-
-        return view('attendance_qr_code', compact('qrCode', 'students', 'scannedStudentIds', 'active_tab'));
-    }*/
     public function generateQrCode(Request $request)
     {
         if (!auth()->user()->hasRole('teacher')) {
@@ -483,5 +407,69 @@ class AttendanceController extends Controller
     {
         $expirationTime = Carbon::now()->subMinutes(1); // 1 minutes timeout
         TempScannedStudent::where('created_at', '<', $expirationTime)->delete();
+    }
+
+
+    public function indexOfJustification()
+    {
+       
+        $userId = auth()->user()->id;
+        $active_tab = 'attendance';
+       
+        $student = Etudiant::where('user_id', $userId)->first();
+
+        if (!$student) {
+           
+            return redirect()->route('attendance.failure')->with('message', 'Student not found.');
+        }
+
+        $studentId = $student->id;
+
+        $attendanceRecords = Attendance::where('id_etu', $studentId)
+            ->where('is_absent', 1) 
+            ->where('is_justified', 0) 
+            ->with('elementPedago') 
+
+            ->get();
+
+       
+        return view('attendanceabsentjustif', compact('attendanceRecords', 'active_tab'));
+    }
+
+
+    public function storeJustification(Request $request)
+    {
+        
+        $request->validate([
+            'titre_rapport' => 'required|string|max:255',
+            'rapport' => 'required|file|mimes:pdf|max:2048',
+            'id_attendance' => 'required|exists:t_attendance,id',
+        ]);
+
+       
+        $attendance = Attendance::with('student')->find($request->id_attendance);
+
+        
+        if (!$attendance || !$attendance->student) {
+            return redirect()->route('attendance.justify')->with('error', 'Invalid attendance record or student not found.');
+        }
+
+
+        $apogee = $attendance->student->apogee;
+
+        $path = $request->file('rapport')->storeAs(
+            'justifications/' . $attendance->annee_uni . '/' . $attendance->Annee . '_' . $attendance->FILIERE,
+            $apogee . '.pdf'
+        );
+
+
+        // Update the attendance record with justification details
+        $attendance->update([
+            'is_justified' => 1,
+            'url_justification' => $path,
+        ]);
+
+        // Redirect back with success message
+        return redirect()->route('attendance.justify')->with('success', 'Justification uploaded successfully.');
     }
 }

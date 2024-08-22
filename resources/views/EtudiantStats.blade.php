@@ -15,7 +15,7 @@
         <div class="attendance-card missed">
             <h5 class="attendance-title">Missed Sessions</h5>
             <p class="attendance-number">{{ $missedSessions }}</p>
-            <button class="justify-button">Justifier une séance</button>
+            <button class="justify-button" onclick="window.location.href='{{ route('attendance.justify') }}'">Justifier une séance</button>
         </div>
 
         <div class="attendance-card rate">

@@ -23,7 +23,9 @@ class Attendance extends Model
         'annee_uni',
         'is_absent',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'is_justified',
+        'url_justification',
     ];
 
     // Define relationships if any
@@ -46,4 +48,5 @@ class Attendance extends Model
     {
         return $this->belongsTo(ElementPedagogique::class, 'id_element_pedago');
     }
+
 }

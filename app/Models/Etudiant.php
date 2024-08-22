@@ -47,4 +47,8 @@ class Etudiant extends Model
     {
         return $this->hasMany(Retrait::class, 'id_etu');
     }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'id_etu');
+    }
 }
