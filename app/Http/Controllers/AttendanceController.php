@@ -473,6 +473,7 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.justify')->with('success', 'Justification uploaded successfully.');
     }
 
+
     public function AdminAttendanceStatsIndex()
     {
         $active_tab = 'stumana';
@@ -508,6 +509,14 @@ class AttendanceController extends Controller
             ->take(10)
             ->get();
     
+            // In your Controller
+        $currentYear = date('Y');
+        $years = [];
+        for ($i = 0; $i < 5; $i++) { // Generates the next 5 years
+            $years[] = $currentYear + $i;
+        }
+
+        // Pass the years to the view
         return view('adminattendancestats', compact(
             'totalStudents',
             'totalSessions',
@@ -518,8 +527,34 @@ class AttendanceController extends Controller
             'attendanceByFiliere',
             'monthlyAbsences',
             'recentAttendances',
-            'active_tab'
+            'active_tab',
+            'years'
         ));
+    }
+
+    public function fetchAttendanceData(Request $request)
+    {
+        $year = $request->get('year');
+            $monthlyAbsences = Attendance::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as total_absences'),
+            DB::raw('SUM(is_justified) as total_justified_absences')
+        )
+        ->whereYear('created_at', $year)
+        ->groupBy('month')
+        ->get();
+    
+        $labels = $monthlyAbsences->pluck('month')->map(function($month) {
+            return date("F", mktime(0, 0, 0, $month, 1));
+        });
+        $totalAbsences = $monthlyAbsences->pluck('total_absences');
+        $justifiedAbsences = $monthlyAbsences->pluck('total_justified_absences');
+    
+        return response()->json([
+            'labels' => $labels,
+            'totalAbsences' => $totalAbsences,
+            'justifiedAbsences' => $justifiedAbsences,
+        ]);
     }
     
 }

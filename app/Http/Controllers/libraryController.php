@@ -99,8 +99,6 @@ class libraryController extends Controller
         }
     }
 
-
-    //hadi drtha pour datatable dyal admin bach ichouf all stages uploaded and accepeted
     public function index()
     {
         if (!auth()->user()->hasRole('admin')) {
@@ -111,19 +109,12 @@ class libraryController extends Controller
         return view('gestionstage', compact('dossierStages'))->with(['active_tab' => 'gestionstage']);
     }
 
-
-
     public function fetchlibrary()
     {
         $dossierStages = Library::where('is_recommanded', 1)->get();
 
         return view('library')->with(['dossierStages' => $dossierStages, 'active_tab' => 'library']);
     }
-
-
-
-
-
 
     public function approveDossier(Request $request, $dossierId)
     {

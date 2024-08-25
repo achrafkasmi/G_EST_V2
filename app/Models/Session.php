@@ -19,5 +19,7 @@ class Session extends Model
         'id_local',
         'id_personnel',
         'id_element_pedago',
+        'created_at',
+        'updated_at'
     ];
 }

@@ -6,6 +6,9 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ErrorReportMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Response;
+
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,6 +33,9 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+  
+
     public function report(Throwable $exception)
     {
         parent::report($exception);
@@ -45,3 +51,4 @@ class Handler extends ExceptionHandler
         }
     }
 }
+

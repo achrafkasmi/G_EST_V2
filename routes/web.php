@@ -236,6 +236,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/attendance/admin-overview', [AttendanceController::class, 'AdminAttendanceStatsIndex'])->name('Admin.Attendance.Stats.Index');
 
+    Route::get('/fetch-attendance-data', [AttendanceController::class, 'fetchAttendanceData'])->name('admin.fetchAttendanceData');
+
+    Route::get('/fetch-attendance-data', [AttendanceController::class, 'fetchAttendanceData'])->name('admin.fetchCurrentDateAttendanceStats');
+
 });
 
 

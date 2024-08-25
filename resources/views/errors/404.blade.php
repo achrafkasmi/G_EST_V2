@@ -1,14 +1,18 @@
-<span class="bubble"></span>
-<h4 style="color:grey">Under maintenance, thank you to reach later</h4>
-<style>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WRONG REQUEST</title>
+    <style>
         body {
-            --bg-body-rgb: 0, 0, 0;
             height: 100vh;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgb(var(--bg-body-rgb));
+            background:
+                rgba(0, 0, 0) 100%;
             color: grey;
             flex-direction: column;
             text-align: center;
@@ -50,18 +54,29 @@
 
         .bubble::after {
             inset: -3px;
-            background: rgba(var(--bg-body-rgb), 0.2);
+            background: rgba(5, 19, 64, 0.2);
+            /* Slightly darkened overlay */
             backdrop-filter: blur(3px);
             z-index: -1;
         }
 
         @keyframes floating {
+
             0%,
             100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(var(--_float-distance, -10px));
             }
         }
     </style>
+</head>
+
+<body>
+    <span class="bubble"></span>
+    <h4 style="color:grey">page not found...</h4>
+</body>
+
+</html>
