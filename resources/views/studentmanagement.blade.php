@@ -8,7 +8,7 @@
             <div class="card">
                 <img src="{{ asset('listeetudiants.svg') }}" alt="black hole">
                 <div class="card-content">
-                    <h3>Listes des etudiants</h3>
+                    <h3>Student Lists</h3>
                 </div>
             </div>
         </a>
@@ -36,7 +36,14 @@
                 </div>
             </div>
         </a>
-        
+        <a href="#" class="card-link">
+            <div class="card">
+            <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
+                <div class="card-content">
+                    <h3>Passwords</h3>
+                </div>
+            </div>
+        </a>
     </div>
 
 </div>

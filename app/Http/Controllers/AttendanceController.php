@@ -470,6 +470,9 @@ class AttendanceController extends Controller
 
     public function AdminAttendanceStatsIndex()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
         $active_tab = 'stumana';
         $totalStudents = Etudiant::count();
         $totalSessions = Attendance::distinct('date')->count();

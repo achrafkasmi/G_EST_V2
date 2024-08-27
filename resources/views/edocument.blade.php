@@ -1,6 +1,6 @@
 @extends('master')
 @section("app-mid")
-
+<title>E-Docs</title>
 <div class="app-main">
     @include('tiles.actions')
 
