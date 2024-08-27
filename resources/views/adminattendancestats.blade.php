@@ -1,45 +1,162 @@
 @extends('master')
 @section("app-mid")
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
 <div class="app-main">
     @include('tiles.actions')
-    <a href="{{ route('index.studentmanage') }}">
-        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
-    </a>
-    <div class="chart-row two">
-        <div class="chart-container-wrapper big">
-            <div class="chart-container">
-                <div class="chart-container-header">
-                    <h2>Nombre des absences mensuelles</h2>
-                    <span>par année universitaire</span>
-                    <select id="year-select" name="academic_year">
-                        @foreach($years as $year)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                        @endforeach
-                    </select>
-                </div>
+    <div class="tabs">
+        <a href="{{ route('index.studentmanage') }}">
+            <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
+        </a>
+        <!-- Tabs Navigation -->
+        <button class="tablinks active" onclick="openTab(event, 'ChartTab')">Aperçu</button>
+        <button class="tablinks" onclick="openTab(event, 'TableTab')">Etudiants</button>
+        <button class="tablinks" onclick="openTab(event, 'TableTabStaff')">Staff</button>
+    </div>
 
-                <div class="line-chart">
-                    <div class="chartjs-size-monitor">
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
-                        </div>
+    <!-- Chart Tab -->
+    <div id="ChartTab" class="tabcontent" style="display: block;">
+        <div class="chart-row two">
+            <div class="chart-container-wrapper big">
+                <div class="chart-container">
+                    <div class="chart-container-header">
+                        <h2>Nombre des absences mensuelles</h2>
+                        <span>par année universitaire</span>
+                        <select id="year-select" name="academic_year">
+                            @foreach($years as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <canvas id="attendanceChart" width="932" height="466" style="display: block; height: 233px; width: 466px;" class="chartjs-render-monitor"></canvas>
-                </div>
-                <div class="chart-data-details">
-                    <div class="chart-details-header"></div>
+
+                    <div class="line-chart">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="attendanceChart" width="932" height="466" style="display: block; height: 233px; width: 466px;" class="chartjs-render-monitor"></canvas>
+                    </div>
+                    <div class="chart-data-details">
+                        <div class="chart-details-header"></div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Data Table Tab -->
+    <div id="TableTab" class="tabcontent" style="display: none;">
+        <div class="datatabcontainer mt-4">
+            <table class="tab" id="myTable">
+                <thead>
+                    <tr>
+                        <th>Nom complet</th>
+                        <th>Absences</th>
+                        <th>Absences justifiées</th>
+                        <th>annee_uni</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($studentsWithAttendanceData as $student)
+                    <tr>
+                        <td>{{ $student->nom_fr }} {{ $student->prenom_fr }}</td>
+                        <td>{{ $student->absences }}</td>
+                        <td>{{ $student->justifiedAbsences }}</td>
+                        <td>{{ $student->annee_uni}}</td>
+                        <td></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Data Table Tab For staff-->
+    <div id="TableTabStaff" class="tabcontent" style="display: none;">
+        <div class="datatabcontainer mt-4">
+            <table class="tab" id="myTableStaff">
+                <thead>
+                    <tr>
+                        <th>Professeur</th>
+                        <th>Element/Module</th>
+                        <th>Filière</th>
+                        <th>annee_uni</th>
+                        <th>Nombre Total des heures</th>
+                        <th>Cours</th>
+                        <th>TD</th>
+                        <th>TP</th>
+                        <th>AP</th>
+                        <th>EX</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($sessionDataByTeacher as $personnelId => $data)
+                    <tr>
+                        <td>{{ $data['professor_name'] }}</td>
+                        <td>{{ $data['element_name'] }}</td>
+                        <td>{{ $data['filiere'] }}</td>
+                        <td>{{ $data['annee_uni'] }}</td>
+                        <td>{{ $data['total_hours'] }} Heurs</td>
+
+                        <td style="color: #e91e63;">
+                            {{ $data['course_counts']['C']['count'] ?? 0 }}
+                            ({{ number_format($data['course_counts']['C']['hours']) }} Heurs)
+                        </td>
+
+                        <td style="color: #9c27b0;">
+                            {{ $data['course_counts']['TD']['count'] ?? 0 }}
+                            ({{ number_format($data['course_counts']['TD']['hours']) }} Heurs)
+                        </td>
+
+                        <td style="color: #4caf50;">
+                            {{ $data['course_counts']['TP']['count'] ?? 0 }}
+                            ({{ number_format($data['course_counts']['TP']['hours']) }} Heurs)
+                        </td>
+
+                        <td style="color: #2196f3;">
+                            {{ $data['course_counts']['AP']['count'] ?? 0 }}
+                            ({{ number_format($data['course_counts']['AP']['hours']) }} Heurs)
+                        </td>
+
+                        <td style="color: #ff9800;">
+                            {{ $data['course_counts']['Examen']['count'] ?? 0 }}
+                            ({{ number_format($data['course_counts']['Examen']['hours']) }} Heurs)
+                        </td>
+                        <td></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script>
+    // Function to handle tab switching
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
     $(document).ready(function() {
         // Initialize Selectize on the year-select element
         $('#year-select').selectize({
@@ -164,13 +281,85 @@
                 }
             });
         }
+
+        // Initialize DataTable
+        if (window.matchMedia("(max-width: 767px)").matches) {
+            $('#myTable').DataTable({
+                scrollX: true
+            });
+        } else {
+            $('#myTable').DataTable();
+        }
+        (window.matchMedia("(max-width: 767px)").matches)
+        $('#myTableStaff').DataTable({
+            scrollX: true
+        });
+
     });
 </script>
 
-<!-- Include Selectize CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" rel="stylesheet">
+<!-- Additional Styles -->
+<style>
+    tbody {
+        color: grey;
+    }
 
-<!-- Include Selectize JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    .dt-layout-row {
+        color: #808080;
+    }
 
+    .dt-layout-cell.dt-end {
+        color: grey;
+    }
+
+    .dt-column-order {
+        color: rgba(0, 207, 222, 1);
+    }
+
+    .dt-column-title {
+        color: #686D76;
+    }
+
+    .dt-paging {
+        color: grey;
+    }
+
+    .datatabcontainer {
+        background-color: var(--app-bg-dark);
+        color: #fff;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .tab th,
+    .tab td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* Tabs styles */
+    .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+
+    }
+
+    .tablinks {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #f1f1f1;
+        border: none;
+        border-radius: 20px;
+    }
+
+    .tablinks.active {
+        background-color: #d1d1d1;
+        font-weight: bold;
+    }
+
+    .tabcontent {
+        display: none;
+    }
+</style>
 @endsection

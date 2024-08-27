@@ -51,4 +51,15 @@ class Etudiant extends Model
     {
         return $this->hasMany(Attendance::class, 'id_etu');
     }
+    // Define the relationship with the Attendance model for absences
+    public function absences()
+    {
+        return $this->hasMany(Attendance::class, 'student_id')->where('is_justified', 0);
+    }
+
+    // Define the relationship with the Attendance model for justified absences
+    public function justifiedAbsences()
+    {
+        return $this->hasMany(Attendance::class, 'student_id')->where('is_justified', 1);
+    }
 }

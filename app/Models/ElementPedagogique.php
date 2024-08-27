@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 
 class ElementPedagogique extends Model
-{ 
+{
     use HasFactory;
-    
-    protected $table = 't_modules_etape'; 
+
+    protected $table = 't_modules_etape';
 
     protected $fillable = [
         'code_etape',
@@ -26,4 +26,8 @@ class ElementPedagogique extends Model
         'coefficient',
     ];
 
+   
+    public function etapeDiplome() {
+        return $this->belongsTo(EtapeDiplome::class, 'id_etape');
+    }
 }

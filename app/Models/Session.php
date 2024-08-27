@@ -20,6 +20,18 @@ class Session extends Model
         'id_personnel',
         'id_element_pedago',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'id_personnel', 
+        'periode_seance',
+        'annee_uni',
+        'type_seance',
     ];
+
+    public function elementPedago() {
+        return $this->belongsTo(ElementPedagogique::class, 'id_element_pedago');
+    }
+
+    public function personnel() {
+        return $this->belongsTo(Personnel::class, 'id_personnel');
+    }
 }

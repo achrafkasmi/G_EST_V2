@@ -62,7 +62,7 @@
     <li class="nav-list-item @if($active_tab == 'stumana') active @endif">
       <a class="nav-list-link" href="{{route('index.studentmanage')}}">
         <img src="/team.PNG" alt="Equipe" width="28" height="28" style="margin-right: 10px;" />
-        Etudiant management
+        Administration des Membres
         
       </a>
     </li>

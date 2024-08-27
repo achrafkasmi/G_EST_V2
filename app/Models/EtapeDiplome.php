@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EtapeDiplome extends Model
 {
-    
-    //protected $table = 't_etudiant_etape';
+
     protected $table = 't_etape_diplome';
 
 
@@ -16,5 +15,9 @@ class EtapeDiplome extends Model
     {
         return $this->belongsToMany(Etudiant::class, 't_etudiant_etape', 'id_etu', 'id_etape');
     }
-    
+
+  
+    public function diplome() {
+        return $this->belongsTo(Diplome::class, 'id_diplome');
+    }
 }

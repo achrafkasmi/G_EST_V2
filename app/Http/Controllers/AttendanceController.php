@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Local, Personnel, Attendance, Etudiant, ElementPedagogique, TempScannedStudent, TypeSeance};
+namespace App\Http\Controllers;
+
+use App\Models\{Local, Personnel, Attendance, Etudiant, ElementPedagogique, TempScannedStudent, TypeSeance, Session as ModelSession};
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\Facades\{Auth, Session, DB};
+use Illuminate\Support\Facades\{Auth, Session as FacadeSession, DB};
 use Carbon\Carbon;
+
 
 
 class AttendanceController extends Controller
@@ -93,7 +96,7 @@ class AttendanceController extends Controller
             return redirect()->back()->with('qr_error', 'QR Code has already been generated for this period.');
         }
 
-        Session::put('attendance_data', array_merge($validatedData, ['id_personnel' => $id_personnel]));
+        FacadeSession::put('attendance_data', array_merge($validatedData, ['id_personnel' => $id_personnel]));
 
         $url = route('scan.qr.code', array_merge($validatedData, ['id_personnel' => $id_personnel]));
 
@@ -109,8 +112,6 @@ class AttendanceController extends Controller
 
         return view('attendance_qr_code', compact('qrCode', 'students', 'scannedStudentIds', 'active_tab'));
     }
-
-
 
     public function handleQrCodeScan(Request $request)
     {
@@ -171,7 +172,7 @@ class AttendanceController extends Controller
 
     public function identifyAndStoreAbsentStudents(Request $request)
     {
-        $validatedData = Session::get('attendance_data');
+        $validatedData = FacadeSession::get('attendance_data');
 
         if (!$validatedData) {
             return redirect()->route('attendance.failure')->with('message', 'No attendance data found.');
@@ -191,7 +192,7 @@ class AttendanceController extends Controller
         ]);
 
         // Save the session ID in the session data
-        Session::put('attendance_data.id_session', $idSession);
+        FacadeSession::put('attendance_data.id_session', $idSession);
 
         // Retrieve all students based on the given criteria
         $students = Etudiant::whereIn('Annee', $validatedData['annee'])
@@ -243,7 +244,6 @@ class AttendanceController extends Controller
         return redirect()->route('dashboard')->with(['message' => 'Absent students identified and stored.', 'success' => true]);
     }
 
-
     public function getScannedCount()
     {
         $count = TempScannedStudent::count();
@@ -269,11 +269,11 @@ class AttendanceController extends Controller
 
         // Check if the student is already marked as present
         $attendanceRecord = Attendance::where('id_etu', $studentId)
-            ->where('id_local', Session::get('attendance_data')['id_local'])
-            ->where('id_personnel', Session::get('attendance_data')['id_personnel'])
-            ->where('id_element_pedago', Session::get('attendance_data')['id_element_pedago'])
-            ->where('annee_uni', Session::get('attendance_data')['annee_uni'])
-            ->where('période_seance', Session::get('attendance_data')['periode_seance'])
+            ->where('id_local', FacadeSession::get('attendance_data')['id_local'])
+            ->where('id_personnel', FacadeSession::get('attendance_data')['id_personnel'])
+            ->where('id_element_pedago', FacadeSession::get('attendance_data')['id_element_pedago'])
+            ->where('annee_uni', FacadeSession::get('attendance_data')['annee_uni'])
+            ->where('période_seance', FacadeSession::get('attendance_data')['periode_seance'])
             ->exists();
 
         if ($attendanceRecord) {
@@ -281,17 +281,16 @@ class AttendanceController extends Controller
         } else {
             TempScannedStudent::create([
                 'id_etu' => $studentId,
-                'id_local' => Session::get('attendance_data')['id_local'],
-                'id_personnel' => Session::get('attendance_data')['id_personnel'],
-                'id_element_pedago' => Session::get('attendance_data')['id_element_pedago'],
-                'annee_uni' => Session::get('attendance_data')['annee_uni'],
-                'période_seance' => Session::get('attendance_data')['periode_seance'],
+                'id_local' => FacadeSession::get('attendance_data')['id_local'],
+                'id_personnel' => FacadeSession::get('attendance_data')['id_personnel'],
+                'id_element_pedago' => FacadeSession::get('attendance_data')['id_element_pedago'],
+                'annee_uni' => FacadeSession::get('attendance_data')['annee_uni'],
+                'période_seance' => FacadeSession::get('attendance_data')['periode_seance'],
             ]);
 
             return response()->json(['success' => true]);
         }
     }
-
 
     public function studentAttendanceStats()
     {
@@ -355,7 +354,6 @@ class AttendanceController extends Controller
         return view('EtudiantStats', compact('totalSessions', 'missedSessions', 'attendancePercentage', 'attendanceByModule', 'attendanceTrend', 'active_tab'));
     }
 
-
     public function studentAttendanceRate()
     {
         if (!auth()->user()->hasRole('student')) {
@@ -402,13 +400,11 @@ class AttendanceController extends Controller
         }
     }
 
-
     public function clearExpiredTempScannedStudents()
     {
         $expirationTime = Carbon::now()->subMinutes(1); // 1 minutes timeout
         TempScannedStudent::where('created_at', '<', $expirationTime)->delete();
     }
-
 
     public function indexOfJustification()
     {
@@ -435,7 +431,6 @@ class AttendanceController extends Controller
 
         return view('attendanceabsentjustif', compact('attendanceRecords', 'active_tab'));
     }
-
 
     public function storeJustification(Request $request)
     {
@@ -473,7 +468,6 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.justify')->with('success', 'Justification uploaded successfully.');
     }
 
-
     public function AdminAttendanceStatsIndex()
     {
         $active_tab = 'stumana';
@@ -483,7 +477,68 @@ class AttendanceController extends Controller
         $totalJustifiedAbsences = Attendance::where('is_absent', 1)->where('is_justified', 1)->count();
         $totalUnjustifiedAbsences = Attendance::where('is_absent', 1)->where('is_justified', 0)->count();
         $attendanceRate = ($totalSessions > 0) ? round((($totalSessions * $totalStudents - $totalAbsences) / ($totalSessions * $totalStudents)) * 100, 2) : 0;
-    
+
+        // Fetch sessions directly from the t_sessions table
+        $sessions = ModelSession::all();
+
+        $sessionDataByTeacher = [];
+
+        foreach ($sessions as $session) {
+            $personnelId = $session->id_personnel;
+            $personnelName = $session->personnel->nom_personnel ?? 'N/A'; // Ensure this relationship exists if needed
+            $elementName = $session->elementPedago->intitule_element ?? 'N/A'; // Ensure this relationship exists if needed
+            $filiereName = $session->filiere; // Directly from t_sessions
+            $anneeUni = $session->annee_uni;
+
+            $periodeSeance = $session->periode_seance;
+            $totalHours = 0;
+            try {
+                list($start, $end) = explode('-', $periodeSeance);
+                $startHour = intval($start);
+                $endHour = intval($end);
+                $totalHours = $endHour - $startHour;
+            } catch (\Exception $e) {
+                // Total hours remain 0 in case of an exception
+            }
+
+            // Use a unique key for each combination of personnel, element, and filiere
+            $key = $personnelId . '|' . $elementName . '|' . $filiereName;
+
+            if (!isset($sessionDataByTeacher[$key])) {
+                $sessionDataByTeacher[$key] = [
+                    'professor_name' => $personnelName,
+                    'element_name' => $elementName,
+                    'filiere' => $filiereName,
+                    'annee_uni' => $anneeUni,
+                    'total_hours' => 0,
+                    'course_counts' => [
+                        'C' => ['count' => 0, 'hours' => 0],
+                        'TD' => ['count' => 0, 'hours' => 0],
+                        'TP' => ['count' => 0, 'hours' => 0],
+                        'AP' => ['count' => 0, 'hours' => 0],
+                        'Examen' => ['count' => 0, 'hours' => 0],
+                    ],
+                ];
+            }
+
+            // Update the course count and hours
+            $sessionDataByTeacher[$key]['total_hours'] += $totalHours;
+            $sessionDataByTeacher[$key]['course_counts'][$session->type_seance]['count'] += 1;
+            $sessionDataByTeacher[$key]['course_counts'][$session->type_seance]['hours'] += $totalHours;
+        }
+
+        // Continue with existing functionalities for other data
+        $students = Etudiant::orderBy('annee_uni', 'desc')->get();
+
+        $studentsWithAttendanceData = $students->map(function ($student) {
+            $absences = Attendance::where('id_etu', $student->id)->count();
+            $justifiedAbsences = Attendance::where('id_etu', $student->id)->where('is_justified', 1)->count();
+
+            $student->absences = $absences;
+            $student->justifiedAbsences = $justifiedAbsences;
+            return $student;
+        });
+
         $attendanceByFiliere = Attendance::select(
             'FILIERE',
             DB::raw('COUNT(*) as total_sessions'),
@@ -491,7 +546,7 @@ class AttendanceController extends Controller
         )
             ->groupBy('FILIERE')
             ->get();
-    
+
         $monthlyAbsences = Attendance::select(
             DB::raw('YEAR(created_at) as year'),
             DB::raw('MONTH(created_at) as month'),
@@ -503,20 +558,18 @@ class AttendanceController extends Controller
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')
             ->get();
-    
-        $recentAttendances = Attendance::with('student', 'elementPedago')
+
+        $recentAttendances = Attendance::with(['student', 'elementPedago'])
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
-    
-            // In your Controller
+
         $currentYear = date('Y');
         $years = [];
-        for ($i = 0; $i < 5; $i++) { // Generates the next 5 years
+        for ($i = 0; $i < 100; $i++) {
             $years[] = $currentYear + $i;
         }
 
-        // Pass the years to the view
         return view('adminattendancestats', compact(
             'totalStudents',
             'totalSessions',
@@ -527,6 +580,8 @@ class AttendanceController extends Controller
             'attendanceByFiliere',
             'monthlyAbsences',
             'recentAttendances',
+            'studentsWithAttendanceData',
+            'sessionDataByTeacher',
             'active_tab',
             'years'
         ));
@@ -535,26 +590,25 @@ class AttendanceController extends Controller
     public function fetchAttendanceData(Request $request)
     {
         $year = $request->get('year');
-            $monthlyAbsences = Attendance::select(
+        $monthlyAbsences = Attendance::select(
             DB::raw('MONTH(created_at) as month'),
             DB::raw('COUNT(*) as total_absences'),
             DB::raw('SUM(is_justified) as total_justified_absences')
         )
-        ->whereYear('created_at', $year)
-        ->groupBy('month')
-        ->get();
-    
-        $labels = $monthlyAbsences->pluck('month')->map(function($month) {
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        $labels = $monthlyAbsences->pluck('month')->map(function ($month) {
             return date("F", mktime(0, 0, 0, $month, 1));
         });
         $totalAbsences = $monthlyAbsences->pluck('total_absences');
         $justifiedAbsences = $monthlyAbsences->pluck('total_justified_absences');
-    
+
         return response()->json([
             'labels' => $labels,
             'totalAbsences' => $totalAbsences,
             'justifiedAbsences' => $justifiedAbsences,
         ]);
     }
-    
 }
