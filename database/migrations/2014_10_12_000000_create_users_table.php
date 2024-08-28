@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('apogee')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password');//here is the password. 
             $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();

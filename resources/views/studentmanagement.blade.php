@@ -36,7 +36,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" class="card-link">
+        <a href="{{route('password.reset.form')}}" class="card-link">
             <div class="card">
             <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
                 <div class="card-content">

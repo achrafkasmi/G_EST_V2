@@ -69,7 +69,7 @@ class RegisterController extends Controller
     {
 
         $user = User::create([
-            'apogee' => random_int(100000,999999),
+            //'apogee' => random_int(100000,999999),
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

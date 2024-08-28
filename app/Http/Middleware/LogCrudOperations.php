@@ -20,19 +20,15 @@ class LogCrudOperations
      */
     public function handle(Request $request, Closure $next)
     {
-        // Process the request and get the response
         $response = $next($request);
 
-        // Check if the user is authenticated
         if (Auth::check()) {
             $operation = $this->getOperation($request);
             $modelName = $this->getModelName($request);
 
-            // Determine the details of the changes
             $details = $this->getChangeDetails($request, $operation);
 
             if ($operation && !$this->shouldSkipLogging($request, $operation)) {
-                // Create a new log entry
                 Log::create([
                     'user_id' => Auth::id(),
                     'operation' => $operation,
@@ -54,7 +50,6 @@ class LogCrudOperations
      */
     protected function shouldSkipLogging(Request $request, $operation)
     {
-        // List of controller actions to skip logging
         $skipLoggingActions = [
             'App\Http\Controllers\DashboardController@index',
             'App\Http\Controllers\DocumentController@griddocindex',
@@ -71,12 +66,13 @@ class LogCrudOperations
             'App\Http\Controllers\DocumentController@showDocuments',
             'App\Http\Controllers\StudentController@showSelectionForm',
             'App\Http\Controllers\AttendanceController@showAttendanceForm',
+            'App\Http\Controllers\Auth\ResetPasswordController@index',
+
         ];
 
         $route = $request->route();
         $controllerAction = $route->getAction('controller');
 
-        // Skip logging if the current action is in the list
         return in_array($controllerAction, $skipLoggingActions);
     }
 
@@ -116,7 +112,7 @@ class LogCrudOperations
             return class_basename($controllerAction);
         }
 
-        return 'Unknown'; // Default to Unknown if model name cannot be determined
+        return 'Unknown';
     }
 
     /**
@@ -152,7 +148,6 @@ class LogCrudOperations
         $controllerAction = $route->getAction('controller');
         $parameters = $route->parameters();
 
-        // Add custom logic to capture specific details based on controller and action
         if ($controllerAction == 'App\Http\Controllers\ProfileController@usercard') {
             $etudiant = Etudiant::find($parameters['id_etu']);
             $user = User::find($etudiant->user_id);
@@ -162,11 +157,10 @@ class LogCrudOperations
                 'etudiant_name' => $etudiant->name,
                 'user_id' => $user->id,
                 'user_name' => $user->name,
-                // Add more details as needed
             ];
         }
 
-        return ['query' => $request->query()]; // Default case: log query parameters
+        return ['query' => $request->query()]; 
     }
 
     /**

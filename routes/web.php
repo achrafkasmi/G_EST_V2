@@ -13,6 +13,7 @@ use App\Http\Controllers\ElementController;
 use App\Http\Controllers\ElementPedagogiqueController;
 use App\Http\Controllers\PersonnelElementPedagoguiqueController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
@@ -66,7 +67,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/attendance/scanned-list', [AttendanceController::class, 'getScannedList'])->name('attendance.getScannedList');
 
         Route::post('/attendance/mark-as-present/{id}', [AttendanceController::class, 'markAsPresent'])->name('attendance.markAsPresent');
-        
+
         Route::get('/student-attendance-stats', [AttendanceController::class, 'studentAttendanceStats'])->name('student.attendance.stats');
     });
 
@@ -231,7 +232,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
 
     Route::get('/attendance/justify', [AttendanceController::class, 'indexOfJustification'])->name('attendance.justify');
-    
+
     Route::post('/attendance/store-justification', [AttendanceController::class, 'storeJustification'])->name('attendance.storeJustification');
 
     Route::get('/attendance/admin-overview', [AttendanceController::class, 'AdminAttendanceStatsIndex'])->name('Admin.Attendance.Stats.Index');
@@ -240,6 +241,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/fetch-attendance-data', [AttendanceController::class, 'fetchAttendanceData'])->name('admin.fetchCurrentDateAttendanceStats');
 
+    Route::get('/password/reset', [ResetPasswordController::class, 'index'])->name('password.reset.form');
+
+    Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 });
 
 
