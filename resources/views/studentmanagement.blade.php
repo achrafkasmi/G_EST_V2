@@ -3,7 +3,7 @@
 <title>Management Etudiant</title>
 <div class="app-main">
     @include('tiles.actions')
-    <div class="document-list " id="data-container">
+    <div class="document-list" id="data-container">
         <a href="{{route('student.selection')}}" class="card-link">
             <div class="card">
                 <img src="{{ asset('listeetudiants.svg') }}" alt="black hole">
@@ -28,26 +28,26 @@
                 </div>
             </div>
         </a>
+        <!-- Passwords Card -->
+        <a href="{{route('password.reset.form')}}" class="card-link">
+            <div class="card red-border">
+                <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
+                <div class="card-content">
+                    <h3 style="color: #780606;">Passwords</h3>
+                </div>
+            </div>
+        </a>
         <a href="{{route('Admin.Attendance.Stats.Index')}}" class="card-link">
             <div class="card">
-            <img src="{{ asset('qr.svg') }}" alt="qr" width="40px" height="40px" style="color: #1C274C;">
+                <img src="{{ asset('qr.svg') }}" alt="qr" width="40px" height="40px" style="color: #1C274C;">
                 <div class="card-content">
                     <h3>Attendance</h3>
                 </div>
             </div>
         </a>
-        <a href="{{route('password.reset.form')}}" class="card-link">
-            <div class="card">
-            <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
-                <div class="card-content">
-                    <h3>Passwords</h3>
-                </div>
-            </div>
-        </a>
+        
     </div>
-
 </div>
-
 
 <style>
     .document-list {
@@ -92,6 +92,10 @@
         color: #fff;
         text-decoration: none;
         border-radius: 4px;
+    }
+
+    .red-border {
+        border: solid red .4mm;
     }
 </style>
 

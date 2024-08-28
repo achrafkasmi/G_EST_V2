@@ -1,5 +1,7 @@
 @extends('master')
 @section("app-mid")
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <title>Acceuil</title>
 <div class="app-main">
   @include('tiles.actions')
@@ -183,7 +185,104 @@
   @endif
 </div>
 
-<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  var chartElement = document.getElementById('chart');
+  if (chartElement) {
+    var chartContext = chartElement.getContext('2d');
+    var gradient = chartContext.createLinearGradient(0, 0, 0, 450);
+
+    gradient.addColorStop(0, 'rgba(0, 199, 214, 0.32)');
+    gradient.addColorStop(0.3, 'rgba(0, 199, 214, 0.1)');
+    gradient.addColorStop(1, 'rgba(0, 199, 214, 0)');
+
+    // Function to fetch student data
+    function fetchStudentData() {
+      fetch('/get-student-count') // Your Laravel route to fetch student data
+        .then(response => response.json())
+        .then(data => {
+          // Extract the labels and counts from the returned data
+          var labels = data.map(item => item.annee_uni);
+          var counts = data.map(item => item.student_count);
+
+          // Update chart data
+          updateChartData(labels, counts);
+        })
+        .catch(error => console.error('Error fetching student data:', error));
+    }
+
+    function updateChartData(labels, counts) {
+      var data = {
+        labels: labels, // Dynamic labels from the database
+        datasets: [{
+          label: 'Nombre des Etudiants inscrits',
+          backgroundColor: gradient,
+          pointBackgroundColor: '#00c7d6',
+          borderWidth: 1,
+          borderColor: '#0e1a2f',
+          data: counts // Dynamic data from the database
+        }]
+      };
+
+      var options = {
+        responsive: true,
+        maintainAspectRatio: true,
+        animation: {
+          easing: 'easeInOutQuad',
+          duration: 520
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              fontColor: '#5e6a81'
+            },
+            gridLines: {
+              color: 'rgba(200, 200, 200, 0.08)',
+              lineWidth: 1
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              fontColor: '#5e6a81'
+            }
+          }]
+        },
+        elements: {
+          line: {
+            tension: 0.4
+          }
+        },
+        legend: {
+          display: false
+        },
+        point: {
+          backgroundColor: '#00c7d6'
+        },
+        tooltips: {
+          titleFontFamily: 'Poppins',
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          titleFontColor: 'white',
+          caretSize: 5,
+          cornerRadius: 2,
+          xPadding: 10,
+          yPadding: 10
+        }
+      };
+
+      // Create or update chart
+      new Chart(chartContext, {
+        type: 'line',
+        data: data,
+        options: options
+      });
+    }
+
+    // Fetch student data on page load
+    fetchStudentData();
+  }
+});
+</script>
 <script>
   ! function(e, t) {
     "use strict";

@@ -14,6 +14,7 @@ use App\Http\Controllers\ElementPedagogiqueController;
 use App\Http\Controllers\PersonnelElementPedagoguiqueController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
@@ -244,6 +245,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/password/reset', [ResetPasswordController::class, 'index'])->name('password.reset.form');
 
     Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
+
+    Route::get('/get-student-count', [DashboardController::class, 'getStudentCount']);
+
 });
 
 
