@@ -91,27 +91,17 @@
 
   @include('tiles.actions')
 
-  @if(session('success'))
   <script>
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: '{{ session('
-      success ') }}',
-    });
-  </script>
-  @endif
 
-  @if(session('error'))
-  <script>
+@if(session('upload_error'))
     Swal.fire({
-      icon: 'error',
-      title: 'Error!',
-      text: '{{ session('
-      error ') }}',
+        icon: 'error',
+        title: 'Erreur...',
+        text: "{{ session('upload_error') }}",
     });
-  </script>
-  @endif
+@endif
+
+</script>
 
   @if(auth()->user()->etudiant && auth()->user()->etudiant->stages && auth()->user()->etudiant->stages->isNotEmpty())
   <div class="containers">
