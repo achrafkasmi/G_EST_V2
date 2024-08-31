@@ -28,15 +28,7 @@
                 </div>
             </div>
         </a>
-        <!-- Passwords Card -->
-        <a href="{{route('password.reset.form')}}" class="card-link">
-            <div class="card red-border">
-                <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
-                <div class="card-content">
-                    <h3 style="color: #780606;">Passwords</h3>
-                </div>
-            </div>
-        </a>
+
         <a href="{{route('Admin.Attendance.Stats.Index')}}" class="card-link">
             <div class="card">
                 <img src="{{ asset('qr.svg') }}" alt="qr" width="40px" height="40px" style="color: #1C274C;">
@@ -45,7 +37,29 @@
                 </div>
             </div>
         </a>
-        
+
+        <a href="#" class="card-link">
+            <div class="card">
+                <img src="{{ asset('user-avatars.svg') }}">
+                <div class="card-content">
+                    <h3>Avatars</h3>
+                </div>
+            </div>
+        </a>
+
+    </div>
+    <div>
+            <div class="orange-trait"></div>
+        </div>
+    <div class="document-list" id="data-container">
+        <a href="{{route('password.reset.form')}}" class="card-link">
+            <div class="card red-border">
+                <img src="{{ asset('password.svg') }}" alt="password" width="40px" height="40px" style="color: #1C274C;">
+                <div class="card-content">
+                    <h3>Passwords</h3>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
 
@@ -63,14 +77,13 @@
         border-radius: 8px;
         padding: 16px;
         text-align: left;
-        max-height: 100px;
+        max-height: 75px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .card img {
         margin-right: 20px;
-        /* Space between the image and text */
-        width: 66px;
+        width: 50px;
         height: 66px;
     }
 
@@ -95,7 +108,15 @@
     }
 
     .red-border {
-        border: solid red .4mm;
+        border: solid orangered .4mm;
+    }
+    .orange-trait {
+        height: .3mm;
+   margin-left: 100px;
+   margin-right: 100px;
+        background-color: orangered;
+        margin-top: 40px;
+        margin-bottom: 20px; /* Space below the line */
     }
 </style>
 
