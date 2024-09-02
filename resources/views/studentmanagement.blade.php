@@ -38,7 +38,7 @@
             </div>
         </a>
 
-        <a href="#" class="card-link">
+        <a href="{{route('avatar.select')}}" class="card-link">
             <div class="card">
                 <img src="{{ asset('user-avatars.svg') }}">
                 <div class="card-content">

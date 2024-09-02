@@ -248,6 +248,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/get-student-count', [DashboardController::class, 'getStudentCount']);
 
+    Route::get('/avatar-select', [StudentController::class, 'avatarSelectIndex'])->name('avatar.select');
+
+    Route::post('/generate-pdff', [StudentController::class, 'generateAvatarPDF'])->name('document.generatePDF');
+
 });
 
 

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>generated Student List</title>
+    <title>Generated Student List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,34 +12,10 @@
             min-height: 100vh;
         }
 
-        table {
-            width: 100%;
-            /* Adjust to fill the width */
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #09555c;
-        }
-
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-            overflow: hidden;
-            /* Prevent text overflow */
-            word-break: break-word;
-            /* Break long words */
-        }
-
         .header {
             width: 100%;
             position: relative;
             margin-bottom: 60px;
-            /* Space for footer */
             padding: 0 20px;
             box-sizing: border-box;
         }
@@ -79,14 +55,34 @@
         }
 
         .content {
-            padding-bottom: 20px;
-            /* Space for footer */
+            padding: 20px;
+            padding-bottom: 60px;
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .student-card {
+            border: 1px solid #09555c;
+            padding: 10px;
+            text-align: center;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .student-avatar img {
+            max-width: 100%;
+            max-height: 150px;
+            margin-bottom: 10px;
         }
 
         h4 {
             text-align: center;
             margin: 20px 0;
-            /* Space above and below the heading */
         }
     </style>
 </head>
@@ -107,29 +103,20 @@
     </div>
 
     <div class="content">
-        <h4>Liste Etudiants Pour: {{ request('annee') }} {{ request('filiere') }}</h4>
-        <table>
-            <thead>
-                <tr>
-                    <th>Apogée</th>
-                    <th>Nom et Prénom</th>
-                    @foreach($columns as $column)
-                    <th>{{ $column }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($students as $student)
-                <tr>
-                    <td>{{$student->apogee}}</td>
-                    <td>{{ $student->nom_fr }} {{ $student->prenom_fr }}</td>
-                    @foreach($columns as $column)
-                    <td>{{ $student->$column }}</td>
-                    @endforeach
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <h4>Liste des Etudiants pour: {{ request('annee') }} {{ request('filiere') }}</h4>
+        <div class="student-grid">
+            @foreach($students as $student)
+            <div class="student-card">
+                <div class="student-avatar">
+                <img src="{{ Storage::url($student->user_image) }}" alt="Student Avatar">
+                </div>
+                <div class="student-info">
+                    <strong>{{ $student->nom_fr }} {{ $student->prenom_fr }}</strong><br>
+                    Apogée: {{ $student->apogee }}
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 
     <div class="footer">

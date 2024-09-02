@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('apogee')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');//here is the password. 
-            $table->string('image')->nullable();
+            $table->string('image')->nullable();//here is the path to the image in storage. 
             $table->rememberToken();
             $table->timestamps();
             $table->boolean('is_uploaded')->default(0);
