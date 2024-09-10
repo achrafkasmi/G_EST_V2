@@ -67,6 +67,10 @@ class LogCrudOperations
             'App\Http\Controllers\StudentController@showSelectionForm',
             'App\Http\Controllers\AttendanceController@showAttendanceForm',
             'App\Http\Controllers\Auth\ResetPasswordController@index',
+            'App\Http\Controllers\Auth\AttendanceController@getScannedList',
+            'App\Http\Controllers\Auth\AttendanceController@showattendancedashboard',
+            'App\Http\Controllers\Auth\AttendanceController@studentAttendanceStats',
+            'App\Http\Controllers\Auth\AttendanceController@indexOfJustification',
 
         ];
 

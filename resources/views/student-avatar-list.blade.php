@@ -2,130 +2,188 @@
 <html>
 
 <head>
-    <title>Generated Student List</title>
+    <title>Student University Card</title>
     <style>
+        @page {
+            size: 153.089pt 243.307pt; 
+            margin: 0;
+        }
+
+        @font-face {
+            font-family: 'Amiri';
+            src: url('{{ public_path("fonts/Amiri-Regular.ttf") }}') format('truetype');
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Amiri', sans-serif;
             margin: 0;
             padding: 0;
+            width: 153.089pt;
+            height: 243.307pt;
             position: relative;
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            position: relative;
-            margin-bottom: 60px;
-            padding: 0 20px;
-            box-sizing: border-box;
+            height: 25pt;
+            padding: 0 5pt;
         }
 
-        .logo1 {
-            position: absolute;
-            top: 10px;
-            left: 0;
-        }
-
+        .logo1,
         .logo2 {
-            position: absolute;
-            top: 10px;
-            right: 0;
-        }
-
-        .mid-text {
-            text-align: center;
-            font-size: 10px;
-            margin-top: 20px;
+            width: 25pt;
+            height: 25pt;
         }
 
         .logo1 img,
         .logo2 img {
-            height: 80px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
-        .footer {
-            width: 100%;
-            position: fixed;
-            bottom: 0;
+        .mid-text {
+            font-size: 6pt;
+            line-height: 1.1;
+            color: #1484CD;
             text-align: center;
-            font-size: 10px;
-            padding: 10px;
-            box-sizing: border-box;
-            border-top: 1px solid black;
+            flex-grow: 1;
+        }
+
+        .yellow-line {
+            width: 100%;
+            height: 2pt;
+            background-color: #FFAE42;
+            margin: 2pt 0;
+        }
+
+        .card-title {
+            text-align: center;
+            font-size: 8pt;
+            font-weight: bold;
+            margin: 2pt 0;
+            position: relative;
+        }
+
+        .annee-uni {
+            display: inline;
+            font-size: 6pt;
         }
 
         .content {
-            padding: 20px;
-            padding-bottom: 60px;
+            display: flex;
+            padding: 5pt;
         }
 
-        .student-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .student-card {
-            border: 1px solid #09555c;
-            padding: 10px;
-            text-align: center;
-            overflow: hidden;
-            word-break: break-word;
+        .student-avatar {
+            width: 50pt;
+            height: 62.5pt;
+            margin-right: 5pt;
+            border: .5px solid black;
         }
 
         .student-avatar img {
-            max-width: 100%;
-            max-height: 150px;
-            margin-bottom: 10px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
-        h4 {
+        .mid-informations {
+            font-size: 7pt;
+            line-height: 1.1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .french,
+        .arabe {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .french {
+            text-align: left;
+        }
+
+        .arabe {
+            text-align: right;
+            direction: rtl;
+            font-family: 'DejaVu Sans', sans-serif;
+        }
+
+        .apogee {
             text-align: center;
-            margin: 20px 0;
+            margin-top: 5pt;
+        }
+
+        .barcode {
+            text-align: center;
+            margin-top: 5pt;
         }
     </style>
 </head>
 
 <body>
+    @foreach($students as $student)
     <div class="header">
         <div class="logo1"><img src="{{ public_path('UniLogo.png') }}" alt="Left Logo"></div>
-        <div class="logo2"><img src="{{ public_path('LogoEST.PNG') }}" alt="Right Logo"></div>
         <div class="mid-text">
-            <span>
-                Royaume du Maroc<br>
-                Ministère de l'Enseignement Supérieur,<br>
-                de la Recherche Scientifique et de l’Innovation<br>
-                Université Sultan Moulay Slimane<br>
-                L'Ecole Supérieure de Technologie -- Fkih Ben Salah<br>
-            </span>
+            Université Sultan Moulay Slimane<br>
+            L'Ecole Supérieure de Technologie<br>
+            Fkih Ben Salah
         </div>
+        <div class="logo2"><img src="{{ public_path('LogoEST.PNG') }}" alt="Right Logo"></div>
+    </div>
+
+    <div class="yellow-line"></div>
+
+    <div class="card-title">
+        Carte d'étudiant
+        <span class="annee-uni">{{ $student->annee_uni }}</span>
     </div>
 
     <div class="content">
-        <h4>Liste des Etudiants pour: {{ request('annee') }} {{ request('filiere') }}</h4>
-        <div class="student-grid">
-            @foreach($students as $student)
-            <div class="student-card">
-                <div class="student-avatar">
-                <img src="{{ Storage::url($student->user_image) }}" alt="Student Avatar">
-                </div>
-                <div class="student-info">
-                    <strong>{{ $student->nom_fr }} {{ $student->prenom_fr }}</strong><br>
-                    Apogée: {{ $student->apogee }}
-                </div>
+        <div class="student-avatar">
+            @if($student->user->image)
+            <img src="{{ public_path(str_replace('public/', 'storage/', $student->user->image)) }}" alt="Student Avatar">
+            @else
+            <img src="{{ public_path('profile.PNG') }}" alt="Default Avatar">
+            @endif
+        </div>
+        <div class="mid-informations">
+            <div class="french">
+                <strong>Filière:</strong> {{ $student->FILIERE }}<br>
+                <strong>Nom:</strong> {{ $student->nom_fr }}<br>
+                <strong>Prénom:</strong> {{ $student->prenom_fr }}<br>
+                <strong>CNE/Massar:</strong> {{ $student->cne }}<br>
+                <strong>CIN:</strong> {{ $student->cin }}
             </div>
-            @endforeach
+            <div class="arabe">
+                {{ $student->nom_ar }} <strong>: النسب</strong><br>
+                {{ $student->prenom_ar }} <strong>: الاسم</strong>
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        <span class="footer-text">
-            Ecole Supérieure de Technologie - Fkih Ben Salah<br>
-            Hay Tighnari, Route Nationale N° 11, 23200 Fkih Ben Salah<br>
-            Tel. : 06.64.29.59.98/06.64.32.85.65 , Email : estfbs@usms.ma , Site Web : http://estfbs.usms.ac.ma/
-        </span>
+    <div class="apogee">
+        {{ $student->apogee }}
     </div>
+
+    <div class="barcode">
+        {!! DNS1D::getBarcodeHTML($student->apogee, 'C128') !!}
+    </div>
+
+    @if(!$loop->last)
+    <div style="page-break-after: always;"></div>
+    @endif
+    @endforeach
 </body>
 
 </html>

@@ -1,12 +1,9 @@
 @extends('master')
 
 @section("app-mid")
-<!-- Include Dropify CSS from CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<!-- Include jQuery from CDN (required for Dropify) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Include Dropify JS from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
 <title>Select Avatars</title>
@@ -15,37 +12,43 @@
     <a href="{{ route('index.studentmanage') }}">
         <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
     </a>
+    <div class="container form-container">
+        <div class="form-title">Selection des attributs de la liste</div>
+        <form action="{{ route('document.generatePDF') }}" method="post" enctype="multipart/form-data" id="documentForm">
+            @csrf
 
-    <form action="{{ route('document.generatePDF') }}" method="post" enctype="multipart/form-data" id="documentForm">
-        @csrf
+            <div class="form-group">
+                <select id="filiere-select" name="filiere" class="form-control tag-select" required>
+                    <option value="" disabled selected>Selectionner Filière</option>
+                    @foreach($filieres as $filiere)
+                    <option value="{{ $filiere->FILIERE }}">{{ $filiere->FILIERE }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <!-- Select Annee -->
-        <select id="annee" name="annee" class="form-control tag-select" required>
-            <option value="" disabled selected>Select Annee</option>
-            @foreach($annees as $annee)
-                <option value="{{ $annee->Annee }}">{{ $annee->Annee }}</option>
-            @endforeach
-        </select>
+            <div class="form-group">
+                <select id="annee" name="annee" class="form-control tag-select" required>
+                    <option value="" disabled selected>Selectionner Annee</option>
+                    @foreach($annees as $annee)
+                    <option value="{{ $annee->Annee }}">{{ $annee->Annee }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                
+                <select id="annee_uni" name="annee_uni" class="form-control tag-select" required>
+                    <option value="" disabled selected>Selectionner Annee Universitaire</option>
+                    @foreach($annee_unis as $annee_uni)
+                    <option value="{{ $annee_uni->annee_uni }}">{{ $annee_uni->annee_uni }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Download PDF</button>
+        </form>
+    </div>
 
-        <!-- Select Annee_uni -->
-        <select id="annee_uni" name="annee_uni" class="form-control tag-select" required>
-            <option value="" disabled selected>Select Annee_uni</option>
-            @foreach($annee_unis as $annee_uni)
-                <option value="{{ $annee_uni->annee_uni }}">{{ $annee_uni->annee_uni }}</option>
-            @endforeach
-        </select>
 
-        <!-- Select Filiere -->
-        <select id="filiere-select" name="filiere" class="form-control tag-select" required>
-            <option value="" disabled selected>Select Filière</option>
-            @foreach($filieres as $filiere)
-                <option value="{{ $filiere->FILIERE }}">{{ $filiere->FILIERE }}</option>
-            @endforeach
-        </select>
-
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn">Download PDF</button>
-    </form>
 </div>
 
 <style>

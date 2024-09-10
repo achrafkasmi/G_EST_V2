@@ -7,12 +7,13 @@ use App\Models\Retrait;
 use App\Models\Etudiant;
 use App\Models\Diplome;
 use App\Models\Laureat;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
-
 
 
 
@@ -60,6 +61,7 @@ class StudentController extends Controller
 
         return $pdf->stream('student-list.pdf');
     }
+
     public function avatarSelectIndex()
     {
         if (!auth()->user()->hasRole('admin')) {
@@ -74,38 +76,49 @@ class StudentController extends Controller
 
         return view('avatarSelect', compact('annees', 'filieres', 'apogees', 'annee_unis', 'active_tab'));
     }
+
+
+
+
     public function generateAvatarPDF(Request $request)
     {
         if (!auth()->user()->hasRole('admin')) {
             abort(403);
         }
 
-        $validated = $request->validate([
-            'annee' => 'required',
-            'filiere' => 'required',
-            'annee_uni' => 'required'
+        $request->validate([
+            'filiere' => 'required|string',
+            'annee' => 'required|string',
+            'annee_uni' => 'required|string',
         ]);
 
-        $students = DB::table('t_etudiant')
-            ->join('users', 't_etudiant.user_id', '=', 'users.id')
-            ->where('t_etudiant.Annee', $validated['annee'])
-            ->where('t_etudiant.FILIERE', $validated['filiere'])
-            ->where('t_etudiant.annee_uni', $validated['annee_uni'])
-            ->where('t_etudiant.is_active', '1')
-            ->select(
-                't_etudiant.*',
-                'users.image as user_image'
-            )
+        $students = Etudiant::where('FILIERE', $request->filiere)
+            ->where('annee', $request->annee)
+            ->where('annee_uni', $request->annee_uni)
+            ->with('user')
             ->get();
 
-            foreach ($students as $student) {
-                // Convert to a public URL for displaying in the PDF
-                $student->user_image = url('storage/' . $student->user_image);
+        // Create a new instance of mPDF
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => [153.089, 243.307], // Dimensions in pt for landscape
+            'orientation' => 'L'
+        ]);
+
+        // Set document information
+        $mpdf->SetTitle('Student Avatar List');
+
+        // Write HTML content to mPDF
+        foreach ($students as $student) {
+            // Render the HTML content using the Blade template
+            $html = view('student-avatar-list', ['students' => [$student]])->render();
+
+            // Add a page for each student
+            $mpdf->AddPage();
+            $mpdf->WriteHTML($html);
         }
 
-        $pdf = PDF::loadView('student-avatar-list', compact('students'))
-            ->setPaper('a4', 'portrait');
-
-            return $pdf->stream('student-avatar-list.pdf');
-        }
+        // Output the PDF as a download
+        return $mpdf->Output('student-avatar-list.pdf', 'I');
+    }
 }
