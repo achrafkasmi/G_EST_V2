@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use PDF;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 
 
@@ -99,26 +100,34 @@ class StudentController extends Controller
             ->get();
 
         // Create a new instance of mPDF
-        $mpdf = new Mpdf([
+        $mpdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
-            'format' => [153.089, 243.307], // Dimensions in pt for landscape
-            'orientation' => 'L'
+            'format' => [53.98, 85.6], // Width x Height in mm
+            'orientation' => 'L', // Landscape orientation
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_top' => 0,
+            'margin_bottom' => 0,
         ]);
 
         // Set document information
-        $mpdf->SetTitle('Student Avatar List');
+        $mpdf->SetTitle('Student University Cards');
 
-        // Write HTML content to mPDF
+        // Loop through each student and generate a page
         foreach ($students as $student) {
-            // Render the HTML content using the Blade template
-            $html = view('student-avatar-list', ['students' => [$student]])->render();
+            // Generate the barcode for each student's apogee
+            $generator = new BarcodeGeneratorPNG();
+            $barcode = base64_encode($generator->getBarcode($student->apogee, $generator::TYPE_CODE_128));
 
-            // Add a page for each student
+            // Render the HTML content using the Blade template for each student
+            $html = view('student-avatar-list', compact('student', 'barcode'))->render();
+
+            // Add a new page for each student
             $mpdf->AddPage();
             $mpdf->WriteHTML($html);
         }
 
         // Output the PDF as a download
-        return $mpdf->Output('student-avatar-list.pdf', 'I');
+        return $mpdf->Output('student-avatar-list', 'I');
     }
 }

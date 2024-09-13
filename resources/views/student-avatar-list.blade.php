@@ -1,189 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
-    <title>Student University Card</title>
+    <meta charset="UTF-8">
+    <title>Carte d'étudiant</title>
+    <!--<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">-->
     <style>
-        @page {
-            size: 153.089pt 243.307pt; 
-            margin: 0;
-        }
-
-        @font-face {
-            font-family: 'Amiri';
-            src: url('{{ public_path("fonts/Amiri-Regular.ttf") }}') format('truetype');
-        }
-
         body {
-            font-family: 'Amiri', sans-serif;
-            margin: 0;
-            padding: 0;
-            width: 153.089pt;
-            height: 243.307pt;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            font-family: Arial, sans-serif;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .card {
             width: 100%;
-            height: 25pt;
-            padding: 0 5pt;
         }
 
-        .logo1,
-        .logo2 {
-            width: 25pt;
-            height: 25pt;
+        .logo-left {
+            float: left;
+            width: 12%;
+            margin-left: 2%;
         }
 
-        .logo1 img,
-        .logo2 img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .mid-text {
-            font-size: 6pt;
-            line-height: 1.1;
-            color: #1484CD;
+        .university-name {
+            float: left;
+            width: 90%;
+            font-size: 9px;
+            font-weight: bold;
             text-align: center;
-            flex-grow: 1;
+            color: #0080bf;
+        }
+
+        .logo-right {
+            float: right;
+            width: 12%;
+            height: 14%;
         }
 
         .yellow-line {
-            width: 100%;
-            height: 2pt;
-            background-color: #FFAE42;
-            margin: 2pt 0;
+            clear: both;
+            width: 90%;
+            height: 2px;
+            background-color: orange;
+            margin: 5px auto 0;
+            border-radius: 1px;
         }
 
-        .card-title {
-            text-align: center;
-            font-size: 8pt;
-            font-weight: bold;
-            margin: 2pt 0;
+        .subtitle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: relative;
+            font-size: 6.5px;
+            font-weight: bold;
+            padding: 0 10px;
         }
 
         .annee-uni {
-            display: inline;
-            font-size: 6pt;
-        }
-
-        .content {
-            display: flex;
-            padding: 5pt;
-        }
-
-        .student-avatar {
-            width: 50pt;
-            height: 62.5pt;
-            margin-right: 5pt;
-            border: .5px solid black;
-        }
-
-        .student-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .mid-informations {
-            font-size: 7pt;
-            line-height: 1.1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .french,
-        .arabe {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .french {
+            font-size: 6px;
             text-align: left;
         }
 
-        .arabe {
-            text-align: right;
-            direction: rtl;
-            font-family: 'DejaVu Sans', sans-serif;
+        .carte-text {
+            width: 100%;
+            text-align: center;
+            margin-top: -3%;
         }
 
-        .apogee {
+        .photo {
+            float: left;
+            width: 22%;
+            height: 40%;
+            margin-left: 5px;
+            background-color: #ccc;
+        }
+
+        .info {
+            float: right;
+            width: 70%;
+            margin-right:14px;
+            font-size: 10px;
+        }
+
+        .footer {
+            clear: both;
+            width: 22%;
             text-align: center;
-            margin-top: 5pt;
+            font-size: 8px;
+            margin-left: 5px;
+        }
+
+        .img {
+            width: 100%;
+            height: 116%;
         }
 
         .barcode {
-            text-align: center;
-            margin-top: 5pt;
+            width: 27%;
+            height: 22%;
+            margin-left: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           margin-top: 15px;
+        }
+
+
+        .arabic {
+            margin-top: -24%;
+            margin-right: 1%;
+            direction: rtl;
+            unicode-bidi: bidi-override;
+            font-family: 'Noto Naskh Arabic', 'Arabic Font', Arial, sans-serif;
         }
     </style>
 </head>
 
 <body>
-    @foreach($students as $student)
-    <div class="header">
-        <div class="logo1"><img src="{{ public_path('UniLogo.png') }}" alt="Left Logo"></div>
-        <div class="mid-text">
+    <div class="card">
+        <img class="logo-left" src="{{ public_path('UniLogo.png') }}" alt="University Logo">
+
+        <div class="university-name">
             Université Sultan Moulay Slimane<br>
-            L'Ecole Supérieure de Technologie<br>
+            École Supérieure de Technologie<br>
             Fkih Ben Salah
         </div>
-        <div class="logo2"><img src="{{ public_path('LogoEST.PNG') }}" alt="Right Logo"></div>
-    </div>
 
-    <div class="yellow-line"></div>
+        <img class="logo-right" src="{{ public_path('LogoEST.PNG') }}" alt="EST Logo">
 
-    <div class="card-title">
-        Carte d'étudiant
-        <span class="annee-uni">{{ $student->annee_uni }}</span>
-    </div>
+        <div class="yellow-line"></div>
 
-    <div class="content">
-        <div class="student-avatar">
-            @if($student->user->image)
-            <img src="{{ public_path(str_replace('public/', 'storage/', $student->user->image)) }}" alt="Student Avatar">
-            @else
-            <img src="{{ public_path('profile.PNG') }}" alt="Default Avatar">
-            @endif
+        <div class="subtitle">
+            <span class="annee-uni">{{ $student->annee_uni }}</span>
+            <h3 class="carte-text">Carte d'étudiant</h3>
         </div>
-        <div class="mid-informations">
-            <div class="french">
-                <strong>Filière:</strong> {{ $student->FILIERE }}<br>
-                <strong>Nom:</strong> {{ $student->nom_fr }}<br>
-                <strong>Prénom:</strong> {{ $student->prenom_fr }}<br>
-                <strong>CNE/Massar:</strong> {{ $student->cne }}<br>
-                <strong>CIN:</strong> {{ $student->cin }}
+
+        <div class="content">
+            <div class="photo">
+                @if($student->user && $student->user->image)
+                <img class="img" src="{{ public_path(str_replace('public/', 'storage/', $student->user->image)) }}" alt="Student Photo">
+                @else
+                <img class="img" src="{{ public_path('profile.PNG') }}" alt="Default Photo">
+                @endif
             </div>
-            <div class="arabe">
-                {{ $student->nom_ar }} <strong>: النسب</strong><br>
-                {{ $student->prenom_ar }} <strong>: الاسم</strong>
+
+            <div class="info">
+                <div class="info-row"><strong>Filière:</strong> {{ $student->FILIERE }}</div>
+                <div class="info-row"><strong>Nom:</strong> {{ $student->nom_fr }}</div>
+                <div class="info-row"><strong>Prénom:</strong> {{ $student->prenom_fr }}</div>
+                <div class="info-row"><strong>CNE/Massar:</strong> {{ $student->cne }}</div>
+                <div class="info-row"><strong>CIN:</strong> {{ $student->cin }} </div>
+                <div class="arabic">
+                    <strong>النسب :</strong> {{ $student->nom_ar }} <br>
+                    <strong>الاسم :</strong> {{ $student->prenom_ar }} <br>
+                    <strong>ر.و.ط / مسار:</strong> <br>
+                    <strong>ب.و.ت :</strong>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="apogee">
-        {{ $student->apogee }}
+        <div class="footer">
+            {{ $student->apogee }}
+        </div>
     </div>
+   <div class="barcode">
+    <img src="data:image/png;base64,{{ $barcode }}" alt="Barcode" style="object-fit: contain;">
+</div>
 
-    <div class="barcode">
-        {!! DNS1D::getBarcodeHTML($student->apogee, 'C128') !!}
-    </div>
-
-    @if(!$loop->last)
-    <div style="page-break-after: always;"></div>
-    @endif
-    @endforeach
 </body>
 
 </html>

@@ -14,7 +14,7 @@
     </a>
     <div class="container form-container">
         <div class="form-title">Selection des attributs de la liste</div>
-        <form action="{{ route('document.generatePDF') }}" method="post" enctype="multipart/form-data" id="documentForm">
+        <form action="{{ route('document.generatePDF') }}" method="post" enctype="multipart/form-data" target="_blank" id="documentForm">
             @csrf
 
             <div class="form-group">
