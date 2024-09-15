@@ -14,7 +14,8 @@ class Document extends Model
     protected $fillable = [
         'intitule_document',
         'type_document',
-        'document'
+        'document',
+        'is_archived'
     ];
 }
 

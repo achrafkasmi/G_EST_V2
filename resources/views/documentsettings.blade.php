@@ -1,184 +1,189 @@
 @extends('master')
 @section("app-mid")
-<title>paramettres document</title>
+<title>Document Settings</title>
 <div class="app-main">
-    @include('tiles.actions')
-    <a href="{{ route('documents.index') }}">
-        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
-    </a>
+  @include('tiles.actions')
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <ul class="conversion-rate-list">
+  <a href="{{ route('documents.index') }}">
+    <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
+  </a>
+
+  <!-- Active Documents Table -->
+  <div class="datatabcontainerr mt-4">
+    <table class="tab" id="documentsTable">
+      <thead>
+        <tr>
+          <th>Intitule</th>
+          <th>Destination</th>
+          <th>Document</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
         @foreach($documents as $document)
-            <li class="list-item">
-                <h2 class="platform">{{ $document->intitule_document }}</h2>
-                <dl class="ad">
-                    <dt class="name">Type</dt>
-                    <dd class="value">{{ $document->type_document }}</dd>
-                    <dt class="name">Document</dt>
-                    <dd class="value">
-                        <a href="{{ Storage::url($document->document) }}" target="_blank">View PDF</a>
-                    </dd>
-                    <dt class="name">Created At</dt>
-                    <dd class="value">{{ $document->created_at->format('Y-m-d H:i:s') }}</dd>
-                </dl>
-            </li>
-        @endforeach
-    </ul>
+        <tr>
+          <td>{{ $document->intitule_document }}</td>
+          <td>{{ $document->type_document }}</td>
+          <td>
+            <a href="{{ Storage::url($document->document) }}" target="_blank">View PDF</a>
+          </td>
+          <td>{{ $document->created_at->format('Y-m-d') }}</td>
 
-    <div class="wrap">
-        <table class="conversion-rate-table">
-            <thead class="table__head">
-                <tr class="table__headers">
-                    <th class="header" scope="col">Intitule</th>
-                    <th class="header" scope="col">Type</th>
-                    <th class="header" scope="col">Document</th>
-                    <th class="header" scope="col">Created At</th>
-                </tr>
-            </thead>
-            <tbody class="table__content">
-                @foreach($documents as $document)
-                    <tr class="table__row">
-                        <td class="row__cell">{{ $document->intitule_document }}</td>
-                        <td class="row__cell">{{ $document->type_document }}</td>
-                        <td class="row__cell">
-                            <a href="{{ Storage::url($document->document) }}" target="_blank">View PDF</a>
-                        </td>
-                        <td class="row__cell">{{ $document->created_at->format('Y-m-d H:i:s') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+          <td>
+            <a href="javascript:void(0)" class="archive-document" data-id="{{ $document->id }}">
+              <img src="{{ asset($document->is_archived ? 'offline.svg' : 'online.svg') }}" alt="Archive" width="12px" height="12px">
+            </a>
+
+           <!-- <a href="javascript:void(0)" class="delete-document " data-id="{{ $document->id }}">
+              <img src="{{ asset('recyclebin.svg') }}" alt="Delete" width="20px" height="20px">
+            </a>-->
+
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
+<!-- Include jQuery and DataTables -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#documentsTable').DataTable();
+  });
+
+  // Archive/Unarchive document
+  $(document).on('click', '.archive-document', function() {
+    let documentId = $(this).data('id');
+    let token = $('meta[name="csrf-token"]').attr('content');
+    let $icon = $(this).find('img');
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You are about to archive/unarchive this document.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, proceed!',
+      cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/documents/archive/' + documentId,
+          type: 'POST',
+          data: {
+            _token: token,
+          },
+          success: function(response) {
+            if (response.success) {
+              if (response.is_archived) {
+                $icon.attr('src', "{{ asset('offline.svg') }}");
+              } else {
+                $icon.attr('src', "{{ asset('online.svg') }}");
+              }
+
+              Swal.fire({
+                title: 'Success!',
+                text: 'Document status has been updated.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false,
+              });
+            }
+          },
+          error: function() {
+            Swal.fire('Error!', 'Unable to update the document status.', 'error');
+          }
+        });
+      }
+    });
+  });
+
+  // Delete document
+  $(document).on('click', '.delete-document', function() {
+    let documentId = $(this).data('id');
+    let token = $('meta[name="csrf-token"]').attr('content');
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will permanently delete the document.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/documents/delete/' + documentId,
+          type: 'DELETE',
+          data: {
+            _token: token,
+          },
+          success: function(response) {
+            if (response.success) {
+              Swal.fire('Deleted!', 'The document has been deleted.', 'success');
+              location.reload(); // Reload page to update view
+            }
+          },
+          error: function() {
+            Swal.fire('Error!', 'Unable to delete the document.', 'error');
+          }
+        });
+      }
+    });
+  });
+</script>
+
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans:wght@500;700&display=swap");
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  font-size: 62.5%;
-  --title-font: "Open Sans";
-  --data-font: "Lato";
-  --dark-background: #121212;
-  --dark-secondary-background: #1e1e1e;
-  --dark-text: #e0e0e0;
-  --dark-border: #333;
-  --blue: rgb(51, 131, 255);
-  --white: #fff;
-}
-
-.page-title {
-  margin: 15px 0;
-  padding: 0 0.5em;
-  font-family: var(--title-font);
-  font-weight: 700;
-  font-size: clamp(2.6rem, 4vw, 3.2rem);
-  text-align: center;
-  color: var(--dark-text);
-}
-
-.conversion-rate-list {
-  width: 80%;
-  margin: 25px auto;
-  text-align: center;
-  list-style: none;
-}
-
-.list-item {
-  padding-bottom: 2.5em;
-  border-radius: 6px;
-  box-shadow: 1px 1px 16px var(--dark-border);
-  background-color: var(--dark-secondary-background);
-  overflow: hidden;
-}
-
-.platform {
-  background: var(--blue);
-  color: var(--white);
-  font-family: var(--title-font);
-  font-size: 2.4rem;
-  font-weight: 500;
-  line-height: 2;
-}
-
-.name {
-  font-family: var(--title-font);
-  font-size: 2.4rem;
-  font-weight: 500;
-  line-height: 2;
-}
-
-.value {
-  line-height: 1.5;
-  font-family: var(--data-font);
-  font-size: 2rem;
-  color: var(--dark-text);
-}
-
-.conversion-rate-table {
-  flex-basis: min(80%, 900px);
-  display: none;
-  padding-bottom: 1em;
-  background-color: var(--dark-background);
-  border-radius: 6px;
-  border-collapse: collapse;
-  box-shadow: 1px 1px 16px var(--dark-border);
-  overflow: hidden;
-}
-
-.table__headers {
-  background-color: var(--blue);
-}
-
-.header {
-  padding: 0.25em 0;
-  font-family: var(--title-font);
-  font-size: 2.4rem;
-  font-weight: 500;
-  color: var(--white);
-}
-
-.table__row:nth-child(odd) {
-  background-color: var(--dark-secondary-background);
-}
-
-.table__row:nth-child(even) {
-  background-color: var(--dark-background);
-}
-
-.row__cell {
-  padding: 0.25em 0;
-  font-family: var(--data-font);
-  font-size: 2rem;
-  text-align: center;
-  color: var(--dark-text);
-}
-
-.row__cell + .row__cell,
-.header + .header {
-  border-left: 1px solid var(--dark-border);
-}
-
-@media (min-width: 600px) {
-  .conversion-rate-list {
-    display: none;
+  tbody {
+    color: grey;
   }
 
-  .conversion-rate-table {
-    display: table;
+  .dt-layout-row {
+    color: #808080;
   }
 
-  .wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+  .dt-layout-cell.dt-end {
+    color: grey;
   }
-}
+
+  .dt-column-order {
+    color: rgba(0, 207, 222, 1);
+  }
+
+  .dt-column-title {
+    color: #686D76;
+    white-space: nowrap;
+  }
+
+  .dt-paging {
+    color: grey;
+  }
+
+  .datatabcontainerr {
+    background-color: var(--app-bg-dark);
+    color: #fff;
+    margin-top: 1%;
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .tab th,
+  .tab td {
+    padding: 8px;
+    text-align: left;
+    word-break: break-word;
+  }
+
+  .tab th {
+    white-space: nowrap;
+  }
 </style>
 @endsection

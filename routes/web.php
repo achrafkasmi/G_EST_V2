@@ -158,7 +158,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/elementspedago/{id}/{etape_id}', [ElementPedagogiqueController::class, 'store'])->name('store-module-etape');
 
     Route::post('/store-teacher-element/{id}/{etape_id}', [PersonnelElementPedagoguiqueController::class, 'storeTeacherElement'])->name('storeTeacherElement');
+    
 
+    Route::post('/documents/archive/{document}', [DocumentController::class, 'toggleArchive'])->name('documents.archive');
+    
+    Route::delete('/documents/delete/{document}', [DocumentController::class, 'deleteDocument'])->name('documents.delete');
 
 
     Route::get('/manuallibrary', function () {
@@ -251,7 +255,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/avatar-select', [StudentController::class, 'avatarSelectIndex'])->name('avatar.select');
 
     Route::post('/generate-pdff', [StudentController::class, 'generateAvatarPDF'])->name('document.generatePDF');
-
 });
 
 

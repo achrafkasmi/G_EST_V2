@@ -10,17 +10,10 @@
 
     <div class="document-list" id="data-container">
         @foreach ($documents as $document)
-            @if(auth()->user()->hasRole('student') && $document->type_document == 'student')
-                <div class="card">
-                    <h3>{!! $document->intitule_document !!}</h3>
-                    <a href="{{ Storage::url($document->document) }}" target="_blank" class="view-document btn">View Document</a>
-                </div>
-            @elseif (auth()->user()->hasRole('teacher') && $document->type_document == 'teacher')
-                <div class="card">
-                    <h3>{!! $document->intitule_document !!}</h3>
-                    <a href="{{ Storage::url($document->document) }}" target="_blank" class="view-document btn">View Document</a>
-                </div>
-            @endif
+        <div class="card">
+            <h3>{!! $document->intitule_document !!}</h3>
+            <a href="{{ Storage::url($document->document) }}" target="_blank" class="view-document btn">View Document</a>
+        </div>
         @endforeach
     </div>
 </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_role')->nullable();
             $table->string('intitule_document')->nullable();
             $table->string('type_document')->nullable();
+            $table->boolean('is_archived')->nullable();
             $table->longText('document')->nullable();
             $table->timestamps();
         });

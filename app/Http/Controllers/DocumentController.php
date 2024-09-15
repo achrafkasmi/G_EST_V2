@@ -42,19 +42,20 @@ class DocumentController extends Controller
         return view('managedocuments')->with(['active_tab' => 'addedoc']);
     }
 
-    /**
-     * Show documents for students.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+
     public function showDocuments()
     {
-        $documents = Document::get();
-        if (auth()->user()->role == 1) { //
-            return view('edocument', ['documents' => $documents, 'active_tab' => 'addedoc']);
-        } else
-            return view('edocument', ['documents' => $documents, 'active_tab' => 'documents']);
+        $documents = Document::where('is_archived', 0)->get();
+        //dd($documents);
+        if (auth()->user()->hasRole('student')) {
+            $documents = $documents->where('type_document', 'student');
+        } elseif (auth()->user()->hasRole('teacher')) {
+            $documents = $documents->where('type_document', 'teacher');
+        }
+
+        return view('edocument', ['documents' => $documents, 'active_tab' => 'documents']);
     }
+
     /**
      * Store a newly created document in storage.
      *
@@ -89,5 +90,31 @@ class DocumentController extends Controller
         $active_tab = 'addedoc';
         $documents = Document::all(); // Fetch all documents from the t_documents table
         return view('documentsettings', compact('documents', 'active_tab'));
+    }
+
+    public function toggleArchive(Document $document)
+    {
+        // Toggle the 'is_archived' status
+        $document->is_archived = !$document->is_archived;
+        $document->save();
+
+        return response()->json(['success' => true, 'is_archived' => $document->is_archived]);
+    }
+
+
+    public function deleteDocument(Document $document)
+    {
+        // Remove the 'public/' prefix from the path if it exists, as Storage::delete expects relative paths
+        $path = str_replace('public/', '', $document->document);
+
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        } else {
+            return response()->json(['success' => false, 'message' => 'File not found in storage.']);
+        }
+
+        $document->delete();
+
+        return response()->json(['success' => true]);
     }
 }
