@@ -9,12 +9,9 @@
 <title>Select Avatars</title>
 
 <div class="app-main">
-    <a href="{{ route('index.studentmanage') }}">
-        <img src="{{ asset('left-arrow.svg') }}" alt="Left Arrow" width="40px" height="40px" style="fill: grey;">
-    </a>
     <div class="container form-container">
         <div class="form-title">Selection des attributs de la liste</div>
-        <form action="{{ route('document.generatePDF') }}" method="post" enctype="multipart/form-data" target="_blank" id="documentForm">
+        <form action="{{ route('Generate.statsPdf') }}" method="post" enctype="multipart/form-data" target="_blank" id="documentForm">
             @csrf
 
             <div class="form-group">

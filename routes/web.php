@@ -161,9 +161,12 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::post('/documents/archive/{document}', [DocumentController::class, 'toggleArchive'])->name('documents.archive');
-    
+
     Route::delete('/documents/delete/{document}', [DocumentController::class, 'deleteDocument'])->name('documents.delete');
 
+    Route::get('/attendance/stats-form', [AttendanceController::class, 'getStatsForm'])->name('attendance.statsForm');
+
+    Route::post('/attendance/generate-stats-pdf', [AttendanceController::class, 'generateStatsPdf'])->name('Generate.statsPdf');
 
     Route::get('/manuallibrary', function () {
         if (!auth()->user()->hasRole('admin')) {
@@ -232,10 +235,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/attendance/manual-entry', [AttendanceController::class, 'handleManualEntry'])->name('attendance.manual.entry');
 
-    Route::post('/attendance/clear-temp-scanned-students', [AttendanceController::class, 'clearTempScannedStudents'])->name('attendance.clearTempScannedStudents');
-
-    Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
-
     Route::get('/attendance/justify', [AttendanceController::class, 'indexOfJustification'])->name('attendance.justify');
 
     Route::post('/attendance/store-justification', [AttendanceController::class, 'storeJustification'])->name('attendance.storeJustification');
@@ -255,6 +254,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/avatar-select', [StudentController::class, 'avatarSelectIndex'])->name('avatar.select');
 
     Route::post('/generate-pdff', [StudentController::class, 'generateAvatarPDF'])->name('document.generatePDF');
+    
+    Route::post('/attendance/clear-temp-scanned-students', [AttendanceController::class, 'clearTempScannedStudents'])->name('attendance.clearTempScannedStudents');
+
+    // Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
+
 });
 
 

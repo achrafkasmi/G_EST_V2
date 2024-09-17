@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\{Auth, Session as FacadeSession, DB};
 use Carbon\Carbon;
+use PDF;
 
 
 
@@ -402,7 +403,7 @@ class AttendanceController extends Controller
 
     public function clearExpiredTempScannedStudents()
     {
-        $expirationTime = Carbon::now()->subMinutes(1); // 1 minutes timeout
+        $expirationTime = Carbon::now()->subMinutes(1);
         TempScannedStudent::where('created_at', '<', $expirationTime)->delete();
     }
 
@@ -613,5 +614,62 @@ class AttendanceController extends Controller
             'totalAbsences' => $totalAbsences,
             'justifiedAbsences' => $justifiedAbsences,
         ]);
+    }
+
+
+    //teacher 
+
+
+    public function getStatsForm()
+    {
+        $active_tab = 'assiduité';
+        $annees = Etudiant::select('Annee')->distinct()->get();
+        $filieres = Etudiant::select('FILIERE')->distinct()->get();
+        $apogees = Etudiant::select('Apogee')->distinct()->get();
+        $annee_unis = Etudiant::select('annee_uni')->distinct()->get();
+
+        return view('AttendanceGetStats', compact('annees', 'filieres', 'apogees', 'annee_unis', 'active_tab'));
+    }
+
+    public function generateStatsPdf(Request $request)
+    {
+        $request->validate([
+            'filiere' => 'required',
+            'annee' => 'required',
+            'annee_uni' => 'required',
+        ]);
+
+        // Fetch students for the selected filiere, annee, and annee_uni
+        $students = DB::table('t_etudiant')
+            ->where('FILIERE', $request->filiere)
+            ->where('Annee', $request->annee)
+            ->where('annee_uni', $request->annee_uni)
+            ->get();
+
+        // Fetch attendance data for these students
+        $attendanceData = [];
+        foreach ($students as $student) {
+            $absentSessions = DB::table('t_attendance')
+                ->where('id_etu', $student->id)
+                ->where('is_absent', 1) // Assuming 'status' represents attendance
+                ->count();
+
+             $justifiedSessions = DB::table('t_attendance')
+                ->where('id_etu', $student->id)
+                ->where('is_justified', 1)
+                ->count();
+
+            $attendanceData[] = [
+                'student' => $student,
+                'absent_sessions' => $absentSessions,
+                'justified_sessions' => $justifiedSessions,
+            ];
+        }
+
+        // Generate PDF with the attendance data
+        $pdf = PDF::loadView('studentAttendanceStats', compact('attendanceData'));
+
+        // Return PDF download response
+        return $pdf->stream('attendance_stats.pdf');
     }
 }
