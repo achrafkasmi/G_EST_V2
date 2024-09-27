@@ -30,13 +30,14 @@
       </a>
     </li>
     @endif
+    @if(auth()->user() && auth()->user()->hasRole('teacher'))
     <li class="nav-list-item @if($active_tab == 'assiduité') active @endif">
       <a class=" nav-list-link" href="{{ route('attendance.statsForm') }}">
         <img src="/attendancestats.svg" alt="attendance" width="28" height="28" style="margin-right: 10px;" />
         Rapports d'assiduité
       </a>
     </li>
-
+  @endif
     @if(auth()->user() && auth()->user()->hasRole('student'))
     <li class="nav-list-item @if($active_tab == 'attendance') active @endif">
       <a class="nav-list-link" href="{{ route('attendance.dash.blade') }}">
