@@ -81,7 +81,7 @@
       </a>
     </li>
     <li class="nav-list-item @if($active_tab == 'checkstage') active @endif">
-      <a class="nav-list-link" href="{{route('logs')}}">
+      <a class="nav-list-link" href="{{route('logs.index')}}">
         <img src="/historisation.PNG" alt="Historisation" width="28" height="28" style="margin-right: 10px;" />
         Historisation
       </a>

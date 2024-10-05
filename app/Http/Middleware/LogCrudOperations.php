@@ -71,10 +71,14 @@ class LogCrudOperations
             'App\Http\Controllers\Auth\AttendanceController@showattendancedashboard',
             'App\Http\Controllers\Auth\AttendanceController@studentAttendanceStats',
             'App\Http\Controllers\Auth\AttendanceController@indexOfJustification',
-
+            'App\Http\Controllers\Auth\LogController@getData',
+            'App\Http\Controllers\Auth\DashboardController@getStudentCount',
+            'App\Http\Controllers\Auth\LogController@getData',
+    
         ];
 
         $route = $request->route();
+
         $controllerAction = $route->getAction('controller');
 
         return in_array($controllerAction, $skipLoggingActions);
