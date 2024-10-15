@@ -21,6 +21,15 @@
                 </div>
             </div>
         </a>
+
+        <a href="{{ route('dash-of-scan')}}" class="card-link">
+            <div class="card">
+                <img src="{{ asset('scanneddoc.svg') }}" alt="settings">
+                <div class="card-content">
+                    <h3>scanned baccalaureate</h3>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
 
@@ -37,9 +46,9 @@
         display: flex;
         align-items: center;
         border-radius: 8px;
-        padding: 16px;
+        padding: 7px;
         text-align: left;
-        max-height: 100px;
+        max-height: 75px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 

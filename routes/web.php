@@ -260,7 +260,12 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/clear-expired-temp-scanned-students', [AttendanceController::class, 'clearExpiredTempScannedStudents'])->name('clearExpiredTempScannedStudents');
 
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-Route::get('/logs/data', [LogController::class, 'getData'])->name('logs.data');
+    
+    Route::get('/logs/data', [LogController::class, 'getData'])->name('logs.data');
+
+    Route::post('/baccalaureates/upload', [DocumentController::class, 'upload'])->name('baccalaureates.upload');
+   
+    Route::get('/dash-of-scan', [DocumentController::class, 'indexscannedbac'])->name('dash-of-scan');
 });
 
 

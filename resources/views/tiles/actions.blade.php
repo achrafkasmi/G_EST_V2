@@ -1,5 +1,5 @@
 <div class="main-header-line">
-    <h4 class="header-ds"><b>Ecole Supérieure de Technologie Fkih Ben Salah-CURSUS V.0 Beta</b></h4>
+    <h4 class="header-ds"><b>Ecole Supérieure de Technologie Fkih Ben Salah  CURSUS-ESTFBS V.01</b></h4>
     <div class="action-buttons">
         <button class="open-right-area">
             <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#d3dede" stroke="#d3dede">

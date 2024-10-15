@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Document;
+use App\Models\Baccalaureate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -104,7 +105,6 @@ class DocumentController extends Controller
 
     public function deleteDocument(Document $document)
     {
-        // Remove the 'public/' prefix from the path if it exists, as Storage::delete expects relative paths
         $path = str_replace('public/', '', $document->document);
 
         if (Storage::exists($path)) {
@@ -117,4 +117,43 @@ class DocumentController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+    //baccalaureate traitment 
+
+    public function indexscannedbac(){
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        $active_tab = 'addedoc';
+        return view('bacscan', compact('active_tab'));
+    }
+
+    
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'pdf_file' => 'required|file|mimes:pdf|max:20480', // Max size 20 MB
+            'year' => 'required|integer', // Assuming you have a 'year' input
+        ]);
+
+        // Store the uploaded PDF in a specific year directory
+        
+
+        $year = $request->input('year'); // Get the year from the request
+        $filename = "{$year}.pdf"; // The format you want
+        $path = $request->file('pdf_file')->storeAs("baccalaureates/$year", $filename);
+
+        // Save the PDF path in the database
+        Baccalaureate::create([
+            'pdf_path' => $path,
+            
+            // Add other fields if necessary
+        ]);
+
+        return redirect()->back()->with('success', 'Baccalaureate PDF uploaded successfully!');
+    }
+
+    
 }
+

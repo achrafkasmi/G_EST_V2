@@ -10,7 +10,7 @@
 
 <div class="app-main">
     <div class="container form-container">
-        <div class="form-title">Selection des attributs de la liste</div>
+        <div class="form-title">generate attendance report</div>
         <form action="{{ route('Generate.statsPdf') }}" method="post" enctype="multipart/form-data" target="_blank" id="documentForm">
             @csrf
 
