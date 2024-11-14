@@ -15,6 +15,18 @@
                     <th>Timestamp</th>
                 </tr>
             </thead>
+   
+            <tbody>
+                @foreach ($logs as $log)
+                    <tr>
+                        <td>{{ $log->user->name }}</td>
+                        <td>{{ $log->operation }}</td>
+                        <td>{{ class_basename($log->model) }}</td>
+                        <td>{{ $log->formatted_details }}</td>
+                        <td>{{ $log->created_at }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
 </div>
@@ -27,16 +39,6 @@
 <script>
     $(document).ready(function() {
         $('#logsTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('logs.data') }}",
-            columns: [
-                { data: 'user_name', name: 'user_name' },
-                { data: 'operation', name: 'operation' },
-                { data: 'model', name: 'model' },
-                { data: 'formatted_details', name: 'formatted_details' },
-                { data: 'created_at', name: 'created_at' }
-            ],
             scrollX: true // Enable horizontal scrolling
         });
     });
