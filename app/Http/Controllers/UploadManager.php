@@ -80,9 +80,16 @@ class UploadManager extends Controller
             $request->session()->flash('success', 'Files were uploaded successfully!');
 
             return redirect()->back();
-        } catch (\Exception $e) {
+        /*} 
+        catch (\Exception $e) {
             return redirect()->back()->with('upload_error', "Une erreur lors de la soumission du dossier de stage. Veuillez réessayer.");
+        }*/
+    }
+        catch (\Exception $e) {
+            // Display the actual exception message for debugging
+            return redirect()->back()->with('upload_error', $e->getMessage());
         }
+        
     }
 
 

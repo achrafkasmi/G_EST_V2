@@ -94,9 +94,9 @@ Route::middleware(['auth'])->group(function () {
         return view('gridetudiant');
     })->name('gridetudiant');
 
-    Route::get('/addnotice', function () {
+    /*Route::get('/addnotice', function () {
         return view('addnotice');
-    })->name('gridetudiant');
+    })->name('gridetudiant');*/
 
     Route::post('/import/users', [App\Http\Controllers\AuthenticationController::class, 'importUsers'])->name('import.excel');
 
@@ -130,7 +130,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/approve-dossier/{dossier_id}', [App\Http\Controllers\libraryController::class, 'approveDossier'])->name('approve-dossier');
 
-    Route::get('/upload/{id}/edit', [UploadManager::class, 'edit'])->name('upload.edit');
 
     Route::get('/upload/edit/{stage}', [UploadManager::class, 'edit'])->name('upload.edit');
 
